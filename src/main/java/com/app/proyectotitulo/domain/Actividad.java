@@ -2,34 +2,39 @@ package com.app.proyectotitulo.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import java.util.List;
 
 /**
  * The persistent class for the actividad database table.
  * 
  */
 @Entity
-@NamedQuery(name="Actividad.findAll", query="SELECT a FROM Actividad a")
+@NamedQuery(name = "Actividad.findAll", query = "SELECT a FROM Actividad a")
 public class Actividad implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id_actividad")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_actividad")
 	private int idActividad;
 
-	private byte estado;
+	private byte habilitado;
 
 	private String nombre;
 
-	//bi-directional many-to-one association to PlanEjecucion
+	// bi-directional many-to-one association to PlanEjecucion
 	@ManyToOne
-	@JoinColumn(name="id_plan_ejecucion")
+	@JoinColumn(name = "id_plan_ejecucion")
+	@JsonManagedReference
 	private PlanEjecucion planEjecucion;
 
-	//bi-directional many-to-one association to ActividadRealizada
-	@OneToMany(mappedBy="actividad")
+	// bi-directional many-to-one association to ActividadRealizada
+	@OneToMany(mappedBy = "actividad")
+	@JsonBackReference
 	private List<ActividadRealizada> actividadRealizadas;
 
 	public Actividad() {
@@ -43,12 +48,12 @@ public class Actividad implements Serializable {
 		this.idActividad = idActividad;
 	}
 
-	public byte getEstado() {
-		return this.estado;
+	public byte getHabilitado() {
+		return this.habilitado;
 	}
 
-	public void setEstado(byte estado) {
-		this.estado = estado;
+	public void setHabilitado(byte habilitado) {
+		this.habilitado = habilitado;
 	}
 
 	public String getNombre() {

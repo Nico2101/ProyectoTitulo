@@ -79,7 +79,7 @@
 											<c:if test="${not empty errorUsuario}">
 												<script>
 													toastr
-															.error("Usuario o Contraseña incorrectos");
+															.error("Datos de sesión incorrectos");
 												</script>
 											</c:if>
 

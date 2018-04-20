@@ -2,36 +2,39 @@ package com.app.proyectotitulo.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.util.Date;
 import java.util.List;
-
 
 /**
  * The persistent class for the temporada database table.
  * 
  */
 @Entity
-@NamedQuery(name="Temporada.findAll", query="SELECT t FROM Temporada t")
+@NamedQuery(name = "Temporada.findAll", query = "SELECT t FROM Temporada t")
 public class Temporada implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id_temporada")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_temporada")
 	private int idTemporada;
 
 	private byte estado;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_inicio")
+	@Column(name = "fecha_inicio")
 	private Date fechaInicio;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_termino")
+	@Column(name = "fecha_termino")
 	private Date fechaTermino;
 
-	//bi-directional many-to-one association to ActividadRealizada
-	@OneToMany(mappedBy="temporada")
+	// bi-directional many-to-one association to ActividadRealizada
+	@OneToMany(mappedBy = "temporada")
+	@JsonBackReference
 	private List<ActividadRealizada> actividadRealizadas;
 
 	public Temporada() {

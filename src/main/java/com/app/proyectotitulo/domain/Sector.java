@@ -2,29 +2,32 @@ package com.app.proyectotitulo.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import java.util.List;
 
 /**
  * The persistent class for the sector database table.
  * 
  */
 @Entity
-@NamedQuery(name="Sector.findAll", query="SELECT s FROM Sector s")
+@NamedQuery(name = "Sector.findAll", query = "SELECT s FROM Sector s")
 public class Sector implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id_sector")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_sector")
 	private int idSector;
 
 	private String nombre;
 
 	private int superficie;
 
-	//bi-directional many-to-one association to Predio
-	@OneToMany(mappedBy="sector")
+	// bi-directional many-to-one association to Predio
+	@OneToMany(mappedBy = "sector")
+	@JsonBackReference
 	private List<Predio> predios;
 
 	public Sector() {

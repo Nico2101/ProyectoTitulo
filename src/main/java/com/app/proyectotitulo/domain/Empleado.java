@@ -4,6 +4,8 @@ import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class Empleado implements Serializable {
 
 	private String cargo;
 
-	@NotEmpty(message="Debe ingresar su contraseña")
+	@NotEmpty(message = "Debe ingresar su contraseña")
 	private String clave;
 
 	private String direccion;
@@ -39,6 +41,7 @@ public class Empleado implements Serializable {
 
 	// bi-directional many-to-one association to PlanEjecucion
 	@OneToMany(mappedBy = "empleado")
+	@JsonBackReference
 	private List<PlanEjecucion> planEjecucions;
 
 	public Empleado() {

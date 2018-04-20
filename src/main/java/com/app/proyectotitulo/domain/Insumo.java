@@ -2,22 +2,26 @@ package com.app.proyectotitulo.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import java.util.List;
 
 /**
  * The persistent class for the insumo database table.
  * 
  */
 @Entity
-@NamedQuery(name="Insumo.findAll", query="SELECT i FROM Insumo i")
+@NamedQuery(name = "Insumo.findAll", query = "SELECT i FROM Insumo i")
 public class Insumo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id_insumo")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_insumo")
 	private int idInsumo;
+
+	private byte habilitado;
 
 	private String marca;
 
@@ -25,11 +29,12 @@ public class Insumo implements Serializable {
 
 	private String tipo;
 
-	@Column(name="unidad_medida")
+	@Column(name = "unidad_medida")
 	private String unidadMedida;
 
-	//bi-directional many-to-one association to ActividadInsumo
-	@OneToMany(mappedBy="insumo")
+	// bi-directional many-to-one association to ActividadInsumo
+	@OneToMany(mappedBy = "insumo")
+	@JsonBackReference
 	private List<ActividadInsumo> actividadInsumos;
 
 	public Insumo() {
@@ -41,6 +46,14 @@ public class Insumo implements Serializable {
 
 	public void setIdInsumo(int idInsumo) {
 		this.idInsumo = idInsumo;
+	}
+
+	public byte getHabilitado() {
+		return this.habilitado;
+	}
+
+	public void setHabilitado(byte habilitado) {
+		this.habilitado = habilitado;
 	}
 
 	public String getMarca() {

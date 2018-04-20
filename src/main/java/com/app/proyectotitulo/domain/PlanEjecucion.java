@@ -2,36 +2,41 @@ package com.app.proyectotitulo.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import java.util.List;
 
 /**
  * The persistent class for the plan_ejecucion database table.
  * 
  */
 @Entity
-@Table(name="plan_ejecucion")
-@NamedQuery(name="PlanEjecucion.findAll", query="SELECT p FROM PlanEjecucion p")
+@Table(name = "plan_ejecucion")
+@NamedQuery(name = "PlanEjecucion.findAll", query = "SELECT p FROM PlanEjecucion p")
 public class PlanEjecucion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id_plan_ejecucion")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_plan_ejecucion")
 	private int idPlanEjecucion;
 
-	@Column(name="fecha_creacion")
+	@Column(name = "fecha_creacion")
 	private String fechaCreacion;
 
 	private String nombre;
 
-	//bi-directional many-to-one association to Actividad
-	@OneToMany(mappedBy="planEjecucion")
+	// bi-directional many-to-one association to Actividad
+	@OneToMany(mappedBy = "planEjecucion")
+	@JsonBackReference
 	private List<Actividad> actividads;
 
-	//bi-directional many-to-one association to Empleado
+	// bi-directional many-to-one association to Empleado
 	@ManyToOne
-	@JoinColumn(name="rut")
+	@JoinColumn(name = "rut")
+	@JsonManagedReference
 	private Empleado empleado;
 
 	public PlanEjecucion() {

@@ -2,32 +2,35 @@ package com.app.proyectotitulo.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import java.util.Date;
 
 /**
  * The persistent class for the reprogramacion database table.
  * 
  */
 @Entity
-@NamedQuery(name="Reprogramacion.findAll", query="SELECT r FROM Reprogramacion r")
+@NamedQuery(name = "Reprogramacion.findAll", query = "SELECT r FROM Reprogramacion r")
 public class Reprogramacion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id_reprogramacion")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_reprogramacion")
 	private int idReprogramacion;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="fecha_reprogramacion")
+	@Column(name = "fecha_reprogramacion")
 	private Date fechaReprogramacion;
 
 	private String motivo;
 
-	//bi-directional many-to-one association to ActividadRealizada
+	// bi-directional many-to-one association to ActividadRealizada
 	@ManyToOne
-	@JoinColumn(name="id_actividad_realizada")
+	@JoinColumn(name = "id_actividad_realizada")
+	@JsonManagedReference
 	private ActividadRealizada actividadRealizada;
 
 	public Reprogramacion() {
