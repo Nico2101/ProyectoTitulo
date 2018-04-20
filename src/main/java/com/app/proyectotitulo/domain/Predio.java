@@ -24,7 +24,7 @@ public class Predio implements Serializable {
 
 	private String nombre;
 
-	private int superficie;
+	private Integer superficie;
 
 	// bi-directional many-to-one association to ActividadRealizada
 	@OneToMany(mappedBy = "predio")
@@ -56,11 +56,11 @@ public class Predio implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public int getSuperficie() {
+	public Integer getSuperficie() {
 		return this.superficie;
 	}
 
-	public void setSuperficie(int superficie) {
+	public void setSuperficie(Integer superficie) {
 		this.superficie = superficie;
 	}
 

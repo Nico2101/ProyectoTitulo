@@ -23,7 +23,7 @@ public class Sector implements Serializable {
 
 	private String nombre;
 
-	private int superficie;
+	private Integer superficie;
 
 	// bi-directional many-to-one association to Predio
 	@OneToMany(mappedBy = "sector")
@@ -49,11 +49,11 @@ public class Sector implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public int getSuperficie() {
+	public Integer getSuperficie() {
 		return this.superficie;
 	}
 
-	public void setSuperficie(int superficie) {
+	public void setSuperficie(Integer superficie) {
 		this.superficie = superficie;
 	}
 

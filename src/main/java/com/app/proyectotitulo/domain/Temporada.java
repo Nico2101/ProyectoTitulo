@@ -22,7 +22,7 @@ public class Temporada implements Serializable {
 	@Column(name = "id_temporada")
 	private int idTemporada;
 
-	private byte estado;
+	private boolean estado;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_inicio")
@@ -48,11 +48,11 @@ public class Temporada implements Serializable {
 		this.idTemporada = idTemporada;
 	}
 
-	public byte getEstado() {
+	public boolean getEstado() {
 		return this.estado;
 	}
 
-	public void setEstado(byte estado) {
+	public void setEstado(boolean estado) {
 		this.estado = estado;
 	}
 

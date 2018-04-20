@@ -20,9 +20,9 @@ public class ActividadInsumo implements Serializable {
 	@Column(name = "id_actividad_insumo")
 	private int idActividadInsumo;
 
-	private int cantidad;
+	private Integer cantidad;
 
-	private int costo;
+	private Integer costo;
 
 	// bi-directional many-to-one association to ActividadRealizada
 	@ManyToOne
@@ -47,19 +47,19 @@ public class ActividadInsumo implements Serializable {
 		this.idActividadInsumo = idActividadInsumo;
 	}
 
-	public int getCantidad() {
+	public Integer getCantidad() {
 		return this.cantidad;
 	}
 
-	public void setCantidad(int cantidad) {
+	public void setCantidad(Integer cantidad) {
 		this.cantidad = cantidad;
 	}
 
-	public int getCosto() {
+	public Integer getCosto() {
 		return this.costo;
 	}
 
-	public void setCosto(int costo) {
+	public void setCosto(Integer costo) {
 		this.costo = costo;
 	}
 

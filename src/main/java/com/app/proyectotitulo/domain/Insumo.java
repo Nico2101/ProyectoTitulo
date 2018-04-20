@@ -21,7 +21,7 @@ public class Insumo implements Serializable {
 	@Column(name = "id_insumo")
 	private int idInsumo;
 
-	private byte habilitado;
+	private boolean habilitado;
 
 	private String marca;
 
@@ -48,11 +48,11 @@ public class Insumo implements Serializable {
 		this.idInsumo = idInsumo;
 	}
 
-	public byte getHabilitado() {
+	public boolean getHabilitado() {
 		return this.habilitado;
 	}
 
-	public void setHabilitado(byte habilitado) {
+	public void setHabilitado(boolean habilitado) {
 		this.habilitado = habilitado;
 	}
 

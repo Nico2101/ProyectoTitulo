@@ -22,7 +22,7 @@ public class Actividad implements Serializable {
 	@Column(name = "id_actividad")
 	private int idActividad;
 
-	private byte habilitado;
+	private boolean habilitado;
 
 	private String nombre;
 
@@ -48,11 +48,11 @@ public class Actividad implements Serializable {
 		this.idActividad = idActividad;
 	}
 
-	public byte getHabilitado() {
+	public boolean getHabilitado() {
 		return this.habilitado;
 	}
 
-	public void setHabilitado(byte habilitado) {
+	public void setHabilitado(boolean habilitado) {
 		this.habilitado = habilitado;
 	}
 

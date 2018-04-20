@@ -25,7 +25,7 @@ public class ActividadRealizada implements Serializable {
 	private int idActividadRealizada;
 
 	@Column(name = "cantidad_cosechada")
-	private int cantidadCosechada;
+	private Integer cantidadCosechada;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_ejecucion_real")
@@ -74,11 +74,11 @@ public class ActividadRealizada implements Serializable {
 		this.idActividadRealizada = idActividadRealizada;
 	}
 
-	public int getCantidadCosechada() {
+	public Integer getCantidadCosechada() {
 		return this.cantidadCosechada;
 	}
 
-	public void setCantidadCosechada(int cantidadCosechada) {
+	public void setCantidadCosechada(Integer cantidadCosechada) {
 		this.cantidadCosechada = cantidadCosechada;
 	}
 
