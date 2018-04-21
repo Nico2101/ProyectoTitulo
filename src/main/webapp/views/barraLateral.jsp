@@ -9,39 +9,102 @@
 	</a></li>
 
 
-	<c:forEach var="menuConSubmenu" items="${menuConSubmenu}">
-
-		<li class="treeview"><a href="#"> <i
-				class="${menuConSubmenu.icono }"></i> <span><c:out
-						value="${menuConSubmenu.nombre}"></c:out></span> <i
-				class="fa fa-angle-left pull-right"></i>
 
 
-		</a>
-			<ul class="treeview-menu">
-				<c:forEach var="submenu" items="${submenu}">
-					<c:if test="${menuConSubmenu.idMenu==submenu.menu.idMenu }">
-						<li><a href="${submenu.nombre}"> <i
-								class="fa fa-circle-o"></i> <span><c:out
-										value="${submenu.nombre}"></c:out></span>
+	<li class="treeview"><a href="#"> <i class="fa fa-list-alt"></i>
+			<span><c:out value="Plan de Ejecución"></c:out></span> <i
+			class="fa fa-angle-left pull-right"></i>
 
-						</a></li>
+	</a>
+		<ul class="treeview-menu">
 
-					</c:if>
-				</c:forEach>
-			</ul></li>
 
-	</c:forEach>
+			<li><a href="#"> <i class="fa fa-circle-o"></i> <span><c:out
+							value="Crear Plan"></c:out></span>
 
-	<c:forEach var="menuSinSubmenu" items="${menuSinSubmenu}">
+			</a></li>
 
-		<li><a href="${menuSinSubmenu.nombre}"> <i
-				class="${menuSinSubmenu.icono }"></i> <span><c:out
-						value="${menuSinSubmenu.nombre }"></c:out></span>
+			<li><a href="#"> <i class="fa fa-circle-o"></i> <span><c:out
+							value="Agregar actividad a plan"></c:out></span>
 
-		</a></li>
+			</a></li>
 
-	</c:forEach>
+			<li><a href="#"> <i class="fa fa-circle-o"></i> <span><c:out
+							value="Ver Planes"></c:out></span>
+
+			</a></li>
+
+
+		</ul></li>
+
+	<li><a href="#"> <i class="fa fa-edit"></i> <span><c:out
+					value="Registrar Actividad"></c:out></span>
+
+	</a></li>
+
+
+
+	<li class="treeview"><a href="#"> <i class="fa fa-info-circle"></i>
+			<span><c:out value="Insumos"></c:out></span> <i
+			class="fa fa-angle-left pull-right"></i>
+
+	</a>
+		<ul class="treeview-menu">
+
+
+			<li><a href="#"> <i class="fa fa-circle-o"></i> <span><c:out
+							value="Listar Insumos"></c:out></span>
+
+			</a></li>
+
+
+		</ul></li>
+
+
+
+	<li class="treeview"><a href="#"> <i class="fa fa-map-o"></i>
+			<span><c:out value="Sectores y Predios"></c:out></span> <i
+			class="fa fa-angle-left pull-right"></i>
+
+	</a>
+		<ul class="treeview-menu">
+
+
+			<li><a href="#"> <i class="fa fa-circle-o"></i> <span><c:out
+							value="Listar Sectores"></c:out></span>
+
+			</a></li>
+
+			<li><a href="#"> <i class="fa fa-circle-o"></i> <span><c:out
+							value="Listar Predios"></c:out></span>
+
+			</a></li>
+		</ul></li>
+
+
+
+
+	<li class="treeview"><a href="#"> <i class="fa fa-file-pdf-o"></i>
+			<span><c:out value="Reportes"></c:out></span> <i
+			class="fa fa-angle-left pull-right"></i>
+
+	</a>
+		<ul class="treeview-menu">
+
+
+			<li><a href="#"> <i class="fa fa-circle-o"></i> <span><c:out
+							value="Rendimiento por Sector"></c:out></span>
+
+			</a></li>
+
+			<li><a href="#"> <i class="fa fa-circle-o"></i> <span><c:out
+							value="Rendimiento por producto"></c:out></span>
+
+			</a></li>
+		</ul></li>
+
+
+
 
 
 </ul>

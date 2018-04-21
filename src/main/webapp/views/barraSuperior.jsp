@@ -4,8 +4,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <!-- Logo -->
 <a href="index" class="logo"> <!-- mini logo for sidebar mini 50x50 pixels -->
-	<span class="logo-mini"><img src="img/logo_blanco.png" width="100%" style="visibility:hidden"><img src="img/logo_blanco.png" width="100%"></span> <!-- logo for regular state and mobile devices -->
-	<span class="logo-lg"><img src="img/logo_blanco.png" width="80%"></span>
+	<span class="logo-mini"><i class="glyphicon glyphicon-grain"></i></span> <!-- logo for regular state and mobile devices -->
+	<span class="logo-lg"><i class="glyphicon glyphicon-grain"></i>Fundo Santa Emilia</span>
 </a>
 <!-- Header Navbar: style can be found in header.less -->
 <nav class="navbar navbar-static-top"> <!-- Sidebar toggle button-->
