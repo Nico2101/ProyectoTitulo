@@ -25,9 +25,9 @@ public class InsumoServiceImplementation implements InsumoService {
 	}
 
 	@Override
-	public void save(Insumo i) {
+	public Insumo saveAndFlush(Insumo i) {
 		// TODO Auto-generated method stub
-		insumoRepo.save(i);
+		return insumoRepo.saveAndFlush(i);
 	}
 
 }

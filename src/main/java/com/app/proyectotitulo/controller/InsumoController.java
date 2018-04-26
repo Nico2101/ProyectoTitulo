@@ -47,7 +47,7 @@ public class InsumoController {
 	}
 
 	@RequestMapping(value = "agregarInsumo")
-	public @ResponseBody boolean agregarInsumo(@RequestParam String nombre, @RequestParam String tipo,
+	public @ResponseBody Insumo agregarInsumo(@RequestParam String nombre, @RequestParam String tipo,
 			@RequestParam String um, @RequestParam String marca) {
 
 		System.out.println(nombre);
@@ -55,6 +55,7 @@ public class InsumoController {
 		System.out.println(um);
 		System.out.println(marca);
 		Insumo i = new Insumo();
+		Insumo insumo = new Insumo();
 
 		if (!nombre.equalsIgnoreCase("") && !tipo.equalsIgnoreCase("") && !um.equalsIgnoreCase("")) {
 			i.setNombre(nombre);
@@ -63,13 +64,21 @@ public class InsumoController {
 			i.setMarca(marca);
 
 			// Guardar
-			insumoService.save(i);
-			return true;
+			insumo = insumoService.saveAndFlush(i);
+			return insumo;
 
 		}
 
-		return false;
+		return insumo;
 
+	}
+
+	@RequestMapping(value = "obtenerListaInsumos")
+	public @ResponseBody List<Insumo> obtenerListaInsumos() {
+
+		List<Insumo> lista = insumoService.listarTodosLosInsumos(false);
+
+		return lista;
 	}
 
 }

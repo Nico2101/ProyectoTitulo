@@ -9,6 +9,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 
+<style>
+.error {
+	color: #FF0000;
+	font-weight: bold;
+}
+</style>
+
 </head>
 <body class="skin-blue sidebar-mini">
 	<div class="wrapper">
@@ -116,6 +123,8 @@
 										<label class="col-sm-4 control-label">Nombre</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="nombreInsumo">
+											<span id="errorNombre" class="error" style="display: none">Ingrese
+												el nombre del insumo</span>
 										</div>
 										<br> <br> <label class="col-sm-4 control-label">Tipo</label>
 										<div class="col-sm-6">
@@ -124,8 +133,12 @@
 												<option value="1">Herramienta</option>
 												<option value="2">Combustible</option>
 												<option value="3">Semilla</option>
+												<option value="3">Abono</option>
+												<option value="3">Fertilizante</option>
+												<option value="3">Herbicida</option>
 
-											</select>
+											</select> <span id="errorTipo" class="error" style="display: none">Seleccione
+												el tipo de insumo</span>
 										</div>
 
 										<br> <br> <label class="col-sm-4 control-label">Unidad
@@ -138,7 +151,8 @@
 												<option value="2">Litro</option>
 												<option value="3">Unidad</option>
 
-											</select>
+											</select> <span id="errorUM" class="error" style="display: none">Seleccione
+												la unidad de medida</span>
 										</div>
 										<br> <br> <label class="col-sm-4 control-label">Marca</label>
 
@@ -183,6 +197,21 @@
 <script>
 	function agregarInsumo() {
 		$('#modalAgregarInsumo').modal('show');
+
+		//Limpiar modal
+		$('#nombreInsumo').val("");
+		$('#marcaInsumo').val("");
+		$("#tipoInsumo").val(-1);
+		$("#umInsumo").val(-1);
+
+		document.getElementById('errorUM').style.display = 'none';
+		document.getElementById('umInsumo').style.border = "";
+
+		document.getElementById('errorTipo').style.display = 'none';
+		document.getElementById('tipoInsumo').style.border = "";
+
+		document.getElementById('errorNombre').style.display = 'none';
+		document.getElementById('nombreInsumo').style.border = "";
 	}
 
 	function guardarDatosInsumo() {
@@ -201,23 +230,76 @@
 		console.log(tipoSeleccionado);
 		console.log(umSeleccionado);
 
-		$.ajax({
-			type : 'POST',
-			url : "agregarInsumo",
-			dataType : 'json',
-			data : {
-				nombre : nombreInsumo,
-				tipo : tipoSeleccionado,
-				um : umSeleccionado,
-				marca : marca
-			},
-			success : function(data) {
-				console.log(data);
-			},
-			error : function(jqXHR, errorThrown) {
-				alert("Error al guardar el insumo");
-			}
-		});
+		//Validacion para el nombre
+		if (nombreInsumo == "") {
+			document.getElementById('errorNombre').style.display = 'inline';
+			document.getElementById('nombreInsumo').style.border = "1px solid red";
+		} else {
+			document.getElementById('errorNombre').style.display = 'none';
+			document.getElementById('nombreInsumo').style.border = "";
+		}
+
+		//Validacion para el tipo
+		if (tipoSeleccionado == "Seleccione Tipo") {
+			document.getElementById('errorTipo').style.display = 'inline';
+			document.getElementById('tipoInsumo').style.border = "1px solid red";
+		} else {
+			document.getElementById('errorTipo').style.display = 'none';
+			document.getElementById('tipoInsumo').style.border = "";
+		}
+
+		//Validacion para la unidad de medida
+		if (umSeleccionado == "Seleccione Unidad de Medida") {
+			document.getElementById('errorUM').style.display = 'inline';
+			document.getElementById('umInsumo').style.border = "1px solid red";
+		} else {
+			document.getElementById('errorUM').style.display = 'none';
+			document.getElementById('umInsumo').style.border = "";
+		}
+
+		if (nombreInsumo != "" && tipoSeleccionado != "Seleccione Tipo"
+				&& umSeleccionado != "Seleccione Unidad de Medida") {
+			$.ajax({
+				type : 'POST',
+				url : "agregarInsumo",
+				dataType : 'json',
+				data : {
+					nombre : nombreInsumo,
+					tipo : tipoSeleccionado,
+					um : umSeleccionado,
+					marca : marca
+				},
+				success : function(data) {
+					console.log(data);
+
+					if (data.idInsumo > 0) {
+						$('#modalAgregarInsumo').modal('hide');
+
+						var tabla = $('#listaInsumos').dataTable();
+						var num = tabla.fnSettings().fnRecordsTotal();
+
+						$('#listaInsumos').dataTable().fnAddData(
+
+								[ num + 1, data.nombre, data.tipo,
+										data.unidadMedida, data.marca, "" ]
+
+						);
+
+						$("#listaInsumos").DataTable().page('last')
+								.draw('page');
+
+						toastr.success("Insumo agregado correctamente");
+					} else {
+						toastr.error("Error al agregar el insumo");
+					}
+
+				},
+				error : function(jqXHR, errorThrown) {
+					toastr.error("Error al agregar el insumo");
+				}
+			});
+		}
+
 	}
 </script>
 

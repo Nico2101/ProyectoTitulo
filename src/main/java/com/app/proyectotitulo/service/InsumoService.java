@@ -8,6 +8,6 @@ public interface InsumoService {
 
 	List<Insumo> listarTodosLosInsumos(boolean insumoEliminado);
 
-	public void save(Insumo i);
+	Insumo saveAndFlush(Insumo i);
 
 }
