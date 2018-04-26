@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.util.List;
 
 /**
- * The persistent class for the sector database table.
+ * The persistent class for the Sector database table.
  * 
  */
 @Entity
@@ -22,6 +22,9 @@ public class Sector implements Serializable {
 	private int idSector;
 
 	private String nombre;
+
+	@Column(name = "sector_eliminado")
+	private boolean sectorEliminado;
 
 	private Integer superficie;
 
@@ -47,6 +50,14 @@ public class Sector implements Serializable {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public boolean getSectorEliminado() {
+		return this.sectorEliminado;
+	}
+
+	public void setSectorEliminado(boolean sectorEliminado) {
+		this.sectorEliminado = sectorEliminado;
 	}
 
 	public Integer getSuperficie() {

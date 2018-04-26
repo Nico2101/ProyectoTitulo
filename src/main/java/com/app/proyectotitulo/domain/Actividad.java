@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.List;
 
 /**
- * The persistent class for the actividad database table.
+ * The persistent class for the Actividad database table.
  * 
  */
 @Entity
@@ -22,20 +22,21 @@ public class Actividad implements Serializable {
 	@Column(name = "id_actividad")
 	private int idActividad;
 
-	private boolean habilitado;
+	@Column(name = "actividad_eliminada")
+	private boolean actividadEliminada;
 
 	private String nombre;
 
-	// bi-directional many-to-one association to PlanEjecucion
+	// bi-directional many-to-one association to Plan_Ejecucion
 	@ManyToOne
 	@JoinColumn(name = "id_plan_ejecucion")
 	@JsonManagedReference
-	private PlanEjecucion planEjecucion;
+	private Plan_Ejecucion planEjecucion;
 
-	// bi-directional many-to-one association to ActividadRealizada
+	// bi-directional many-to-one association to Actividad_Realizada
 	@OneToMany(mappedBy = "actividad")
 	@JsonBackReference
-	private List<ActividadRealizada> actividadRealizadas;
+	private List<Actividad_Realizada> actividadRealizadas;
 
 	public Actividad() {
 	}
@@ -48,12 +49,12 @@ public class Actividad implements Serializable {
 		this.idActividad = idActividad;
 	}
 
-	public boolean getHabilitado() {
-		return this.habilitado;
+	public boolean getActividadEliminada() {
+		return this.actividadEliminada;
 	}
 
-	public void setHabilitado(boolean habilitado) {
-		this.habilitado = habilitado;
+	public void setActividadEliminada(boolean actividadEliminada) {
+		this.actividadEliminada = actividadEliminada;
 	}
 
 	public String getNombre() {
@@ -64,30 +65,30 @@ public class Actividad implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public PlanEjecucion getPlanEjecucion() {
+	public Plan_Ejecucion getPlanEjecucion() {
 		return this.planEjecucion;
 	}
 
-	public void setPlanEjecucion(PlanEjecucion planEjecucion) {
+	public void setPlanEjecucion(Plan_Ejecucion planEjecucion) {
 		this.planEjecucion = planEjecucion;
 	}
 
-	public List<ActividadRealizada> getActividadRealizadas() {
+	public List<Actividad_Realizada> getActividadRealizadas() {
 		return this.actividadRealizadas;
 	}
 
-	public void setActividadRealizadas(List<ActividadRealizada> actividadRealizadas) {
+	public void setActividadRealizadas(List<Actividad_Realizada> actividadRealizadas) {
 		this.actividadRealizadas = actividadRealizadas;
 	}
 
-	public ActividadRealizada addActividadRealizada(ActividadRealizada actividadRealizada) {
+	public Actividad_Realizada addActividadRealizada(Actividad_Realizada actividadRealizada) {
 		getActividadRealizadas().add(actividadRealizada);
 		actividadRealizada.setActividad(this);
 
 		return actividadRealizada;
 	}
 
-	public ActividadRealizada removeActividadRealizada(ActividadRealizada actividadRealizada) {
+	public Actividad_Realizada removeActividadRealizada(Actividad_Realizada actividadRealizada) {
 		getActividadRealizadas().remove(actividadRealizada);
 		actividadRealizada.setActividad(null);
 

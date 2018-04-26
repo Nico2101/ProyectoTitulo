@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.List;
 
 /**
- * The persistent class for the predio database table.
+ * The persistent class for the Predio database table.
  * 
  */
 @Entity
@@ -22,14 +22,19 @@ public class Predio implements Serializable {
 	@Column(name = "id_predio")
 	private int idPredio;
 
+	private String estado;
+
 	private String nombre;
+
+	@Column(name = "predio_eliminado")
+	private boolean predioEliminado;
 
 	private Integer superficie;
 
-	// bi-directional many-to-one association to ActividadRealizada
+	// bi-directional many-to-one association to Actividad_Realizada
 	@OneToMany(mappedBy = "predio")
 	@JsonBackReference
-	private List<ActividadRealizada> actividadRealizadas;
+	private List<Actividad_Realizada> actividadRealizadas;
 
 	// bi-directional many-to-one association to Sector
 	@ManyToOne
@@ -48,12 +53,28 @@ public class Predio implements Serializable {
 		this.idPredio = idPredio;
 	}
 
+	public String getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
 	public String getNombre() {
 		return this.nombre;
 	}
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public boolean getPredioEliminado() {
+		return this.predioEliminado;
+	}
+
+	public void setPredioEliminado(boolean predioEliminado) {
+		this.predioEliminado = predioEliminado;
 	}
 
 	public Integer getSuperficie() {
@@ -64,22 +85,22 @@ public class Predio implements Serializable {
 		this.superficie = superficie;
 	}
 
-	public List<ActividadRealizada> getActividadRealizadas() {
+	public List<Actividad_Realizada> getActividadRealizadas() {
 		return this.actividadRealizadas;
 	}
 
-	public void setActividadRealizadas(List<ActividadRealizada> actividadRealizadas) {
+	public void setActividadRealizadas(List<Actividad_Realizada> actividadRealizadas) {
 		this.actividadRealizadas = actividadRealizadas;
 	}
 
-	public ActividadRealizada addActividadRealizada(ActividadRealizada actividadRealizada) {
+	public Actividad_Realizada addActividadRealizada(Actividad_Realizada actividadRealizada) {
 		getActividadRealizadas().add(actividadRealizada);
 		actividadRealizada.setPredio(this);
 
 		return actividadRealizada;
 	}
 
-	public ActividadRealizada removeActividadRealizada(ActividadRealizada actividadRealizada) {
+	public Actividad_Realizada removeActividadRealizada(Actividad_Realizada actividadRealizada) {
 		getActividadRealizadas().remove(actividadRealizada);
 		actividadRealizada.setPredio(null);
 

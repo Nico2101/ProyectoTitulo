@@ -32,44 +32,57 @@
 						<div class="box-header">
 							<h3 class="box-title">Lista de Sectores</h3>
 							
-							<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modalSector">Agregar Sector</button>
+							<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#modalAgregarSector" id="AgregarSector" type="button"
+							><i class="fa fa-plus-circle"> Agregar Sector</i></button>
 							
 						</div>
                               <!-- Modal -->
                                 <p></p>
-                                <div class="modal fade" id="modalSector" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h2 class="modal-title" id="modalSector">Datos Sector</h2>
-                                               
-                                            </div>
-                                            <div class="modal-body">
-                                                <form class="form-horizontal" name="form1" action="#" method =post>
-                                                    
-                                                    <div class="form-group row">
-                                                        <label for="nombre" class="col-lg-2 col-form-label">Nombre </label>
-                                                        <div class="col-lg-8">
-                                                            <input type="text" class="form-control"  name="nombre" placeholder="Nombre" required="">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="apellido" class="col-lg-2 col-form-label">Superficie</label>
-                                                        <div class="col-lg-8">
-                                                            <input type="text" class="form-control"  name="superficie" placeholder="Superficie" required>
-                                                        </div>
-                                                    </div>
-                                                  
-                                                    <div class="modal-footer">
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                                                <button type="submit" class="btn btn-raised btn-success">Guardar</button>
-                                                </form>
-                                            </div>
-                                           
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div class="modal fade" id="modalAgregarSector" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<h4 class="modal-title" id="myModalLabel">Agregar Sector</h4>
+						</div>
+						<div class="modal-body">
+
+
+							<div class="row">
+
+								<div class="box-body">
+
+									<div id="form-editar" class="form-group">
+
+
+
+										<label class="col-sm-4 control-label">Nombre</label>
+										<div class="col-sm-6">
+											<input type="text" class="form-control" id="nombreSector">
+										</div>
+										<br> <br> <label class="col-sm-4 control-label">Superficie</label>
+
+										<div class="col-sm-6">
+											<input type="text" class="form-control" id="superficieSector">
+										</div>
+									</div>
+
+
+								</div>
+
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger pull-left"
+									data-dismiss="modal">Cerrar</button>
+								<button id="botonGuardar" type="button" class="btn btn-primary"
+									onclick="guardarDatosSector();">Agregar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 						<div class="box-body">
 							<div class="row">
 								<div class="col-xs-12">

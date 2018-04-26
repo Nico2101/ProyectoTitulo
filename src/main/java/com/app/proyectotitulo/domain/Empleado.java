@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The persistent class for the empleado database table.
+ * The persistent class for the Empleado database table.
  * 
  */
 @Entity
@@ -31,6 +31,9 @@ public class Empleado implements Serializable {
 
 	private String direccion;
 
+	@Column(name = "empleado_eliminado")
+	private byte empleadoEliminado;
+
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_nac")
 	private Date fechaNac;
@@ -39,10 +42,10 @@ public class Empleado implements Serializable {
 
 	private String telefono;
 
-	// bi-directional many-to-one association to PlanEjecucion
+	// bi-directional many-to-one association to Plan_Ejecucion
 	@OneToMany(mappedBy = "empleado")
 	@JsonBackReference
-	private List<PlanEjecucion> planEjecucions;
+	private List<Plan_Ejecucion> planEjecucions;
 
 	public Empleado() {
 	}
@@ -87,6 +90,14 @@ public class Empleado implements Serializable {
 		this.direccion = direccion;
 	}
 
+	public byte getEmpleadoEliminado() {
+		return this.empleadoEliminado;
+	}
+
+	public void setEmpleadoEliminado(byte empleadoEliminado) {
+		this.empleadoEliminado = empleadoEliminado;
+	}
+
 	public Date getFechaNac() {
 		return this.fechaNac;
 	}
@@ -111,22 +122,22 @@ public class Empleado implements Serializable {
 		this.telefono = telefono;
 	}
 
-	public List<PlanEjecucion> getPlanEjecucions() {
+	public List<Plan_Ejecucion> getPlanEjecucions() {
 		return this.planEjecucions;
 	}
 
-	public void setPlanEjecucions(List<PlanEjecucion> planEjecucions) {
+	public void setPlanEjecucions(List<Plan_Ejecucion> planEjecucions) {
 		this.planEjecucions = planEjecucions;
 	}
 
-	public PlanEjecucion addPlanEjecucion(PlanEjecucion planEjecucion) {
+	public Plan_Ejecucion addPlanEjecucion(Plan_Ejecucion planEjecucion) {
 		getPlanEjecucions().add(planEjecucion);
 		planEjecucion.setEmpleado(this);
 
 		return planEjecucion;
 	}
 
-	public PlanEjecucion removePlanEjecucion(PlanEjecucion planEjecucion) {
+	public Plan_Ejecucion removePlanEjecucion(Plan_Ejecucion planEjecucion) {
 		getPlanEjecucions().remove(planEjecucion);
 		planEjecucion.setEmpleado(null);
 

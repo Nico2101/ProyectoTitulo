@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.util.List;
 
 /**
- * The persistent class for the insumo database table.
+ * The persistent class for the Insumo database table.
  * 
  */
 @Entity
@@ -21,7 +21,8 @@ public class Insumo implements Serializable {
 	@Column(name = "id_insumo")
 	private int idInsumo;
 
-	private boolean habilitado;
+	@Column(name = "insumo_eliminado")
+	private boolean insumoEliminado;
 
 	private String marca;
 
@@ -32,10 +33,10 @@ public class Insumo implements Serializable {
 	@Column(name = "unidad_medida")
 	private String unidadMedida;
 
-	// bi-directional many-to-one association to ActividadInsumo
+	// bi-directional many-to-one association to Actividad_Insumo
 	@OneToMany(mappedBy = "insumo")
 	@JsonBackReference
-	private List<ActividadInsumo> actividadInsumos;
+	private List<Actividad_Insumo> actividadInsumos;
 
 	public Insumo() {
 	}
@@ -48,12 +49,12 @@ public class Insumo implements Serializable {
 		this.idInsumo = idInsumo;
 	}
 
-	public boolean getHabilitado() {
-		return this.habilitado;
+	public boolean getInsumoEliminado() {
+		return this.insumoEliminado;
 	}
 
-	public void setHabilitado(boolean habilitado) {
-		this.habilitado = habilitado;
+	public void setInsumoEliminado(boolean insumoEliminado) {
+		this.insumoEliminado = insumoEliminado;
 	}
 
 	public String getMarca() {
@@ -88,22 +89,22 @@ public class Insumo implements Serializable {
 		this.unidadMedida = unidadMedida;
 	}
 
-	public List<ActividadInsumo> getActividadInsumos() {
+	public List<Actividad_Insumo> getActividadInsumos() {
 		return this.actividadInsumos;
 	}
 
-	public void setActividadInsumos(List<ActividadInsumo> actividadInsumos) {
+	public void setActividadInsumos(List<Actividad_Insumo> actividadInsumos) {
 		this.actividadInsumos = actividadInsumos;
 	}
 
-	public ActividadInsumo addActividadInsumo(ActividadInsumo actividadInsumo) {
+	public Actividad_Insumo addActividadInsumo(Actividad_Insumo actividadInsumo) {
 		getActividadInsumos().add(actividadInsumo);
 		actividadInsumo.setInsumo(this);
 
 		return actividadInsumo;
 	}
 
-	public ActividadInsumo removeActividadInsumo(ActividadInsumo actividadInsumo) {
+	public Actividad_Insumo removeActividadInsumo(Actividad_Insumo actividadInsumo) {
 		getActividadInsumos().remove(actividadInsumo);
 		actividadInsumo.setInsumo(null);
 

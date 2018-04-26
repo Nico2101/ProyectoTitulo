@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.Date;
 
 /**
- * The persistent class for the reprogramacion database table.
+ * The persistent class for the Reprogramacion database table.
  * 
  */
 @Entity
@@ -27,11 +27,11 @@ public class Reprogramacion implements Serializable {
 
 	private String motivo;
 
-	// bi-directional many-to-one association to ActividadRealizada
+	// bi-directional many-to-one association to Actividad_Realizada
 	@ManyToOne
 	@JoinColumn(name = "id_actividad_realizada")
 	@JsonManagedReference
-	private ActividadRealizada actividadRealizada;
+	private Actividad_Realizada actividadRealizada;
 
 	public Reprogramacion() {
 	}
@@ -60,11 +60,11 @@ public class Reprogramacion implements Serializable {
 		this.motivo = motivo;
 	}
 
-	public ActividadRealizada getActividadRealizada() {
+	public Actividad_Realizada getActividadRealizada() {
 		return this.actividadRealizada;
 	}
 
-	public void setActividadRealizada(ActividadRealizada actividadRealizada) {
+	public void setActividadRealizada(Actividad_Realizada actividadRealizada) {
 		this.actividadRealizada = actividadRealizada;
 	}
 
