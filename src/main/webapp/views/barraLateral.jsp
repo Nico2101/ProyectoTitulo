@@ -52,7 +52,7 @@
 		<ul class="treeview-menu">
 
 
-			<li><a href="#"> <i class="fa fa-circle-o"></i> <span><c:out
+			<li><a href="ListarInsumos"> <i class="fa fa-circle-o"></i> <span><c:out
 							value="Listar Insumos"></c:out></span>
 
 			</a></li>
