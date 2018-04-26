@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The persistent class for the temporada database table.
+ * The persistent class for the Temporada database table.
  * 
  */
 @Entity
@@ -32,10 +32,15 @@ public class Temporada implements Serializable {
 	@Column(name = "fecha_termino")
 	private Date fechaTermino;
 
-	// bi-directional many-to-one association to ActividadRealizada
+	private String nombre;
+
+	@Column(name = "temporada_eliminada")
+	private boolean temporadaEliminada;
+
+	// bi-directional many-to-one association to Actividad_Realizada
 	@OneToMany(mappedBy = "temporada")
 	@JsonBackReference
-	private List<ActividadRealizada> actividadRealizadas;
+	private List<Actividad_Realizada> actividadRealizadas;
 
 	public Temporada() {
 	}
@@ -72,22 +77,38 @@ public class Temporada implements Serializable {
 		this.fechaTermino = fechaTermino;
 	}
 
-	public List<ActividadRealizada> getActividadRealizadas() {
+	public String getNombre() {
+		return this.nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public boolean getTemporadaEliminada() {
+		return this.temporadaEliminada;
+	}
+
+	public void setTemporadaEliminada(boolean temporadaEliminada) {
+		this.temporadaEliminada = temporadaEliminada;
+	}
+
+	public List<Actividad_Realizada> getActividadRealizadas() {
 		return this.actividadRealizadas;
 	}
 
-	public void setActividadRealizadas(List<ActividadRealizada> actividadRealizadas) {
+	public void setActividadRealizadas(List<Actividad_Realizada> actividadRealizadas) {
 		this.actividadRealizadas = actividadRealizadas;
 	}
 
-	public ActividadRealizada addActividadRealizada(ActividadRealizada actividadRealizada) {
+	public Actividad_Realizada addActividadRealizada(Actividad_Realizada actividadRealizada) {
 		getActividadRealizadas().add(actividadRealizada);
 		actividadRealizada.setTemporada(this);
 
 		return actividadRealizada;
 	}
 
-	public ActividadRealizada removeActividadRealizada(ActividadRealizada actividadRealizada) {
+	public Actividad_Realizada removeActividadRealizada(Actividad_Realizada actividadRealizada) {
 		getActividadRealizadas().remove(actividadRealizada);
 		actividadRealizada.setTemporada(null);
 

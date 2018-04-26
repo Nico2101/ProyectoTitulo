@@ -9,13 +9,12 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.List;
 
 /**
- * The persistent class for the plan_ejecucion database table.
+ * The persistent class for the Plan_Ejecucion database table.
  * 
  */
 @Entity
-@Table(name = "plan_ejecucion")
-@NamedQuery(name = "PlanEjecucion.findAll", query = "SELECT p FROM PlanEjecucion p")
-public class PlanEjecucion implements Serializable {
+@NamedQuery(name = "Plan_Ejecucion.findAll", query = "SELECT p FROM Plan_Ejecucion p")
+public class Plan_Ejecucion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -28,6 +27,9 @@ public class PlanEjecucion implements Serializable {
 
 	private String nombre;
 
+	@Column(name = "plan_eliminado")
+	private boolean planEliminado;
+
 	// bi-directional many-to-one association to Actividad
 	@OneToMany(mappedBy = "planEjecucion")
 	@JsonBackReference
@@ -39,7 +41,7 @@ public class PlanEjecucion implements Serializable {
 	@JsonManagedReference
 	private Empleado empleado;
 
-	public PlanEjecucion() {
+	public Plan_Ejecucion() {
 	}
 
 	public int getIdPlanEjecucion() {
@@ -64,6 +66,14 @@ public class PlanEjecucion implements Serializable {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public boolean getPlanEliminado() {
+		return this.planEliminado;
+	}
+
+	public void setPlanEliminado(boolean planEliminado) {
+		this.planEliminado = planEliminado;
 	}
 
 	public List<Actividad> getActividads() {

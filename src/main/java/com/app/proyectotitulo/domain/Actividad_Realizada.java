@@ -10,13 +10,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The persistent class for the actividad_realizada database table.
+ * The persistent class for the Actividad_Realizada database table.
  * 
  */
 @Entity
-@Table(name = "actividad_realizada")
-@NamedQuery(name = "ActividadRealizada.findAll", query = "SELECT a FROM ActividadRealizada a")
-public class ActividadRealizada implements Serializable {
+@NamedQuery(name = "Actividad_Realizada.findAll", query = "SELECT a FROM Actividad_Realizada a")
+public class Actividad_Realizada implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -35,10 +34,10 @@ public class ActividadRealizada implements Serializable {
 	@Column(name = "fecha_estimada")
 	private Date fechaEstimada;
 
-	// bi-directional many-to-one association to ActividadInsumo
+	// bi-directional many-to-one association to Actividad_Insumo
 	@OneToMany(mappedBy = "actividadRealizada")
 	@JsonBackReference
-	private List<ActividadInsumo> actividadInsumos;
+	private List<Actividad_Insumo> actividadInsumos;
 
 	// bi-directional many-to-one association to Actividad
 	@ManyToOne
@@ -46,24 +45,24 @@ public class ActividadRealizada implements Serializable {
 	@JsonManagedReference
 	private Actividad actividad;
 
-	// bi-directional many-to-one association to Predio
-	@ManyToOne
-	@JoinColumn(name = "id_predio")
-	@JsonManagedReference
-	private Predio predio;
-
 	// bi-directional many-to-one association to Temporada
 	@ManyToOne
 	@JoinColumn(name = "id_temporada")
 	@JsonManagedReference
 	private Temporada temporada;
 
+	// bi-directional many-to-one association to Predio
+	@ManyToOne
+	@JoinColumn(name = "id_predio")
+	@JsonManagedReference
+	private Predio predio;
+
 	// bi-directional many-to-one association to Reprogramacion
 	@OneToMany(mappedBy = "actividadRealizada")
 	@JsonBackReference
 	private List<Reprogramacion> reprogramacions;
 
-	public ActividadRealizada() {
+	public Actividad_Realizada() {
 	}
 
 	public int getIdActividadRealizada() {
@@ -98,22 +97,22 @@ public class ActividadRealizada implements Serializable {
 		this.fechaEstimada = fechaEstimada;
 	}
 
-	public List<ActividadInsumo> getActividadInsumos() {
+	public List<Actividad_Insumo> getActividadInsumos() {
 		return this.actividadInsumos;
 	}
 
-	public void setActividadInsumos(List<ActividadInsumo> actividadInsumos) {
+	public void setActividadInsumos(List<Actividad_Insumo> actividadInsumos) {
 		this.actividadInsumos = actividadInsumos;
 	}
 
-	public ActividadInsumo addActividadInsumo(ActividadInsumo actividadInsumo) {
+	public Actividad_Insumo addActividadInsumo(Actividad_Insumo actividadInsumo) {
 		getActividadInsumos().add(actividadInsumo);
 		actividadInsumo.setActividadRealizada(this);
 
 		return actividadInsumo;
 	}
 
-	public ActividadInsumo removeActividadInsumo(ActividadInsumo actividadInsumo) {
+	public Actividad_Insumo removeActividadInsumo(Actividad_Insumo actividadInsumo) {
 		getActividadInsumos().remove(actividadInsumo);
 		actividadInsumo.setActividadRealizada(null);
 
@@ -128,20 +127,20 @@ public class ActividadRealizada implements Serializable {
 		this.actividad = actividad;
 	}
 
-	public Predio getPredio() {
-		return this.predio;
-	}
-
-	public void setPredio(Predio predio) {
-		this.predio = predio;
-	}
-
 	public Temporada getTemporada() {
 		return this.temporada;
 	}
 
 	public void setTemporada(Temporada temporada) {
 		this.temporada = temporada;
+	}
+
+	public Predio getPredio() {
+		return this.predio;
+	}
+
+	public void setPredio(Predio predio) {
+		this.predio = predio;
 	}
 
 	public List<Reprogramacion> getReprogramacions() {

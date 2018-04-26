@@ -6,13 +6,12 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
- * The persistent class for the actividad_insumo database table.
+ * The persistent class for the Actividad_Insumo database table.
  * 
  */
 @Entity
-@Table(name = "actividad_insumo")
-@NamedQuery(name = "ActividadInsumo.findAll", query = "SELECT a FROM ActividadInsumo a")
-public class ActividadInsumo implements Serializable {
+@NamedQuery(name = "Actividad_Insumo.findAll", query = "SELECT a FROM Actividad_Insumo a")
+public class Actividad_Insumo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -24,11 +23,11 @@ public class ActividadInsumo implements Serializable {
 
 	private Integer costo;
 
-	// bi-directional many-to-one association to ActividadRealizada
+	// bi-directional many-to-one association to Actividad_Realizada
 	@ManyToOne
 	@JoinColumn(name = "id_actividad_realizada")
 	@JsonManagedReference
-	private ActividadRealizada actividadRealizada;
+	private Actividad_Realizada actividadRealizada;
 
 	// bi-directional many-to-one association to Insumo
 	@ManyToOne
@@ -36,7 +35,7 @@ public class ActividadInsumo implements Serializable {
 	@JsonManagedReference
 	private Insumo insumo;
 
-	public ActividadInsumo() {
+	public Actividad_Insumo() {
 	}
 
 	public int getIdActividadInsumo() {
@@ -63,11 +62,11 @@ public class ActividadInsumo implements Serializable {
 		this.costo = costo;
 	}
 
-	public ActividadRealizada getActividadRealizada() {
+	public Actividad_Realizada getActividadRealizada() {
 		return this.actividadRealizada;
 	}
 
-	public void setActividadRealizada(ActividadRealizada actividadRealizada) {
+	public void setActividadRealizada(Actividad_Realizada actividadRealizada) {
 		this.actividadRealizada = actividadRealizada;
 	}
 
