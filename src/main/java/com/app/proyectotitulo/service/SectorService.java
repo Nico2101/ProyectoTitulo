@@ -7,5 +7,6 @@ import com.app.proyectotitulo.domain.Sector;
 public interface SectorService {
 
 	List<Sector> findAll();
-
+	
+	public void save(Sector s);
 }

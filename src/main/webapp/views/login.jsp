@@ -20,7 +20,7 @@
 	rel="stylesheet" />
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
-<title>Inventario</title>
+<title>Fundo Santa Emilia</title>
 
 <meta name="description" content="User login page" />
 <meta name="viewport"

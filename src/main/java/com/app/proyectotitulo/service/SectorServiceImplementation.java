@@ -23,4 +23,10 @@ public class SectorServiceImplementation implements SectorService {
 		// TODO Auto-generated method stub
 		return sectorRepo.findAll();
 	}
+	
+	@Override
+	public void save(Sector s) {
+		// TODO Auto-generated method stub
+		sectorRepo.save(s);
+	}
 }
