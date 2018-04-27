@@ -47,7 +47,7 @@ public class InsumoController {
 	}
 
 	@RequestMapping(value = "agregarInsumo")
-	public @ResponseBody boolean agregarInsumo(@RequestParam String nombre, @RequestParam String tipo,
+	public @ResponseBody Insumo agregarInsumo(@RequestParam String nombre, @RequestParam String tipo,
 			@RequestParam String um, @RequestParam String marca) {
 
 		System.out.println(nombre);
@@ -55,6 +55,7 @@ public class InsumoController {
 		System.out.println(um);
 		System.out.println(marca);
 		Insumo i = new Insumo();
+		Insumo insumo = new Insumo();
 
 		if (!nombre.equalsIgnoreCase("") && !tipo.equalsIgnoreCase("") && !um.equalsIgnoreCase("")) {
 			i.setNombre(nombre);
@@ -63,7 +64,71 @@ public class InsumoController {
 			i.setMarca(marca);
 
 			// Guardar
-			insumoService.save(i);
+			insumo = insumoService.saveAndFlush(i);
+			return insumo;
+
+		}
+
+		return insumo;
+
+	}
+
+	@RequestMapping(value = "obtenerListaInsumos")
+	public @ResponseBody List<Insumo> obtenerListaInsumos() {
+
+		List<Insumo> lista = insumoService.listarTodosLosInsumos(false);
+
+		return lista;
+	}
+
+	@RequestMapping(value = "eliminarInsumo")
+	public @ResponseBody boolean eliminarInsumo(@RequestParam int idInsumo) {
+
+		Insumo i = insumoService.findByIdInsumo(idInsumo);
+		if (i != null) {
+			i.setInsumoEliminado(true);
+
+			insumoService.eliminarInsumo(i);
+			return true;
+		}
+
+		return false;
+	}
+
+	@RequestMapping(value = "obtenerInsumoAEditar")
+	public @ResponseBody Insumo obtenerInsumoAEditar(@RequestParam int idInsumo) {
+
+		Insumo i = insumoService.findByIdInsumo(idInsumo);
+		if (i != null) {
+			return i;
+		} else {
+			return new Insumo();
+		}
+
+	}
+
+	@RequestMapping(value = "editarInsumo")
+	public @ResponseBody boolean editar(@RequestParam int idInsumo, @RequestParam String nombre,
+			@RequestParam String tipo, @RequestParam String um, @RequestParam String marca) {
+
+		System.out.println(nombre);
+		System.out.println(tipo);
+		System.out.println(um);
+		System.out.println(marca);
+
+		Insumo i = new Insumo();
+
+		if (!nombre.equalsIgnoreCase("") && !tipo.equalsIgnoreCase("") && !um.equalsIgnoreCase("") && idInsumo > 0) {
+
+			// Buscar el insumo
+			i = insumoService.findByIdInsumo(idInsumo);
+			i.setNombre(nombre);
+			i.setTipo(tipo);
+			i.setUnidadMedida(um);
+			i.setMarca(marca);
+
+			// Guardar
+			insumoService.editarInsumo(i);
 			return true;
 
 		}

@@ -70,6 +70,7 @@
 <link rel="stylesheet"
 	href="assets/bower_components/fullcalendar/dist/fullcalendar.print.min.css"
 	media="print">
+<link rel="stylesheet" href="assets/sweetalert/sweetalert.css">
 <script src="assets\login\assets\js\bootbox.js"></script>
 
 <script src="assets/Chart.js"></script>

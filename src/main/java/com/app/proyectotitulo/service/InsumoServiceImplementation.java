@@ -25,9 +25,27 @@ public class InsumoServiceImplementation implements InsumoService {
 	}
 
 	@Override
-	public void save(Insumo i) {
+	public Insumo saveAndFlush(Insumo i) {
 		// TODO Auto-generated method stub
-		insumoRepo.save(i);
+		return insumoRepo.saveAndFlush(i);
+	}
+
+	@Override
+	public Insumo eliminarInsumo(Insumo i) {
+		// TODO Auto-generated method stub
+		return insumoRepo.save(i);
+	}
+
+	@Override
+	public Insumo findByIdInsumo(int idInsumo) {
+		// TODO Auto-generated method stub
+		return insumoRepo.findByIdInsumo(idInsumo);
+	}
+
+	@Override
+	public Insumo editarInsumo(Insumo i) {
+		// TODO Auto-generated method stub
+		return insumoRepo.save(i);
 	}
 
 }
