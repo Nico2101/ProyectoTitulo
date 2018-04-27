@@ -38,7 +38,7 @@
 						</div>
                               <!-- Modal -->
                                 <p></p>
-                                <div class="modal fade" id="modalAgregarSector" tabindex="-1"
+                <div class="modal fade" id="modalAgregarSector" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
@@ -55,8 +55,6 @@
 
 									<div id="form-editar" class="form-group">
 
-
-
 										<label class="col-sm-4 control-label">Nombre</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="nombreSector">
@@ -67,10 +65,7 @@
 											<input type="text" class="form-control" id="superficieSector">
 										</div>
 									</div>
-
-
 								</div>
-
 
 							</div>
 							<div class="modal-footer">
@@ -86,7 +81,7 @@
 						<div class="box-body">
 							<div class="row">
 								<div class="col-xs-12">
-									<table id="totalsectores" class="table table-condensed">
+									<table id="listaSectores" class="table table-striped table-bordered table-hover">
 										<thead>
 											<tr>
 												<th>Nº</th>
@@ -118,9 +113,6 @@
 
 			</section>
 
-
-
-
 			<!-- Main content -->
 
 		</div>
@@ -136,53 +128,68 @@
 	</div>
 	<%@ include file="scripts.jsp"%>
 </body>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script type="text/javascript"
-	src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js">
-	
+
+ <script>
+
+	function guardarDatosSector() {
+		//Obtener los datos
+		var nombreSector = $('#nombreSector').val();
+		var  superficieSector = $('#superficieSector').val();
+
+		console.log(nombreSector);
+		console.log(superficieSector);
+
+		$.ajax({
+			type : 'POST',
+			url : "agregarSector",
+			dataType : 'json',
+			data : {
+				nombre : nombreSector,
+			  superficie : superficieSector,
+
+			},
+			success : function(data) {
+				console.log(data);
+			},
+			error : function(jqXHR, errorThrown) {
+				alert("Error al guardar el sector");
+			}
+		});
+	}
 </script>
-<script
-	src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+
+
 
 <script>
-	$(function() {
-		$('#totalsectores')
-				.DataTable(
-						{
-							'paging' : true,
-							'lengthChange' : false,
-							'searching' : false,
-							'ordering' : false,
-							'info' : true,
-							'autoWidth' : true,
-							'responsive' : true,
-							"language" : {
-								"sProcessing" : "Procesando...",
-								"sSearch" : "Buscar :",
-								"sLengthMenu" : "Mostrar _MENU_ registros",
-								"sZeroRecords" : "No se encontraron resultados",
-								"sEmptyTable" : "Ningún dato disponible en esta tabla",
-								"sInfo" : "Mostrando del _START_ al _END_ de _TOTAL_",
-								"sInfoEmpty" : "Mostrando del 0 al 0 de 0",
-								"sInfoFiltered" : "(filtrado de un total de _MAX_ registros)",
-								"sInfoPostFix" : "",
-								"sUrl" : "",
-								"sInfoThousands" : ",",
-								"sLoadingRecords" : "Cargando...",
-								"oPaginate" : {
-									"sFirst" : "Primero",
-									"sLast" : "Último",
-									"sNext" : "Siguiente",
-									"sPrevious" : "Anterior"
-
-								},
-								"oAria" : {
-									"sSortAscending" : ": Activar para ordenar la columna de manera ascendente",
-									"sSortDescending" : ": Activar para ordenar la columna de manera descendente"
-								}
-							}
-						})
+	$('#listaSectores').DataTable({
+		'dom' : 'Bfrtip',
+		'paging' : true,
+		'lengthChange' : true,
+		'searching' : false,
+		'ordering' : false,
+		'info' : true,
+		'autoWidth' : true,
+		'responsive' : true,
+		"language" : {
+			"sProcessing" : "Procesando...",
+			"sLengthMenu" : "Mostrar _MENU_ registros",
+			"sZeroRecords" : "No se encontraron resultados",
+			"sEmptyTable" : "Ningún dato disponible en esta tabla",
+			"sInfo" : "",
+			"sInfoEmpty" : "No hay datos para mostrar",
+			"sInfoFiltered" : "(filtrado de un total de _MAX_ registros)",
+			"sInfoPostFix" : "",
+			"sSearch" : "Buscar:",
+			"sUrl" : "",
+			"sInfoThousands" : ",",
+			"sLoadingRecords" : "Cargando...",
+			"oPaginate" : {
+				"sFirst" : "Primero",
+				"sLast" : "Último",
+				"sNext" : "Siguiente",
+				"sPrevious" : "Anterior"
+			}
+		}
 	})
 </script>
-
 </html>

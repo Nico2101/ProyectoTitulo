@@ -12,7 +12,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.app.proyectotitulo.domain.Insumo;
 import com.app.proyectotitulo.domain.Sector;
 import com.app.proyectotitulo.service.SectorService;
 
@@ -37,7 +41,24 @@ public class SectorController {
 		return vista;
     }
     
-	
+    @RequestMapping(value = "agregarSector")
+	public @ResponseBody boolean agregarInsumo(@RequestParam String nombre, @RequestParam int superficie) {
+		Sector s = new Sector();
+
+		if (!nombre.equalsIgnoreCase("") && !(superficie==(0))) {
+			s.setNombre(nombre);
+			s.setSuperficie(superficie);
+
+			// Guardar
+			sectorService.save(s);
+			return true;
+
+		}
+
+		return false;
+
+	}
+
 
 		
 	}
