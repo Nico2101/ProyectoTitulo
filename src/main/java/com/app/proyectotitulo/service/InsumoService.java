@@ -10,4 +10,12 @@ public interface InsumoService {
 
 	Insumo saveAndFlush(Insumo i);
 
+	Insumo findByIdInsumo(int idInsumo);
+
+	// Eliminar insumo
+	Insumo eliminarInsumo(Insumo i);
+
+	// Editar insumo
+	Insumo editarInsumo(Insumo i);
+
 }

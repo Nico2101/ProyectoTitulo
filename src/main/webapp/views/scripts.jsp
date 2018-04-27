@@ -59,5 +59,7 @@
 	<script 
 	src="assets/bower_components/fullcalendar/dist/locale/es.js"></script>
 	<script src="assets\login\assets\js\bootbox.js"></script>
+	
+	<script src="assets/sweetalert/sweetalert.min.js"></script>
 
 	
