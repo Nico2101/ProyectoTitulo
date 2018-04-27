@@ -66,7 +66,7 @@
 	</a>
 		<ul class="treeview-menu">
 
-			<li><a href="listarSectores"> <i class="fa fa-circle-o"></i> <span><c:out
+			<li><a href="listaSectores"> <i class="fa fa-circle-o"></i> <span><c:out
 							value="Listar Sectores"></c:out></span>
 
 			</a></li>

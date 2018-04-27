@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.proyectotitulo.domain.Insumo;
 import com.app.proyectotitulo.domain.Sector;
 import com.app.proyectotitulo.repository.SectorRepository;
 
@@ -19,14 +20,32 @@ public class SectorServiceImplementation implements SectorService {
 	}
 
 	@Override
-	public List<Sector> findAll() {
+	public List<Sector> listarSectores(boolean sectorEliminado) {
 		// TODO Auto-generated method stub
-		return sectorRepo.findAll();
+		return sectorRepo.findBySectorEliminado(sectorEliminado);
+	}
+	@Override
+	public Sector saveAndFlush(Sector s) {
+		// TODO Auto-generated method stub
+		return sectorRepo.saveAndFlush(s);
+	
+   
+	}
+	@Override
+	public Sector findByIdSector(int idSector) {
+		// TODO Auto-generated method stub
+		return sectorRepo.findByIdSector(idSector);
 	}
 	
 	@Override
-	public void save(Sector s) {
+	public Sector eliminarSector(Sector s) {
 		// TODO Auto-generated method stub
-		sectorRepo.save(s);
+		return sectorRepo.save(s);
+	}
+	
+	@Override
+	public Sector editarSector(Sector s) {
+		// TODO Auto-generated method stub
+		return sectorRepo.save(s);
 	}
 }

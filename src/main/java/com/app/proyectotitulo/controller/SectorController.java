@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.app.proyectotitulo.domain.Empleado;
 import com.app.proyectotitulo.domain.Insumo;
 import com.app.proyectotitulo.domain.Sector;
 import com.app.proyectotitulo.service.SectorService;
@@ -28,29 +29,102 @@ public class SectorController {
 	@Autowired
 	private SectorService sectorService;
 	
-    @RequestMapping(value="listarSectores")
-    public ModelAndView totalSectores(ModelAndView vista) {
-    	List<Sector> lista = sectorService.findAll();
-    	if (!lista.isEmpty()) {
-    		vista.addObject("sectores",lista );
+	@RequestMapping(value = "listaSectores")
+	public ModelAndView listarInsumos(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
+
+		sesion = request.getSession(true);
+		Empleado e = (Empleado) sesion.getAttribute("empleado");
+
+		if (e != null) {
+
+			List<Sector> sectores = sectorService.listarSectores(false);
+			vista.addObject("sectores", sectores);
 			vista.setViewName("listarSectores");
-		}else {
-		    //vista.addObject("noHaySectores", " No existen sectores registrados");
-			vista.setViewName("listarSectores");
+
+		} else {
+			vista.setViewName("login");
+			vista.addObject("empleado", new Empleado());
+			vista.addObject("sesionExpirada", "Su sesión ha expirado");
+
 		}
 		return vista;
-    }
+	}
     
     @RequestMapping(value = "agregarSector")
-	public @ResponseBody boolean agregarInsumo(@RequestParam String nombre, @RequestParam int superficie) {
+	public @ResponseBody Sector agregarSector(@RequestParam String nombre, @RequestParam int superficie) {
+
+		System.out.println(nombre);
+		System.out.println(superficie);
 		Sector s = new Sector();
+		Sector sector = new Sector();
 
 		if (!nombre.equalsIgnoreCase("") && !(superficie==(0))) {
 			s.setNombre(nombre);
 			s.setSuperficie(superficie);
+			// Guardar
+			sector = sectorService.saveAndFlush(s);
+			return sector;
+
+		}
+
+		return sector;
+
+	}
+    
+    @RequestMapping(value = "obtenerListaSectores")
+	public @ResponseBody List<Sector> obtenerListaSectores() {
+
+		List<Sector> lista = sectorService.listarSectores(false);
+
+		return lista;
+	}
+    
+    
+	@RequestMapping(value = "eliminarSector")
+	public @ResponseBody boolean eliminarSector(@RequestParam int idSector) {
+
+		Sector s = sectorService.findByIdSector(idSector);
+		if (s != null) {
+			s.setSectorEliminado(true);
+
+			sectorService.eliminarSector(s);
+			return true;
+		}
+
+		return false;
+	}
+
+	@RequestMapping(value = "obtenerSectorAEditar")
+	public @ResponseBody Sector obtenerSectorAEditar(@RequestParam int idSector) {
+
+		Sector s = sectorService.findByIdSector(idSector);
+		if (s != null) {
+			return s;
+		} else {
+			return new Sector();
+		}
+
+	}
+	
+	@RequestMapping(value = "editarSector")
+	public @ResponseBody boolean editar(@RequestParam int idSector, @RequestParam String nombre,
+			@RequestParam int superficie) {
+
+		System.out.println(nombre);
+		System.out.println(superficie);
+		
+		Sector s = new Sector();
+
+		if (!nombre.equalsIgnoreCase("") && !(superficie==(0)) && idSector > 0) {
+
+			// Buscar el insumo
+			s = sectorService.findByIdSector(idSector);
+			s.setNombre(nombre);
+			s.setSuperficie(superficie);
+			
 
 			// Guardar
-			sectorService.save(s);
+			sectorService.editarSector(s);
 			return true;
 
 		}
@@ -58,8 +132,6 @@ public class SectorController {
 		return false;
 
 	}
-
-
 		
 	}
 
