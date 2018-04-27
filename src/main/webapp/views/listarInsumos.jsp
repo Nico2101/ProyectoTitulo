@@ -158,7 +158,7 @@
 											</select> <span id="errorUM" class="error" style="display: none">Seleccione
 												la unidad de medida</span>
 										</div>
-										<br> <br> <label class="col-sm-4 control-label">Marca</label>
+										<br> <br> <label class="col-sm-4 control-label">Marca (Opcional)</label>
 
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="marcaInsumo">
@@ -231,7 +231,7 @@
 											</select> <span id="errorUMEditar" class="error" style="display: none">Seleccione
 												la unidad de medida</span>
 										</div>
-										<br> <br> <label class="col-sm-4 control-label">Marca</label>
+										<br> <br> <label class="col-sm-4 control-label">Marca (Opcional)</label>
 
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
