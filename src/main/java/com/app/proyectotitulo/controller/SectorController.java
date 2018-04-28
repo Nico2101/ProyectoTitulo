@@ -21,14 +21,12 @@ import com.app.proyectotitulo.domain.Insumo;
 import com.app.proyectotitulo.domain.Sector;
 import com.app.proyectotitulo.service.SectorService;
 
-
 @Controller
 public class SectorController {
-	
-    
+
 	@Autowired
 	private SectorService sectorService;
-	
+
 	@RequestMapping(value = "listaSectores")
 	public ModelAndView listarInsumos(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
 
@@ -49,8 +47,8 @@ public class SectorController {
 		}
 		return vista;
 	}
-    
-    @RequestMapping(value = "agregarSector")
+
+	@RequestMapping(value = "agregarSector")
 	public @ResponseBody Sector agregarSector(@RequestParam String nombre, @RequestParam int superficie) {
 
 		System.out.println(nombre);
@@ -58,7 +56,7 @@ public class SectorController {
 		Sector s = new Sector();
 		Sector sector = new Sector();
 
-		if (!nombre.equalsIgnoreCase("") && !(superficie==(0))) {
+		if (!nombre.equalsIgnoreCase("") && !(superficie == (0))) {
 			s.setNombre(nombre);
 			s.setSuperficie(superficie);
 			// Guardar
@@ -70,16 +68,15 @@ public class SectorController {
 		return sector;
 
 	}
-    
-    @RequestMapping(value = "obtenerListaSectores")
+
+	@RequestMapping(value = "obtenerListaSectores")
 	public @ResponseBody List<Sector> obtenerListaSectores() {
 
 		List<Sector> lista = sectorService.listarSectores(false);
 
 		return lista;
 	}
-    
-    
+
 	@RequestMapping(value = "eliminarSector")
 	public @ResponseBody boolean eliminarSector(@RequestParam int idSector) {
 
@@ -105,23 +102,22 @@ public class SectorController {
 		}
 
 	}
-	
+
 	@RequestMapping(value = "editarSector")
 	public @ResponseBody boolean editar(@RequestParam int idSector, @RequestParam String nombre,
 			@RequestParam int superficie) {
 
 		System.out.println(nombre);
 		System.out.println(superficie);
-		
+
 		Sector s = new Sector();
 
-		if (!nombre.equalsIgnoreCase("") && !(superficie==(0)) && idSector > 0) {
+		if (!nombre.equalsIgnoreCase("") && !(superficie == (0)) && idSector > 0) {
 
-			// Buscar el insumo
+			// Buscar el sector
 			s = sectorService.findByIdSector(idSector);
 			s.setNombre(nombre);
 			s.setSuperficie(superficie);
-			
 
 			// Guardar
 			sectorService.editarSector(s);
@@ -132,11 +128,5 @@ public class SectorController {
 		return false;
 
 	}
-		
-	}
 
-	
-
-		
-	
-
+}

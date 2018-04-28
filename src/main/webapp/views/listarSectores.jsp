@@ -9,6 +9,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 
+<style>
+.error {
+	color: #FF0000;
+}
+</style>
+
 </head>
 <body class="skin-blue sidebar-mini">
 	<div class="wrapper">
@@ -19,7 +25,7 @@
 		<aside class="main-sidebar"> <%@ include
 			file="barraLateral.jsp"%> <!-- /.sidebar -->
 		</aside>
-  
+
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
 			<!-- Main content -->
@@ -31,14 +37,62 @@
 
 						<div class="box-header">
 							<h3 class="box-title">Lista de Sectores</h3>
-							
-							<button class="btn btn-primary pull-right"  id="AgregarSector" type="button"
-							onclick="agregarSector();"><i class="fa fa-plus-circle"> Agregar Sector</i></button>
-							
+
+							<button class="btn btn-primary pull-right" id="AgregarSector"
+								type="button" onclick="agregarSector();">
+								<i class="fa fa-plus-circle"> Agregar Sector</i>
+							</button>
+
 						</div>
-                              <!-- Modal -->
-                                <p></p>
-                <div class="modal fade" id="modalAgregarSector" tabindex="-1"
+
+						<div class="box-body">
+							<div class="row">
+								<div class="col-xs-12">
+									<table id="listaSectores"
+										class="table table-striped table-bordered table-hover">
+										<thead>
+											<tr>
+												<th>Nº</th>
+												<th>Nombre</th>
+												<th>Superficie (m<sup>2</sup>)
+												</th>
+												<th>Acción</th>
+
+											</tr>
+										</thead>
+										<c:set var="i" value="0" />
+										<c:forEach var="sectores" items="${sectores}">
+											<c:set var="i" value="${i+1}" />
+											<tr>
+
+
+												<td><c:out value="${i}"></c:out></td>
+												<td><c:out value="${sectores.nombre}"></c:out></td>
+												<td><c:out value="${sectores.superficie}"></c:out></td>
+												<td><a href="#"
+													onclick="editarSector(${sectores.idSector});"><i
+														class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+													href="#" onclick="eliminarSector(${sectores.idSector});"><i
+														class="fa fa-trash-o fa-lg" style="color: red"></i></a></td>
+
+
+											</tr>
+										</c:forEach>
+
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			</section>
+
+			<!-- Modal -->
+
+			<div class="modal fade" id="modalAgregarSector" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
@@ -61,12 +115,17 @@
 											<span id="errorNombre" class="error" style="display: none">Ingrese
 												el nombre del sector</span>
 										</div>
-										<br> <br> <label class="col-sm-4 control-label">Superficie (m<sup>2</sup>)</label>
+										<br> <br> <label class="col-sm-4 control-label">Superficie
+											(m<sup>2</sup>)
+										</label>
 
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="superficieSector">
-											<span id="errorSuperficie" class="error" style="display: none">Ingrese
-												la superficie del sector</span>
+											<span id="errorSuperficie" class="error"
+												style="display: none">Ingrese la superficie del
+												sector</span> <span id="errorSuperficieNegativa" class="error"
+												style="display: none">La superficie no puede ser
+												negativa</span>
 										</div>
 									</div>
 								</div>
@@ -82,47 +141,7 @@
 					</div>
 				</div>
 			</div>
-						<div class="box-body">
-							<div class="row">
-								<div class="col-xs-12">
-									<table id="listaSectores" class="table table-striped table-bordered table-hover">
-										<thead>
-											<tr>
-												<th>Nº</th>
-												<th>Nombre</th>
-												<th>Superficie (m<sup>2</sup>)</th>
-												<th> Acción</th>
 
-											</tr>
-										</thead>
-										<c:set var="i" value="0" />
-										<c:forEach var="sectores" items="${sectores}">
-											<c:set var="i" value="${i+1}" />
-											<tr>
-
-
-												<td><c:out value="${i}"></c:out></td>
-												<td><c:out value="${sectores.nombre}"></c:out></td>
-												<td><c:out value="${sectores.superficie}"></c:out></td>
-												<td><a href="#"
-														onclick="editarSector(${sectores.idSector});"><i
-															class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-														href="#"
-														onclick="eliminarSector(${sectores.idSector});"><i
-															class="fa fa-trash-o fa-lg" style="color: red"></i></a></td>
-												
-
-											</tr>
-										</c:forEach>
-
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			
 			<!-- Modal editar -->
 
 
@@ -150,53 +169,56 @@
 										<label class="col-sm-4 control-label">Nombre</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
-												id="nombreSectorEditar"> 
-												<span id="errorNombreEditar" class="error" style="display: none">Ingrese
+												id="nombreSectorEditar"> <span
+												id="errorNombreEditar" class="error" style="display: none">Ingrese
 												el nombre del sector</span>
-									
-									</div>
-                                     <br> <br>
-                                    <label class="col-sm-4 control-label">Superficie (m<sup>2</sup>)</label>
+
+										</div>
+										<br> <br> <label class="col-sm-4 control-label">Superficie
+											(m<sup>2</sup>)
+										</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
 												id="superficieSectorEditar"> <span
-												id="errorSuperficieEditar" class="error" style="display: none">Ingrese
-												la superficie del sector</span>
-									
+												id="errorSuperficieEditar" class="error"
+												style="display: none">Ingrese la superficie del
+												sector</span> <span id="errorSuperficieNegativaEditar"
+												class="error" style="display: none">La superficie no
+												puede ser negativa</span>
+
+										</div>
 									</div>
+
+
 								</div>
-
-
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-danger pull-left"
-									data-dismiss="modal">Cerrar</button>
-								<button id="botonGuardar" type="button" class="btn btn-primary"
-									onclick="guardarDatosSectorEditar();">Actualizar</button>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-danger pull-left"
+										data-dismiss="modal">Cerrar</button>
+									<button id="botonGuardar" type="button" class="btn btn-primary"
+										onclick="guardarDatosSectorEditar();">Actualizar</button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			</section>
 
-			<!-- Main content -->
+				<!-- Main content -->
+
+			</div>
+
+			<!-- /.content-wrapper -->
+
+			<footer align="center" class="main-footer"
+				style="background-color:#ecf0f5;"> <%@ include
+				file="pieDePagina.jsp"%> </footer>
+			<div class="control-sidebar-bg"></div>
+
 
 		</div>
-
-		<!-- /.content-wrapper -->
-
-		<footer align="center" class="main-footer"
-			style="background-color:#ecf0f5;"> <%@ include
-			file="pieDePagina.jsp"%> </footer>
-		<div class="control-sidebar-bg"></div>
-
-
-	</div>
-	<%@ include file="scripts.jsp"%>
+		<%@ include file="scripts.jsp"%>
 </body>
 
- <script>
+<script>
  
  function agregarSector() {
 		$('#modalAgregarSector').modal('show');
@@ -233,15 +255,28 @@
 		}
 		
 		//Validacion para la superficie
-		if (superficieSector ==" " || superficieSector ==0) {
+		if (superficieSector =="") {
 			document.getElementById('errorSuperficie').style.display = 'inline';
 			document.getElementById('superficieSector').style.border = "1px solid red";
 		} else {
+			//Validacion para la superficie
+			if (superficieSector<0 && superficieSector !="") {
+				document.getElementById('errorSuperficie').style.display = 'none';
+				document.getElementById('errorSuperficieNegativa').style.display = 'inline';
+				document.getElementById('superficieSector').style.border = "1px solid red";
+			} else {
+				document.getElementById('errorSuperficieNegativa').style.display = 'none';
+				document.getElementById('superficieSector').style.border = "";
+			}
+			
+		}
+		
+		if(superficieSector!="" && superficieSector>0){
 			document.getElementById('errorSuperficie').style.display = 'none';
 			document.getElementById('superficieSector').style.border = "";
 		}
-
-		if (nombreSector != "" && superficieSector!=0) {
+		
+		if (nombreSector != "" && superficieSector>0) {
 			$.ajax({
 				type : 'POST',
 				url : "agregarSector",
@@ -411,17 +446,31 @@
 			document.getElementById('errorNombreEditar').style.display = 'none';
 			document.getElementById('nombreSectorEditar').style.border = "";
 		}
-
-		//Validacion superficie
-		if (superficie == "") {
+		
+		//Validacion para la superficie
+		if (superficie =="") {
 			document.getElementById('errorSuperficieEditar').style.display = 'inline';
 			document.getElementById('superficieSectorEditar').style.border = "1px solid red";
 		} else {
+			//Validacion para la superficie
+			if (superficie<0 && superficie !="") {
+				document.getElementById('errorSuperficieEditar').style.display = 'none';
+				document.getElementById('errorSuperficieNegativaEditar').style.display = 'inline';
+				document.getElementById('superficieSectorEditar').style.border = "1px solid red";
+			} else {
+				document.getElementById('errorSuperficieNegativaEditar').style.display = 'none';
+				document.getElementById('superficieSectorEditar').style.border = "";
+			}
+			
+		}
+		
+		if(superficie!="" && superficie>0){
 			document.getElementById('errorSuperficieEditar').style.display = 'none';
 			document.getElementById('superficieSectorEditar').style.border = "";
 		}
 
-		if (nombreSector != "" && superficieSector!=0 && idSector>0) {
+	
+		if (nombreSector != "" && superficie>0 && idSector>0) {
 			$.ajax({
 				type : 'POST',
 				url : "editarSector",
