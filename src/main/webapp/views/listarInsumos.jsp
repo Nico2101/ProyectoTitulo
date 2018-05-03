@@ -132,12 +132,11 @@
 										<div class="col-sm-6">
 											<select class="form-control" id="tipoInsumo">
 												<option value="-1">Seleccione Tipo</option>
-												<option value="1">Herramienta</option>
-												<option value="2">Combustible</option>
-												<option value="3">Semilla</option>
-												<option value="4">Abono</option>
-												<option value="5">Fertilizante</option>
-												<option value="6">Herbicida</option>
+												<option value="1">Combustible</option>
+												<option value="2">Semilla</option>
+												<option value="3">Abono</option>
+												<option value="4">Fertilizante</option>
+												<option value="5">Herbicida</option>
 
 											</select> <span id="errorTipo" class="error" style="display: none">Seleccione
 												el tipo de insumo</span>
