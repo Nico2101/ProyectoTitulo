@@ -155,7 +155,8 @@
 											</select> <span id="errorUM" class="error" style="display: none">Seleccione
 												la unidad de medida</span>
 										</div>
-										<br> <br> <label class="col-sm-4 control-label">Marca (Opcional)</label>
+										<br> <br> <label class="col-sm-4 control-label">Marca
+											(Opcional)</label>
 
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="marcaInsumo">
@@ -228,7 +229,8 @@
 											</select> <span id="errorUMEditar" class="error" style="display: none">Seleccione
 												la unidad de medida</span>
 										</div>
-										<br> <br> <label class="col-sm-4 control-label">Marca (Opcional)</label>
+										<br> <br> <label class="col-sm-4 control-label">Marca
+											(Opcional)</label>
 
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
@@ -395,6 +397,9 @@
 							$('#nombreInsumoEditar').val(data.nombre);
 							$('#marcaInsumoEditar').val(data.marca);
 							
+							$('#tipoInsumoEditar').empty();
+							$('#umInsumoEditar').empty();
+							
 							
 							//obtengo los option de tipo insumo
 							var tipoInsumo = $('#tipoInsumo option');
@@ -432,10 +437,20 @@
 								
 							}
 							
+							document.getElementById('errorUMEditar').style.display = 'none';
+							document.getElementById('umInsumoEditar').style.border = "";
+
+							document.getElementById('errorTipoEditar').style.display = 'none';
+							document.getElementById('tipoInsumoEditar').style.border = "";
+
+							document.getElementById('errorNombreEditar').style.display = 'none';
+							document.getElementById('nombreInsumoEditar').style.border = "";
+							
 							//Cargar el id del insumo en el input oculto
 							$('#idInsumoEditar').val(idInsumo);
 	
 							$('#modalEditarInsumo').modal('show');
+						
 							
 						}
 
@@ -616,6 +631,8 @@
 									toastr.error("Error al obtener los insumos");
 								}
 							});
+						
+							toastr.success("Insumo editado correctamente");
 						
 						
 						

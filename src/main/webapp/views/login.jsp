@@ -62,8 +62,9 @@
 				<div class="col-sm-10 col-sm-offset-1">
 					<div class="login-container">
 						<div class="center">
-							<br>
-							<h1 class="header blue lighter bigger">Fundo Santa Emilia</h1>
+							<br><br>
+							
+							<h1 class="header blue lighter bigger"><i class="glyphicon glyphicon-grain"></i>Fundo Santa Emilia</h1>
 							<br>
 
 							<div class="position-relative">
