@@ -132,12 +132,11 @@
 										<div class="col-sm-6">
 											<select class="form-control" id="tipoInsumo">
 												<option value="-1">Seleccione Tipo</option>
-												<option value="1">Herramienta</option>
-												<option value="2">Combustible</option>
-												<option value="3">Semilla</option>
-												<option value="4">Abono</option>
-												<option value="5">Fertilizante</option>
-												<option value="6">Herbicida</option>
+												<option value="1">Combustible</option>
+												<option value="2">Semilla</option>
+												<option value="3">Abono</option>
+												<option value="4">Fertilizante</option>
+												<option value="5">Herbicida</option>
 
 											</select> <span id="errorTipo" class="error" style="display: none">Seleccione
 												el tipo de insumo</span>
@@ -398,6 +397,9 @@
 							$('#nombreInsumoEditar').val(data.nombre);
 							$('#marcaInsumoEditar').val(data.marca);
 							
+							$('#tipoInsumoEditar').empty();
+							$('#umInsumoEditar').empty();
+							
 							
 							//obtengo los option de tipo insumo
 							var tipoInsumo = $('#tipoInsumo option');
@@ -435,10 +437,20 @@
 								
 							}
 							
+							document.getElementById('errorUMEditar').style.display = 'none';
+							document.getElementById('umInsumoEditar').style.border = "";
+
+							document.getElementById('errorTipoEditar').style.display = 'none';
+							document.getElementById('tipoInsumoEditar').style.border = "";
+
+							document.getElementById('errorNombreEditar').style.display = 'none';
+							document.getElementById('nombreInsumoEditar').style.border = "";
+							
 							//Cargar el id del insumo en el input oculto
 							$('#idInsumoEditar').val(idInsumo);
 	
 							$('#modalEditarInsumo').modal('show');
+						
 							
 						}
 
@@ -619,6 +631,8 @@
 									toastr.error("Error al obtener los insumos");
 								}
 							});
+						
+							toastr.success("Insumo editado correctamente");
 						
 						
 						

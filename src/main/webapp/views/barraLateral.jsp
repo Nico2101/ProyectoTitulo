@@ -50,7 +50,8 @@
 
 	</a>
 		<ul class="treeview-menu">
-				<li><a href="ListarInsumos"> <i class="fa fa-circle-o"></i> <span><c:out value="Listar Insumos"></c:out></span>
+			<li><a href="ListarInsumos"> <i class="fa fa-circle-o"></i>
+					<span><c:out value="Listar Insumos"></c:out></span>
 
 			</a></li>
 
@@ -66,8 +67,8 @@
 	</a>
 		<ul class="treeview-menu">
 
-			<li><a href="listaSectores"> <i class="fa fa-circle-o"></i> <span><c:out
-							value="Listar Sectores"></c:out></span>
+			<li><a href="listaSectores"> <i class="fa fa-circle-o"></i>
+					<span><c:out value="Listar Sectores"></c:out></span>
 
 			</a></li>
 
@@ -76,6 +77,22 @@
 
 			</a></li>
 		</ul></li>
+
+
+	<li class="treeview"><a href="#"> <i class="fa fa-clock-o"></i>
+			<span><c:out value="Gestión de Temporadas"></c:out></span> <i
+			class="fa fa-angle-left pull-right"></i>
+
+	</a>
+		<ul class="treeview-menu">
+
+			<li><a href="ListaTemporadas"> <i class="fa fa-circle-o"></i>
+					<span><c:out value="Listar Temporadas"></c:out></span>
+
+			</a></li>
+
+		</ul></li>
+
 
 
 
