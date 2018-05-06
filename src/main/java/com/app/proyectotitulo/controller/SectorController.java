@@ -128,5 +128,13 @@ public class SectorController {
 		return false;
 
 	}
+	
+	@RequestMapping(value = "obtenerTotalSuperficeSector")
+	public @ResponseBody Integer obtieneTotalSuperficieSector(@RequestParam int idSector) {
+
+		Integer TotalSuperficieSector= sectorService.TotalSuperficieSector(idSector);
+			return TotalSuperficieSector;
+		
+	}
 
 }

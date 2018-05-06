@@ -25,10 +25,7 @@
 
 
 			<!-- Main content -->
-			<section class="content"> 
-			
-			
-			</section>
+			<section class="content"> </section>
 
 		</div>
 

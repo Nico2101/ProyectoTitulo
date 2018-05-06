@@ -18,4 +18,6 @@ public interface SectorService {
 		
 		// Editar Sector
 		Sector editarSector(Sector s);
+		
+		Integer TotalSuperficieSector(int id_sector);
 }

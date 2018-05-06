@@ -71,7 +71,7 @@
 
 			</a></li>
 
-			<li><a href="#"> <i class="fa fa-circle-o"></i> <span><c:out
+			<li><a href="ListarPredios"> <i class="fa fa-circle-o"></i> <span><c:out
 							value="Listar Predios"></c:out></span>
 
 			</a></li>

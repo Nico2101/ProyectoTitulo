@@ -48,4 +48,9 @@ public class SectorServiceImplementation implements SectorService {
 		// TODO Auto-generated method stub
 		return sectorRepo.save(s);
 	}
+	
+	public Integer  TotalSuperficieSector(int id_sector) {
+		// TODO Auto-generated method stub
+		return sectorRepo.TotalSuperSector( id_sector);
+	}
 }
