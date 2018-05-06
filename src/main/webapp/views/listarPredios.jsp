@@ -342,6 +342,7 @@
 		console.log(idSector);
 
 		if (idSector >0) {
+			//habilitar el input de superficie
 			document.getElementById('mostrar').style.display = 'inline';
 			
 			//obtengo el total de la superficie del sector
@@ -383,7 +384,10 @@
 		//superficie disponile
 		var input1=$("#idinput1").val();
 		var input2=$("#idinput2").val();
-		$("#idinput3").val(input1-input2);
+		var primerInput = parseInt(input1);
+		var segundoInput = parseInt(input2);
+		
+		$("#idinput3").val(primerInput-segundoInput);
 		
 		//desactiva el input de superficie cuando superficie disponible =0
 		 var sup = document.getElementById('superficiePredio');
@@ -461,8 +465,12 @@
 		var superficie = $('#superficiePredio').val();
 		
 		
-		var totalSuperficieSector =$('#idinput1').val();
-		var totalSuperficiePredios = $('#idinput2').val();
+		//para obtener la superficie disponible
+		var input1=$("#idinput1").val();
+		var input2=$("#idinput2").val();
+		var totalSuperficieSector =parseInt(input1);
+		var totalSuperficiePredios = parseInt(input2);
+		
 
 		console.log(nombrePredio);
 		console.log(idSector);
@@ -577,6 +585,8 @@
 
 	function editarPredio(idPredio) {
 		console.log(idPredio);
+		var TotalSector=$("#idinput1").val();
+		var TotalPredios=$("#idinput2").val();
 
 		if (idPredio > 0) {
 			//Obtener los datos del predio a editar
@@ -593,8 +603,13 @@
 						//Cargar los datos en el modal
 						$('#nombrePredioEditar').val(data.nombre);
 						$('#superficieEditar').val(data.superficie);
+			
+						$('#totalSector').val(TotalSector);
+						$('#totalPredios').val(TotalPredios);
 						
-
+						
+						$('#sectorEditar').empty();
+						
 						//obtengo los option de los sectores
 						var idSector = $('#sectorSeleccionado option');
 
@@ -767,7 +782,7 @@
 			document.getElementById('superficieEditar').style.border = "1px solid red";
 		} else {
 			
-			if (superficieEditar<0 && superficieEditar !="") {
+			if (superficieEditar<0 && superficieEditar !="" ) {
 				document.getElementById('errorSuperficieEditar').style.display = 'none';
 				document.getElementById('errorSupNegativa').style.display = 'inline';
 				document.getElementById('superficieEditar').style.border = "1px solid red";
