@@ -382,7 +382,7 @@
 		
 		//superficie disponile
 		var input1=$("#idinput1").val();
-		var  input2=$("#idinput2").val();
+		var input2=$("#idinput2").val();
 		$("#idinput3").val(input1-input2);
 		
 		//desactiva el input de superficie cuando superficie disponible =0
