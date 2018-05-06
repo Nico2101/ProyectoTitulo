@@ -36,4 +36,10 @@ public class TemporadaServiceImplementation implements TemporadaService {
 		return temporadaRepo.findByIdTemporada(idTemporada);
 	}
 
+	@Override
+	public Integer totalTemporadasActivas() {
+		// TODO Auto-generated method stub
+		return temporadaRepo.obtenerTotalTemporadasActivas();
+	}
+
 }

@@ -128,6 +128,7 @@ public class TemporadaController {
 
 			// Eliminar la temporada
 			t.setTemporadaEliminada(true);
+			t.setEstado(false);
 
 			temporadaService.saveTemporada(t);
 
@@ -154,6 +155,18 @@ public class TemporadaController {
 		}
 
 		return false;
+	}
+
+	@RequestMapping(value = "verificarCantidadTotalDeTemporadasActivas")
+	public @ResponseBody Integer verificarCantidadTotalDeTemporadasActivas() {
+
+		Integer total = temporadaService.totalTemporadasActivas();
+
+		if (total != null) {
+			return total;
+		} else {
+			return 0;
+		}
 	}
 
 }

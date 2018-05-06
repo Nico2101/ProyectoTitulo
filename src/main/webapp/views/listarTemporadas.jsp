@@ -280,28 +280,44 @@
 
 <script>
 	function agregarTemporada() {
-		$('#modalAgregarTemporada').modal('show');
-
-		//Limpiar modal
-		$('#nombreTemporada').val("");
-		$('#fechaInicio').val("");
-		$("#fechaTermino").val("");
-		
-
-		document.getElementById('errorNombreTemporada').style.display = 'none';
-		document.getElementById('nombreTemporada').style.border = "";
-
-		document.getElementById('errorFechaInicio').style.display = 'none';
-		document.getElementById('fechaInicio').style.border = "";
-
-		document.getElementById('errorFechaTermino').style.display = 'none';
-		document.getElementById('fechaTermino').style.border = "";
-		
-		document.getElementById('errorFechaTerminoMenor').style.display = 'none';
-		document.getElementById('fechaTermino').style.border = "";
 		
 		//Verificar la cantidad maxima de temporadas activas
 		//Pueden ser solo 4
+			$.ajax({
+				type : 'POST',
+				url : "verificarCantidadTotalDeTemporadasActivas",
+				dataType : 'json',
+				success : function(data) {
+					if(data<4){
+						$('#modalAgregarTemporada').modal('show');
+
+						//Limpiar modal
+						$('#nombreTemporada').val("");
+						$('#fechaInicio').val("");
+						$("#fechaTermino").val("");
+						
+
+						document.getElementById('errorNombreTemporada').style.display = 'none';
+						document.getElementById('nombreTemporada').style.border = "";
+
+						document.getElementById('errorFechaInicio').style.display = 'none';
+						document.getElementById('fechaInicio').style.border = "";
+
+						document.getElementById('errorFechaTermino').style.display = 'none';
+						document.getElementById('fechaTermino').style.border = "";
+						
+						document.getElementById('errorFechaTerminoMenor').style.display = 'none';
+						document.getElementById('fechaTermino').style.border = "";
+					}else{
+						toastr.error("Error, Al agregar otra temporada excede el total permitido. Debe finalizar la temporada que corresponda");
+					}
+				},
+				error : function(jqXHR, errorThrown) {
+					alert("Error al verificar temporadas");
+				}
+			});
+		
+	
 	}
 
 	function guardarDatosTemporada() {
@@ -378,16 +394,64 @@
 							}else{
 								estado="Temporada Inactiva";
 							}
+							
+							//Actualizar tabla
 
-							$('#listaTemporadas').dataTable().fnAddData(
+							//Actualizar el data table
+						 $.ajax({
+								type : 'POST',
+								url : "obtenerListaTemporadas",
+								dataType : 'json',
+								success : function(data) {
+									
+									if(!$.isEmptyObject(data)){
+										//vaciar datatable
+										var oTable = $('#listaTemporadas').dataTable();
+										oTable.fnClearTable();
+										
+										//Llenar data table
+										for(var i=0;i<data.length;i++){
+											
+											//Formatear fechas
+											var fechaInicio = moment(data[i].fechaInicio,'YYYY/MM/DD');
+											fechaInicio = fechaInicio.format('DD-MM-YYYY');
+											
+											var fechaTermino = moment(data[i].fechaTermino,'YYYY/MM/DD');
+											fechaTermino = fechaTermino.format('DD-MM-YYYY');
+											
+											var estado;
+											if(data[i].estado==true){
+												estado="Temporada Activa";
+											}else{
+												estado="Temporada Inactiva";
+											}
+											
+											if(data[i].estado==true){
+												$('#listaTemporadas').dataTable().fnAddData(
 
-									[ num + 1, data.nombre, fechaInicio,
-											fechaTermino, estado , '<a href="#" title="Editar Temporada" onclick="editarTemporada('+data.idTemporada+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Eliminar Temporada" onclick="eliminarTemporada('+data.idTemporada+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Finalizar Temporada" onclick="finalizarTemporada('+data.idTemporada+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>' ]
+														[i + 1, data[i].nombre, fechaInicio,
+																fechaTermino, estado, '<a href="#" title="Editar Temporada" onclick="editarTemporada('+data[i].idTemporada+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Eliminar Temporada" onclick="eliminarTemporada('+data[i].idTemporada+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Finalizar Temporada" onclick="finalizarTemporada('+data[i].idTemporada+');"><i class="fa fa-check fa-lg" style="color: green"></i></a>' ]
 
-							);
+												);
+											}else{
+												$('#listaTemporadas').dataTable().fnAddData(
 
-							$("#listaTemporadas").DataTable().page('last')
-									.draw('page');
+														[i + 1, data[i].nombre, fechaInicio,
+																fechaTermino, estado, '' ]
+
+												);
+											}
+											
+											
+										}
+									}
+																	
+
+								},
+								error : function(jqXHR, errorThrown) {
+									toastr.error("Error al obtener las temporadas");
+								}
+							});
 
 							toastr.success("Temporada agregada correctamente");
 						}
@@ -501,7 +565,7 @@
 														$('#listaTemporadas').dataTable().fnAddData(
 
 																[i + 1, data[i].nombre, fechaInicio,
-																		fechaTermino, estado, '<a href="#" title="Editar Temporada" onclick="editarTemporada('+data[i].idTemporada+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Eliminar Temporada" onclick="eliminarTemporada('+data[i].idTemporada+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Finalizar Temporada" onclick="finalizarTemporada('+data[i].idTemporada+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>' ]
+																		fechaTermino, estado, '<a href="#" title="Editar Temporada" onclick="editarTemporada('+data[i].idTemporada+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Eliminar Temporada" onclick="eliminarTemporada('+data[i].idTemporada+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Finalizar Temporada" onclick="finalizarTemporada('+data[i].idTemporada+');"><i class="fa fa-check fa-lg" style="color: green"></i></a>' ]
 
 														);
 													}else{
@@ -634,7 +698,7 @@
 												$('#listaTemporadas').dataTable().fnAddData(
 
 														[i + 1, data[i].nombre, fechaInicio,
-																fechaTermino, estado, '<a href="#" title="Editar Temporada" onclick="editarTemporada('+data[i].idTemporada+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Eliminar Temporada" onclick="eliminarTemporada('+data[i].idTemporada+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Finalizar Temporada" onclick="finalizarTemporada('+data[i].idTemporada+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>' ]
+																fechaTermino, estado, '<a href="#" title="Editar Temporada" onclick="editarTemporada('+data[i].idTemporada+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Eliminar Temporada" onclick="eliminarTemporada('+data[i].idTemporada+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Finalizar Temporada" onclick="finalizarTemporada('+data[i].idTemporada+');"><i class="fa fa-check fa-lg" style="color: green"></i></a>' ]
 
 												);
 											}else{
@@ -725,7 +789,7 @@
 												$('#listaTemporadas').dataTable().fnAddData(
 
 														[i + 1, data[i].nombre, fechaInicio,
-																fechaTermino, estado, '<a href="#" title="Editar Temporada" onclick="editarTemporada('+data[i].idTemporada+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Eliminar Temporada" onclick="eliminarTemporada('+data[i].idTemporada+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Finalizar Temporada" onclick="finalizarTemporada('+data[i].idTemporada+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>' ]
+																fechaTermino, estado, '<a href="#" title="Editar Temporada" onclick="editarTemporada('+data[i].idTemporada+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Eliminar Temporada" onclick="eliminarTemporada('+data[i].idTemporada+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Finalizar Temporada" onclick="finalizarTemporada('+data[i].idTemporada+');"><i class="fa fa-check fa-lg" style="color: green"></i></a>' ]
 
 												);
 											}else{

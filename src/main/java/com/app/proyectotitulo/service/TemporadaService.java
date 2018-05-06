@@ -11,4 +11,6 @@ public interface TemporadaService {
 	Temporada saveTemporada(Temporada t);
 
 	Temporada buscarTemporada(int idTemporada);
+	
+	Integer totalTemporadasActivas();
 }
