@@ -238,7 +238,7 @@
 										<br> <br> <label class="col-sm-4 control-label">Sector</label>
 										<div class="col-sm-6">
 											<select class="form-control" id="sectorEditar"
-												onchange="superficieTotalPrediosEditar()">
+												onchange="superficieTotalPrediosEditar();">
 											</select> <span id="errorSectorEditar" class="error"
 												style="display: none">Seleccione el sector</span>
 										</div>
@@ -346,6 +346,9 @@
 
 	function superficieTotalPredios() {
 		var idSector = $("#sectorSeleccionado").val();
+		$("#idinput1").val("");
+		$("#idinput2").val("");
+		$("#idinput3").val("");
 		console.log(idSector);
 
 		if (idSector >0) {
@@ -358,6 +361,7 @@
 				type : 'POST',
 				url : "obtenerTotalSuperficeSector",
 				dataType : 'json',
+				async: false,
 				data : {
 					idSector : idSector
 				},
@@ -365,44 +369,50 @@
 					$("#idinput1").val(data);
 					console.log(data);
 
+				},
+				error : function(jqXHR, errorThrown) {
+					alert("Error al obtener la superficie del sector");
 				}
 
-			}),
+			});
+			
 			$.ajax({
 				type : 'POST',
 				url : "obtenerTotalSuperficePrediosSector",
 				dataType : 'json',
+				async: false,
 				data : {
 					idSector : idSector
 				},
 				success : function(data) {
 					$("#idinput2").val(data);
 					console.log(data);
-					
-					
-				}
 				
-
-			})
+				},
+				error : function(jqXHR, errorThrown) {
+					alert("Error al obtener la superficie utilizada del sector");
+				}
+			});
 			
+			//superficie disponile
+			var input1=$("#idinput1").val();
+			var input2=$("#idinput2").val();
+			var primerInput = parseInt(input1);
+			var segundoInput = parseInt(input2);
 			
+			$("#idinput3").val(primerInput-segundoInput);
+			
+			//desactiva el input de superficie cuando superficie disponible =0
+			 var sup = document.getElementById('superficiePredio');
+			if($("#idinput3").val()==0){
+				sup.disabled = true;
+			}else{
+				sup.disabled = false;
+			}
+			
+		
 		}
 		
-		//superficie disponile
-		var input1=$("#idinput1").val();
-		var input2=$("#idinput2").val();
-		var primerInput = parseInt(input1);
-		var segundoInput = parseInt(input2);
-		
-		$("#idinput3").val(primerInput-segundoInput);
-		
-		//desactiva el input de superficie cuando superficie disponible =0
-		 var sup = document.getElementById('superficiePredio');
-		if($("#idinput3").val()==0){
-			sup.disabled = true;
-		}else{
-			sup.disabled = false;
-		}
 		
 
 	}
@@ -507,7 +517,7 @@
 			document.getElementById('superficiePredio').style.border = "1px solid red";
 		} else {
 			
-			if (superficie<0 && superficie !="") {
+			if (superficie<0) {
 				document.getElementById('errorSuperficie').style.display = 'none';
 				document.getElementById('errorSuperficieNegativa').style.display = 'inline';
 				document.getElementById('superficiePredio').style.border = "1px solid red";
@@ -524,13 +534,14 @@
 		}
 		
 		
+		/* Hace bien la validacion, asi como está al no ingresar nada no se marca el cuadro del input
 		if(superficie>(($('#idinput1').val())-($('#idinput2').val()))){
 			document.getElementById('errorSubTotal').style.display = 'inline';
 			document.getElementById('superficiePredio').style.border = "1px solid red";
 		}else {
 			document.getElementById('errorSubTotal').style.display = 'none';
 			document.getElementById('superficiePredio').style.border = "";
-		}
+		}*/
 		
 		
 		
