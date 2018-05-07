@@ -54,5 +54,11 @@ public class PredioServiceImplementation implements PredioService {
 		// TODO Auto-generated method stub
 		return predioRepo.save(p);
 	}
+	
+	@Override
+	public boolean   eliminarPrediosSector(int idSector) {
+		// TODO Auto-generated method stub
+		return predioRepo.EliminarPrediosDeUnSector( idSector);
+	}
 
 }

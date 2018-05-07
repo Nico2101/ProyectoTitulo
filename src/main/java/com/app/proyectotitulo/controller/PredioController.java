@@ -111,6 +111,19 @@ public class PredioController {
 		return false;
 	}
 	
+	//cuando se elimnina un sector permite eliminar los predios asociados a el 
+	@RequestMapping(value = "eliminarPrediosDeUnSector")
+	public @ResponseBody boolean eliminarPrediosDeUnSector(@RequestParam int idSector) {
+           
+		
+		if (PredioService.eliminarPrediosSector(idSector)==true) {
+			return true;
+		}else {
+			return false;
+			
+		}
+	}
+	
 	@RequestMapping(value = "obtenerPredioAEditar")
 	public @ResponseBody Predio obtenerPredioAEditar(@RequestParam int idPredio) {
 

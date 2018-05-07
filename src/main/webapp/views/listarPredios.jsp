@@ -75,8 +75,9 @@
 													<td><c:out value="${predios.nombre}"></c:out></td>
 													<td><c:out value="${predios.superficie}"></c:out></td>
 													<td><c:out value="${predios.sector.nombre}"></c:out></td>
-													<td><a href="#" onclick="editarPredio(${predios.idPredio});"><i class="fa fa-edit fa-lg"
-															style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+													<td><a href="#"
+														onclick="editarPredio(${predios.idPredio});"><i
+															class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
 														href="#" onclick="eliminarPredio(${predios.idPredio});"><i
 															class="fa fa-trash-o fa-lg" style="color: red"></i></a></td>
 
@@ -139,47 +140,50 @@
 												</c:forEach>
 
 											</select> <span id="errorSector" class="error" style="display: none">Seleccione
-												el sector</span> 
+												el sector</span>
 
 										</div>
-                                     <div id="mostrar" style="display: none">
-										<br> <br> <label class="col-sm-4 control-label">Superficie
-											total sector</label>
-										<div class="col-sm-6">
-											<input type="number" class="form-control" id="idinput1" disabled>
+										<div id="mostrar" style="display: none">
+											<br> <br> <label class="col-sm-4 control-label">Superficie
+												total sector</label>
+											<div class="col-sm-6">
+												<input type="number" class="form-control" id="idinput1"
+													disabled>
 
+											</div>
+
+											<br> <br> <label class="col-sm-4 control-label">Superficie
+												ocupada</label>
+											<div class="col-sm-6">
+												<input type="number" class="form-control" id="idinput2"
+													disabled>
+
+
+											</div>
+
+											<br> <br> <label class="col-sm-4 control-label">Superficie
+												disponible</label>
+											<div class="col-sm-6">
+												<input type="number" class="form-control" id="idinput3"
+													disabled>
+
+
+											</div>
+
+											<br> <br> <label class="col-sm-4 control-label">Superficie
+												(m<sup>2</sup>) predio
+											</label>
+											<div class="col-sm-6">
+												<input type="number" class="form-control"
+													id="superficiePredio"> <span id="errorSuperficie"
+													class="error" style="display: none">Ingrese la
+													superficie del predio</span> <span id="errorSubTotal"
+													class="error" style="display: none">La superficie
+													ingresada debe ser menor</span> <span id="errorSuperficieNegativa"
+													class="error" style="display: none">La superficie no
+													puede ser negativa</span>
+											</div>
 										</div>
-
-										<br> <br> <label class="col-sm-4 control-label">Superficie
-											ocupada</label>
-										<div class="col-sm-6">
-											<input type="number" class="form-control" id="idinput2" disabled>
-
-
-										</div>
-										
-										<br> <br> <label class="col-sm-4 control-label">Superficie
-											disponible</label>
-										<div class="col-sm-6">
-											<input type="number" class="form-control" id="idinput3" disabled>
-
-
-										</div>
-
-										<br> <br> <label class="col-sm-4 control-label">Superficie
-											(m<sup>2</sup>) predio
-										</label>
-										<div class="col-sm-6">
-											<input type="number" class="form-control" id="superficiePredio">
-											<span id="errorSuperficie" class="error"
-												style="display: none">Ingrese la superficie del
-												predio</span> <span id="errorSubTotal" class="error"
-												style="display: none">La superficie ingresada debe
-												ser menor</span> <span id="errorSuperficieNegativa" class="error"
-												style="display: none">La superficie no puede ser
-												negativa</span>
-										</div>
-                                      </div>
 
 									</div>
 
@@ -233,30 +237,34 @@
 										</div>
 										<br> <br> <label class="col-sm-4 control-label">Sector</label>
 										<div class="col-sm-6">
-											<select class="form-control" id="sectorEditar" onchange="superficieTotalPrediosEditar()">
+											<select class="form-control" id="sectorEditar"
+												onchange="superficieTotalPrediosEditar()">
 											</select> <span id="errorSectorEditar" class="error"
 												style="display: none">Seleccione el sector</span>
 										</div>
-										
-										
+
+
 										<br> <br> <label class="col-sm-4 control-label">Superficie
 											total sector</label>
 										<div class="col-sm-6">
-											<input type="number" class="form-control" id="totalSector" disabled>
+											<input type="number" class="form-control" id="totalSector"
+												disabled>
 
 										</div>
 
 										<br> <br> <label class="col-sm-4 control-label">Superficie
 											ocupada</label>
 										<div class="col-sm-6">
-											<input type="number" class="form-control" id="totalPredios" disabled>
+											<input type="number" class="form-control" id="totalPredios"
+												disabled>
 
 										</div>
-										
+
 										<br> <br> <label class="col-sm-4 control-label">Superficie
 											disponible</label>
 										<div class="col-sm-6">
-											<input type="number" class="form-control" id="superficieDisponible" disabled>
+											<input type="number" class="form-control"
+												id="superficieDisponible" disabled>
 
 										</div>
 
@@ -264,14 +272,13 @@
 										</label>
 										<div class="col-sm-6">
 											<input type="number" class="form-control"
-												id="superficieEditar">
-												<span id="errorSuperficieEditar" class="error"
-												style="display: none">Ingrese superficie</span>
-												<span id="errorSubTotal" class="error"
-												style="display: none">La superficie ingresada debe
-												ser menor</span> 
-												<span id="errorSupNegativa" class="error"
-												style="display: none">La superficie no puede ser negativa</span>
+												id="superficieEditar"> <span
+												id="errorSuperficieEditar" class="error"
+												style="display: none">Ingrese superficie</span> <span
+												id="errorSubTotal" class="error" style="display: none">La
+												superficie ingresada debe ser menor</span> <span
+												id="errorSupNegativa" class="error" style="display: none">La
+												superficie no puede ser negativa</span>
 										</div>
 									</div>
 

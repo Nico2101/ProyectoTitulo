@@ -88,7 +88,7 @@
 			</div>
 
 
-			</section>
+			
 
 			<!-- Modal -->
 
@@ -203,8 +203,9 @@
 				</div>
 
 				<!-- Main content -->
-
+               </section>
 			</div>
+			
 
 			<!-- /.content-wrapper -->
 
@@ -213,7 +214,7 @@
 				file="pieDePagina.jsp"%> </footer>
 			<div class="control-sidebar-bg"></div>
 
-		</div>
+		
 	</div>
 	<%@ include file="scripts.jsp"%>
 </body>
@@ -387,47 +388,63 @@
 								toastr.success("Sector eliminado correctamente");
 
 								//Actualizar el data table
-								 $.ajax({
-										type : 'POST',
-										url : "obtenerListaSectores",
-										dataType : 'json',
-										success : function(data) {
-											
-											if(!$.isEmptyObject(data)){
-												//vaciar datatable
-												var oTable = $('#listaSectores').dataTable();
-												oTable.fnClearTable();
-												
-												//Llenar data table
-												for(var i=0;i<data.length;i++){
-													$('#listaSectores').dataTable().fnAddData(
+								$.ajax({
+											type : 'POST',
+											url : "obtenerListaSectores",
+											dataType : 'json',
+											success : function(data) {
 
-															[i + 1, data[i].nombre, data[i].superficie, '<a href="#" onclick="editarSector('+data[i].idSector+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarSector('+data[i].idSector+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+												if (!$.isEmptyObject(data)) {
+													//vaciar datatable
+													var oTable = $(
+															'#listaSectores')
+															.dataTable();
+													oTable
+															.fnClearTable();
 
-													);
+													//Llenar data table
+													for (var i = 0; i < data.length; i++) {
+														$(
+																'#listaSectores')
+																.dataTable()
+																.fnAddData(
+
+																		[i + 1,
+																				data[i].nombre,
+																				data[i].superficie,
+																				'<a href="#" onclick="editarSector('
+																						+ data[i].idSector
+																						+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarSector('
+																						+ data[i].idSector
+																						+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+
+																);
+													}
 												}
-											}
-											
 
-										},
-										error : function(jqXHR, errorThrown) {
-											toastr.error("Error al obtener los sectores");
-										}
-									});
-							}else{
-								toastr.error("Error al obtener los sectores");
+											},
+											error : function(jqXHR,
+													errorThrown) {
+												toastr
+														.error("Error al obtener los sectores");
+											}
+										});
+							} else {
+								toastr
+										.error("Error al obtener los sectores");
 							}
 
 						},
 						error : function(jqXHR, errorThrown) {
-							toastr.error("Error al eliminar el sector");
+							toastr
+									.error("Error al eliminar sector");
 						}
 					});
-				  
-				});
-		}
-		
- }
+
+		});
+}
+
+}
  
  function guardarDatosSectorEditar(){
 		//Obtener los datos
