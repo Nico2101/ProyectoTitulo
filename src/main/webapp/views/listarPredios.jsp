@@ -56,7 +56,7 @@
 											<tr>
 												<th>N°</th>
 												<th>Nombre</th>
-												<th>Superficie</th>
+												<th>Superficie </th>
 												<th>Sector</th>
 												<th>Acción</th>
 
@@ -145,7 +145,7 @@
 										</div>
 										<div id="mostrar" style="display: none">
 											<br> <br> <label class="col-sm-4 control-label">Superficie
-												total sector</label>
+												total sector(m<sup>2</sup>)</label>
 											<div class="col-sm-6">
 												<input type="number" class="form-control" id="idinput1"
 													disabled>
@@ -153,7 +153,7 @@
 											</div>
 
 											<br> <br> <label class="col-sm-4 control-label">Superficie
-												ocupada</label>
+												ocupada (m<sup>2</sup>) </label>
 											<div class="col-sm-6">
 												<input type="number" class="form-control" id="idinput2"
 													disabled>
@@ -162,7 +162,7 @@
 											</div>
 
 											<br> <br> <label class="col-sm-4 control-label">Superficie
-												disponible</label>
+												disponible (m<sup>2</sup>) </label>
 											<div class="col-sm-6">
 												<input type="number" class="form-control" id="idinput3"
 													disabled>
@@ -171,7 +171,7 @@
 											</div>
 
 											<br> <br> <label class="col-sm-4 control-label">Superficie
-												(m<sup>2</sup>) predio
+												 predio (m<sup>2</sup>)
 											</label>
 											<div class="col-sm-6">
 												<input type="number" class="form-control"
@@ -248,7 +248,7 @@
 
 
 										<br> <br> <label class="col-sm-4 control-label">Superficie
-											total sector</label>
+											total sector(m<sup>2</sup>)</label>
 										<div class="col-sm-6">
 											<input type="number" class="form-control" id="totalSector"
 												disabled>
@@ -256,7 +256,7 @@
 										</div>
 
 										<br> <br> <label class="col-sm-4 control-label">Superficie
-											ocupada</label>
+											ocupada(m<sup>2</sup>) </label>
 										<div class="col-sm-6">
 											<input type="number" class="form-control" id="totalPredios"
 												disabled>
@@ -264,14 +264,14 @@
 										</div>
 
 										<br> <br> <label class="col-sm-4 control-label">Superficie
-											disponible</label>
+											disponible (m<sup>2</sup>)</label>
 										<div class="col-sm-6">
 											<input type="number" class="form-control"
 												id="superficieDisponible" disabled>
 
 										</div>
 
-										<br> <br> <label class="col-sm-4 control-label">Superficie
+										<br> <br> <label class="col-sm-4 control-label">Superficie (m<sup>2</sup>)
 										</label>
 										<div class="col-sm-6">
 											<input type="number" class="form-control"
