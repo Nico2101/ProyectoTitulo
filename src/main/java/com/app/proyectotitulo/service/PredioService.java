@@ -21,7 +21,5 @@ public interface PredioService {
 	// Editar Predio
 	Predio editarPredio(Predio p);
 	
-	
-	//elimina los predios de un sector 
-	boolean  eliminarPrediosSector(int idSector);
+
 }

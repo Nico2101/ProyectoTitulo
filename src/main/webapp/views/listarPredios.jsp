@@ -182,6 +182,9 @@
 													ingresada debe ser menor</span> <span id="errorSuperficieNegativa"
 													class="error" style="display: none">La superficie no
 													puede ser negativa</span>
+													<span id="errorSuperficieNoPuedeSerCero"
+													class="error" style="display: none">La superficie no
+													puede ser cero</span>
 											</div>
 										</div>
 
@@ -272,13 +275,16 @@
 										</label>
 										<div class="col-sm-6">
 											<input type="number" class="form-control"
-												id="superficieEditar"> <span
-												id="errorSuperficieEditar" class="error"
-												style="display: none">Ingrese superficie</span> <span
-												id="errorSubTotal" class="error" style="display: none">La
-												superficie ingresada debe ser menor</span> <span
-												id="errorSupNegativa" class="error" style="display: none">La
-												superficie no puede ser negativa</span>
+												id="superficieEditar">  <span id="errorSuperficieEditar"
+													class="error" style="display: none">Ingrese la
+													superficie del predio</span> <span id="errorSubTotalEditar"
+													class="error" style="display: none">La superficie
+													ingresada debe ser menor</span> <span id="errorSuperficieNegativaEditar"
+													class="error" style="display: none">La superficie no
+													puede ser negativa</span>
+													<span id="errorSuperficieNoPuedeSerCeroEditar"
+													class="error" style="display: none">La superficie no
+													puede ser cero</span>
 										</div>
 									</div>
 
@@ -339,6 +345,9 @@
 		document.getElementById('errorSubTotal').style.display = 'none';
 		document.getElementById('superficiePredio').style.border = "";
 		
+		document.getElementById('errorSuperficieNoPuedeSerCero').style.display = 'none';
+		document.getElementById('superficiePredio').style.border = "";
+		
 		document.getElementById('mostrar').style.display = 'none';
 	}
 	
@@ -352,7 +361,7 @@
 		console.log(idSector);
 
 		if (idSector >0) {
-			//habilitar el input de superficie
+			//habilita los input
 			document.getElementById('mostrar').style.display = 'inline';
 			
 			//obtengo el total de la superficie del sector
@@ -420,29 +429,21 @@
 	
 	function superficieTotalPrediosEditar() {
 		var idSector = $("#sectorEditar").val();
+		$("#totalSector").val("");
+		$("#totalPredios").val("");
+		$("#superficieDisponible").val("");
+		
 		console.log(idSector);
 
 		if (idSector >0) {
-			//Obtengo el total de la superficie de los predios de un sector
-			$.ajax({
-				type : 'POST',
-				url : "obtenerTotalSuperficePrediosSector",
-				dataType : 'json',
-				data : {
-					idSector : idSector
-				},
-				success : function(data) {
-					$("#totalPredios").val(data);
-					console.log(data);
-				}
-
-			}),
+			
 			//obtengo el total de la superficie del sector
 
 			$.ajax({
 				type : 'POST',
 				url : "obtenerTotalSuperficeSector",
 				dataType : 'json',
+				async: false,
 				data : {
 					idSector : idSector
 				},
@@ -450,26 +451,53 @@
 					$("#totalSector").val(data);
 					console.log(data);
 
+				},
+				error : function(jqXHR, errorThrown) {
+					alert("Error al obtener la superficie del sector");
 				}
 
-			})
+			});
+			
+			$.ajax({
+				type : 'POST',
+				url : "obtenerTotalSuperficePrediosSector",
+				dataType : 'json',
+				async: false,
+				data : {
+					idSector : idSector
+				},
+				success : function(data) {
+					$("#totalPredios").val(data);
+					console.log(data);
+				
+				},
+				error : function(jqXHR, errorThrown) {
+					alert("Error al obtener la superficie utilizada del sector");
+				}
+			});
+			
+			//superficie disponile
+			var totalSECTOR=$("#totalSector").val();
+			var totalPREDIOS=$("#totalPredios").val();
+			var totalSector = parseInt(totalSECTOR);
+			var totalPredios = parseInt(totalPREDIOS);
+			
+			$("#superficieDisponible").val(totalSector-totalPredios);
+			
+			//desactiva el input de superficie cuando superficie disponible =0
+			 var Sup = document.getElementById('superficieEditar');
+			if($("#superficieDisponible").val()==0){
+				Sup.disabled = true;
+			}else{
+				Sup.disabled = false;
+			}
+			
+		
 		}
 		
-		//superficie disponible 
-		var totalSector=$("#totalSector").val();
-		var  totalPredios=$("#totalPredios").val();
-		$("#superficieDisponible").val(totalSector-totalPredios);
 		
-		//desactiva el input de superficie cuando superficie disponible =0
-		 var Superficie = document.getElementById('superficieEditar');
-		if($("#superficieDisponible").val()==0){
-			Superficie.disabled = true;
-		}else{
-			Superficie.disabled = false;
-		}
 
 	}
-	
 	
 
 	function guardarDatosPredio() {
@@ -513,11 +541,12 @@
 
 		//Validacion para la superficie del predio a agregar
 		if (superficie =="") {
+			document.getElementById('errorSuperficieNoPuedeSerCero').style.display = 'none';
 			document.getElementById('errorSuperficie').style.display = 'inline';
 			document.getElementById('superficiePredio').style.border = "1px solid red";
 		} else {
 			
-			if (superficie<0) {
+			if (superficie<0 ) {
 				document.getElementById('errorSuperficie').style.display = 'none';
 				document.getElementById('errorSuperficieNegativa').style.display = 'inline';
 				document.getElementById('superficiePredio').style.border = "1px solid red";
@@ -526,22 +555,37 @@
 				document.getElementById('superficiePredio').style.border = "";
 			}
 			
+		if(superficie==0){
+			document.getElementById('errorSuperficie').style.display = 'none';
+			document.getElementById('errorSuperficieNoPuedeSerCero').style.display = 'inline';
+			document.getElementById('superficiePredio').style.border = "1px solid red";
+		}else{
+			document.getElementById('errorSuperficieNoPuedeSerCero').style.display = 'none';
+			document.getElementById('superficiePredio').style.border = "";
 		}
 		
+		} 
 		if(superficie!="" && superficie>0){
 			document.getElementById('errorSuperficie').style.display = 'none';
 			document.getElementById('superficiePredio').style.border = "";
 		}
 		
+			
 		
-		/* Hace bien la validacion, asi como está al no ingresar nada no se marca el cuadro del input
+		// valida cuando la superficie ingresada es superior a la disponible
 		if(superficie>(($('#idinput1').val())-($('#idinput2').val()))){
 			document.getElementById('errorSubTotal').style.display = 'inline';
 			document.getElementById('superficiePredio').style.border = "1px solid red";
 		}else {
 			document.getElementById('errorSubTotal').style.display = 'none';
 			document.getElementById('superficiePredio').style.border = "";
-		}*/
+		}
+		
+		
+		if(superficie=="" && ($('#idinput3').val())==0){
+			document.getElementById('errorSuperficie').style.display = 'none';
+			document.getElementById('superficiePredio').style.border = "";
+		}
 		
 		
 		
@@ -598,16 +642,17 @@
 						}
 					});
 		}
+		 
 
 	}
 
 	function editarPredio(idPredio) {
 		console.log(idPredio);
-		var TotalSector=$("#idinput1").val();
-		var TotalPredios=$("#idinput2").val();
-
+		
+		
 		if (idPredio > 0) {
 			//Obtener los datos del predio a editar
+			
 			$.ajax({
 				type : 'POST',
 				url : "obtenerPredioAEditar",
@@ -621,11 +666,8 @@
 						//Cargar los datos en el modal
 						$('#nombrePredioEditar').val(data.nombre);
 						$('#superficieEditar').val(data.superficie);
+						
 			
-						$('#totalSector').val(TotalSector);
-						$('#totalPredios').val(TotalPredios);
-						
-						
 						$('#sectorEditar').empty();
 						
 						//obtengo los option de los sectores
@@ -645,12 +687,88 @@
 							}
 
 						}
+						
+					//  permite mostrar la superficie del sector, ocupada y disponible. 
+						 var IDsector = $("#sectorEditar").val();
+							if (IDsector >0) {
+								
+								//obtengo el total de la superficie del sector
 
+								$.ajax({
+									type : 'POST',
+									url : "obtenerTotalSuperficeSector",
+									dataType : 'json',
+									async: false,
+									data : {
+										idSector : IDsector
+									},
+									success : function(data) {
+										$("#totalSector").val(data);
+										console.log(data);
 
+									},
+									error : function(jqXHR, errorThrown) {
+										alert("Error al obtener la superficie del sector");
+									}
+
+								});
+								
+								$.ajax({
+									type : 'POST',
+									url : "obtenerTotalSuperficePrediosSector",
+									dataType : 'json',
+									async: false,
+									data : {
+										idSector : IDsector
+									},
+									success : function(data) {
+										$("#totalPredios").val(data-$('#superficieEditar').val());
+										console.log(data);
+									
+									},
+									error : function(jqXHR, errorThrown) {
+										alert("Error al obtener la superficie utilizada del sector");
+									}
+								});
+						}
+							
+							//superficie disponile
+							var TOTALsector=$("#totalSector").val();
+							var TOTALpredios=$("#totalPredios").val();
+							var totalSECTOR = parseInt(TOTALsector);
+							var totalPREDIOS = parseInt(TOTALpredios);
+							
+							$("#superficieDisponible").val(totalSECTOR-totalPREDIOS);
+							
+						
+						
+
+						document.getElementById('errorNombreEditar').style.display = 'none';
+						document.getElementById('nombrePredioEditar').style.border = "";
+
+						document.getElementById('errorSectorEditar').style.display = 'none';
+						document.getElementById('sectorEditar').style.border = "";
+
+						document.getElementById('errorSuperficieNegativaEditar').style.display = 'none';
+						document.getElementById('superficieEditar').style.border = "";
+						
+						document.getElementById('errorSuperficieEditar').style.display = 'none';
+						document.getElementById('superficieEditar').style.border = "";
+						
+						document.getElementById('errorSubTotalEditar').style.display = 'none';
+						document.getElementById('superficieEditar').style.border = "";
+						
+						document.getElementById('errorSuperficieNoPuedeSerCeroEditar').style.display = 'none';
+						document.getElementById('superficieEditar').style.border = "";
+						
+							
 						//Cargar el id del predio en el input oculto
 						$('#idPredioEditar').val(idPredio);
 
 						$('#modalEditarPredio').modal('show');
+						
+					
+						
 
 					}
 
@@ -659,6 +777,8 @@
 					toastr.error("Error al editar el predio");
 				}
 			});
+			
+			
 		}
 
 	}
@@ -694,7 +814,8 @@
 											swal.close();
 											toastr
 													.success("Predio eliminado correctamente");
-
+											
+										
 											//Actualizar el data table
 											$
 													.ajax({
@@ -766,9 +887,9 @@
 
 		var superficieEditar = $('#superficieEditar').val();
 		
-		
 		var totalSuperficieSector =$('#totalSector').val();
 		var totalSuperficiePredios = $('#totalPredios').val();
+		var superficieDisponible= $('#superficieDisponible').val();
 		
 		var idPredio=$('#idPredioEditar').val();
 
@@ -796,29 +917,55 @@
 
 		//Validacion para la superficie del predio a agregar
 		if (superficieEditar =="") {
+			document.getElementById('errorSuperficieNoPuedeSerCeroEditar').style.display = 'none';
 			document.getElementById('errorSuperficieEditar').style.display = 'inline';
 			document.getElementById('superficieEditar').style.border = "1px solid red";
 		} else {
 			
-			if (superficieEditar<0 && superficieEditar !="" ) {
-				document.getElementById('errorSuperficieEditar').style.display = 'none';
-				document.getElementById('errorSupNegativa').style.display = 'inline';
+			if (superficieEditar<0 ) {
+				document.getElementById('errorSuperficieNegativaEditar').style.display = 'inline';
 				document.getElementById('superficieEditar').style.border = "1px solid red";
 			} else {
-				document.getElementById('errorSupNegativa').style.display = 'none';
+				document.getElementById('errorSuperficieNegativaEditar').style.display = 'none';
 				document.getElementById('superficieEditar').style.border = "";
 			}
 			
-		} 
-		
-		if(superficieEditar!="" && superficieEditar>0){
-			document.getElementById('errorSuperficie').style.display = 'none';
+		if(superficieEditar==0){
+			document.getElementById('errorSuperficieEditar').style.display = 'none';
+			document.getElementById('errorSuperficieNoPuedeSerCeroEditar').style.display = 'inline';
+			document.getElementById('superficieEditar').style.border = "1px solid red";
+		}else{
+			document.getElementById('errorSuperficieNoPuedeSerCeroEditar').style.display = 'none';
 			document.getElementById('superficieEditar').style.border = "";
 		}
 		
+		} 
+		if(superficieEditar!="" && superficieEditar>0){
+			document.getElementById('errorSuperficieEditar').style.display = 'none';
+			document.getElementById('errorSubTotalEditar').style.display = 'none';
+			document.getElementById('superficieEditar').style.border = "";
+		}
+		
+			
+		
+		// cuando la superficie ingresada es superior a la disponible
+		if(superficieEditar>(superficieDisponible)){
+			document.getElementById('errorSubTotalEditar').style.display = 'inline';
+			document.getElementById('superficieEditar').style.border = "1px solid red";
+		}else {
+			document.getElementById('errorSubTotalEditar').style.display = 'none';
+			document.getElementById('superficieEditar').style.border = "";
+		}
+		
+		
+		
+		
+	
+		
+		
 
 
-		if (nombrePredioEditar != "" && superficieEditar>0 && idPredio>0) {
+		if (nombrePredioEditar != "" && superficieEditar>0 && idPredio>0 && superficieEditar<=(superficieDisponible)) {
 			$.ajax({
 				type : 'POST',
 				url : "editarPredio",

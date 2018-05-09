@@ -17,7 +17,8 @@ public interface PredioRepository extends JpaRepository<Predio, Integer> {
 	@Query(value="select sum(superficie) as totalSuperficie from Predio p where id_sector=? and predio_Eliminado='0'", nativeQuery=true)
 	Integer  superficieTotal(int id_sector);
 	
-	@Query(value="DELETE FROM Predio where id_sector=?", nativeQuery=true)
-	boolean  EliminarPrediosDeUnSector(int idSector);
+	
+	
+	
 
 }
