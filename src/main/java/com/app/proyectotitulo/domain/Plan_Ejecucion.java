@@ -6,6 +6,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class Plan_Ejecucion implements Serializable {
 	private int idPlanEjecucion;
 
 	@Column(name = "fecha_creacion")
-	private String fechaCreacion;
+	private Date fechaCreacion;
 
 	private String nombre;
 
@@ -52,11 +53,11 @@ public class Plan_Ejecucion implements Serializable {
 		this.idPlanEjecucion = idPlanEjecucion;
 	}
 
-	public String getFechaCreacion() {
+	public Date getFechaCreacion() {
 		return this.fechaCreacion;
 	}
 
-	public void setFechaCreacion(String fechaCreacion) {
+	public void setFechaCreacion(Date fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
 	}
 

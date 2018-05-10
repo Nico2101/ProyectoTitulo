@@ -48,20 +48,18 @@
 									<div class="col-md-3 col-sm-6 col-xs-12">
 										<label>Nombre del Plan</label><input id="nombrePlan"
 											name="numeroOC" type="text"
-											class="form-control select2 select2-hidden-accessible"
-											onclick="javascript: limpia(this);" />
-											<span id="errorNombrePlan" class="error"
-												style="display: none">Ingrese el nombre del plan</span>
+											class="form-control select2 select2-hidden-accessible" /> <span
+											id="errorNombrePlan" class="error" style="display: none">Ingrese
+											el nombre del plan</span>
 									</div>
 
 									<div class="col-md-3 col-sm-6 col-xs-12">
 										<label>Fecha de Creación</label> <input id="fechaCreacion"
 											type="date"
 											class="form-control select2 select2-hidden-accessible"
-											name="daterange" value="" />
-											
-											<span id="errorFechaCreacion" class="error"
-												style="display: none">Ingrese la fecha de creación</span>
+											name="daterange" value="" /> <span id="errorFechaCreacion"
+											class="error" style="display: none">Ingrese la fecha
+											de creación</span>
 									</div>
 
 
@@ -99,7 +97,11 @@
 								<div class="col-sm-3"></div>
 
 								<div class="col-sm-6">
-									<table id="tablaActiviades"
+									<div align="center">
+										<span id="errorTablaVacia" class="error" style="display: none">Debe
+											agregar actividades</span>
+									</div>
+									<table id="tablaActividades"
 										class="table table-striped table-bordered table-hover">
 
 										<thead>
@@ -173,7 +175,7 @@
 								<button type="button" class="btn btn-danger pull-left"
 									data-dismiss="modal">Cerrar</button>
 								<button id="botonGuardar" type="button" class="btn btn-primary"
-									onclick="guardarDatosActividad();">Agregar</button>
+									onclick="agregarDatosActividad();">Agregar</button>
 							</div>
 						</div>
 					</div>
@@ -200,6 +202,161 @@
 	function modalAgregarActividad() {
 		$('#nombreActividad').val("");
 		$('#modalAgregarActividad').modal('show');
+		//$('#nombreActividad').focus();
+	}
+
+	function agregarDatosActividad() {
+		var nombreActividad = $('#nombreActividad').val();
+
+		if (nombreActividad == "") {
+			document.getElementById('errorNombreActividad').style.display = 'inline';
+			document.getElementById('nombreActividad').style.border = "1px solid red";
+		} else {
+			document.getElementById('errorNombreActividad').style.display = 'none';
+			document.getElementById('nombreActividad').style.border = "";
+		}
+
+		if (nombreActividad != "") {
+			//Agregar el dato de la actividad a la tabla
+
+			//N° Filas
+			var filas = document.getElementById("tablaActividades").rows.length;
+			console.log("filas: " + filas);
+
+			if (filas >= 1) {
+				//Agregar el nombre de la actividad a la tabla
+
+				//numero
+				var num = 0;
+				var oTable = document.getElementById('tablaActividades');
+
+				var rowLength = oTable.rows.length;
+				var oCells = oTable.rows.item(rowLength - 1).cells;
+				var n = oCells[0].textContent;
+
+				if (n == "N°") {
+					num = 1;
+				} else {
+					num = parseInt(n) + 1;
+				}
+
+				// Find a <table> element with id="myTable":
+				var table = document.getElementById("tablaActividades");
+
+				// Create an empty <tr> element and add it to the 1st position of the table:
+				var row = table.insertRow(filas);
+
+				// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+
+				// Add some text to the new cells:
+				cell1.innerHTML = num;
+				cell2.innerHTML = nombreActividad;
+				cell3.innerHTML = '<a href="#" onclick="editarActividad('
+						+ num
+						+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarActividad('
+						+ num
+						+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>';
+
+				$('#nombreActividad').val("");
+				$('#nombreActividad').focus();
+
+			}
+		}
+	}
+
+	function editarActividad(numFila) {
+		var oTable = document.getElementById('tablaActividades');
+		//gets rows of table
+		var rowLength = oTable.rows.length;
+
+		//loops through rows    
+		for (i = 0; i < rowLength; i++) {
+			var oCells = oTable.rows.item(i).cells;//devuelve un objeto con la fila completa
+
+			if (numFila == oCells[0].textContent) {
+				var table = document.getElementById("tablaActividades");
+				console.log("TABLE: ");
+				console.log(table);
+				if (table.rows.length > 0) {
+
+					var num = numFila;
+
+					var nombre = oCells[1].textContent;
+
+					//mostrar el modal para editar la actividad
+
+				}
+			}
+
+		}
+	}
+
+	function eliminarActividad(numFila) {
+		swal(
+				{
+					title : "¿Está seguro de eliminar la actividad?",
+					text : "Esta acción no podrá ser recuperada",
+					type : "warning",
+					showCancelButton : true,
+					confirmButtonClass : "btn-danger",
+					cancelButtonText : "Cancelar",
+					confirmButtonText : "Si, Eliminar",
+					closeOnConfirm : false
+				},
+				function() {
+					var oTable = document.getElementById('tablaActividades');
+
+					//gets rows of table
+					var rowLength = oTable.rows.length;
+
+					var eliminado = false;
+					//loops through rows    
+					for (var i = 1; i < rowLength; i++) {
+						var oCells = oTable.rows.item(i).cells;//devuelve un objeto con la fila completa
+
+						if (numFila == oCells[0].textContent) {
+							if (oTable.rows.length > 0) {
+								console.log("valor de i: " + i);
+								oTable.deleteRow(i);
+								toastr.success("Se ha eliminado la fila N°: "
+										+ numFila + " correctamente!");
+								oTable = document
+										.getElementById('tablaActividades');
+								i = oTable.rows.length;
+								eliminado = true;
+							}
+						}
+
+						if (eliminado == true) {
+							break;
+						}
+
+					}
+					swal.close();
+
+					//Actualizar numero de la tabla
+
+					oTable = document.getElementById('tablaActividades');
+					//gets rows of table
+					rowLength = oTable.rows.length;
+
+					for (var i = 1; i < rowLength; i++) {
+						var oCells = oTable.rows.item(i).cells;//devuelve un objeto con la fila completa
+
+						oCells[0].innerHTML = i;
+						oCells[2].innerHTML = '<a href="#" onclick="editarActividad('
+								+ i
+								+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarActividad('
+								+ i
+								+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>';
+
+					}
+
+				});
+
 	}
 
 	function guardarDatos() {
@@ -215,13 +372,82 @@
 			document.getElementById('errorNombrePlan').style.display = 'none';
 			document.getElementById('nombrePlan').style.border = "";
 		}
-		
+
 		if (fechaCreacion == "") {
 			document.getElementById('errorFechaCreacion').style.display = 'inline';
 			document.getElementById('fechaCreacion').style.border = "1px solid red";
 		} else {
 			document.getElementById('errorFechaCreacion').style.display = 'none';
 			document.getElementById('fechaCreacion').style.border = "";
+		}
+
+		var oTable = document.getElementById('tablaActividades');
+		//gets rows of table
+		var rowLength = oTable.rows.length;
+
+		if (rowLength > 1) {
+			document.getElementById('errorTablaVacia').style.display = 'none';
+		} else {
+			document.getElementById('errorTablaVacia').style.display = 'inline';
+		}
+
+		if (rowLength > 1 && nombrePlan != "" && fechaCreacion != "") {
+
+			var arregloActividades = Array();
+
+			//obtener las actividades de la tabla
+			for (var i = 1; i < rowLength; i++) {
+				var oCells = oTable.rows.item(i).cells;//devuelve un objeto con la fila completa
+				arregloActividades.push(oCells[1].innerText);
+			}
+
+			console.log(arregloActividades);
+
+			$
+					.ajax({
+						type : 'POST',
+						url : "agregarPlanYActividades",
+						dataType : 'json',
+						data : {
+							nombrePlan : nombrePlan,
+							fecha : fechaCreacion,
+							actividades : arregloActividades
+						},
+						success : function(data) {
+							console.log(data);
+							if (data == true) {
+								toastr
+										.success("El plan ha sido agregado correctamente");
+								$('#nombrePlan').val("");
+								$('#fechaCreacion').val("");
+
+								//Vaciar tabla
+								//Vaciar tabla materiales
+								var ot = document
+										.getElementById('tablaActividades');
+								var tam = ot.rows.length;
+								//loops through rows  
+								var w = 0;
+								for (w = 1; w < tam; w++) {
+									var ot2 = document
+											.getElementById('tablaActividades');
+									if (ot2.rows.length > 0) {
+										ot2.deleteRow(1);
+
+									}
+								}
+
+							} else {
+								toastr
+										.error("Se ha producido un error al guardar el plan");
+							}
+
+						},
+						error : function(jqXHR, errorThrown) {
+							alert("Error al guardar el plan");
+						}
+					});
+
 		}
 	}
 </script>
