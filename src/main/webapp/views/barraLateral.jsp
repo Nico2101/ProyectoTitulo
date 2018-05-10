@@ -19,8 +19,8 @@
 		<ul class="treeview-menu">
 
 
-			<li><a href="#"> <i class="fa fa-circle-o"></i> <span><c:out
-							value="Crear Plan"></c:out></span>
+			<li><a href="agregarPlan"> <i class="fa fa-circle-o"></i> <span><c:out
+							value="Agregar Plan"></c:out></span>
 
 			</a></li>
 
