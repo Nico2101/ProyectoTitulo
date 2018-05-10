@@ -90,6 +90,8 @@ public class PredioController {
 		}
 
 	}
+	
+	
 
 	@RequestMapping(value = "obtenerListaPredios")
 	public @ResponseBody List<Predio> obtenerListaPredios() {
@@ -101,6 +103,7 @@ public class PredioController {
 
 	@RequestMapping(value = "eliminarPredio")
 	public @ResponseBody boolean eliminarPredio(@RequestParam int idPredio) {
+		
 
 		Predio p = PredioService.findByIdPredio(idPredio);
 		if (p != null) {
@@ -112,7 +115,32 @@ public class PredioController {
 
 		return false;
 	}
-
+	
+	
+	//Permite eliminar los predios asociados a un sector
+	@RequestMapping(value = "eliminarPrediosDeUnSector")
+	public @ResponseBody boolean eliminarPrediosDeUnSector( @RequestParam int idSector) {
+		
+		List<Predio> lista1 = PredioService.listarTodosLosPredios(false);
+		Sector s = sectorService.findByIdSector(idSector);
+		
+		if (s != null) {
+			for(int i =0; i < lista1.size(); i++ ) {
+				Predio p = PredioService.findByIdPredio(lista1.get(i).getIdPredio());
+				if(lista1.get(i).getSector().equals(s)) {
+					p.setPredioEliminado(true);
+					PredioService.eliminarPredio(p);
+					
+					
+				}
+					
+				}
+		}
+		return true;
+		}
+		
+	
+	
 	@RequestMapping(value = "obtenerPredioAEditar")
 	public @ResponseBody Predio obtenerPredioAEditar(@RequestParam int idPredio) {
 

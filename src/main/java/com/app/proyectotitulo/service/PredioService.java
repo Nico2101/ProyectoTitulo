@@ -20,4 +20,6 @@ public interface PredioService {
 
 	// Editar Predio
 	Predio editarPredio(Predio p);
+	
+
 }

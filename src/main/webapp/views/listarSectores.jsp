@@ -88,7 +88,7 @@
 			</div>
 
 
-			</section>
+
 
 			<!-- Modal -->
 
@@ -203,17 +203,18 @@
 				</div>
 
 				<!-- Main content -->
-
-			</div>
-
-			<!-- /.content-wrapper -->
-
-			<footer align="center" class="main-footer"
-				style="background-color:#ecf0f5;"> <%@ include
-				file="pieDePagina.jsp"%> </footer>
-			<div class="control-sidebar-bg"></div>
-
+			</section>
 		</div>
+
+
+		<!-- /.content-wrapper -->
+
+		<footer align="center" class="main-footer"
+			style="background-color:#ecf0f5;"> <%@ include
+			file="pieDePagina.jsp"%> </footer>
+		<div class="control-sidebar-bg"></div>
+
+
 	</div>
 	<%@ include file="scripts.jsp"%>
 </body>
@@ -340,6 +341,17 @@
 							$('#nombreSectorEditar').val(data.nombre);
 							$('#superficieSectorEditar').val(data.superficie);
 							
+							
+							
+							document.getElementById('errorNombreEditar').style.display = 'none';
+							document.getElementById('nombreSectorEditar').style.border = "";
+
+							document.getElementById('errorSuperficieEditar').style.display = 'none';
+							document.getElementById('superficieSectorEditar').style.border = "";
+							
+							document.getElementById('errorSuperficieNegativaEditar').style.display = 'none';
+							document.getElementById('superficieSectorEditar').style.border = "";
+							
 							//Cargar el id del sector en el input oculto
 							$('#idSectorEditar').val(idSector);
 	
@@ -385,50 +397,88 @@
 							if(data==true){
 								swal.close();
 								toastr.success("Sector eliminado correctamente");
+								
+								 
+								//elimina los predios asociados a un sector
+								$.ajax({
+								type : 'POST',
+								url : "eliminarPrediosDeUnSector",
+								dataType : 'json',
+								data : {
+								idSector:idSector
+							 },
+							  success : function(data) {
+							  if(data==true){
+								swal.close();
+								
 
 								//Actualizar el data table
-								 $.ajax({
-										type : 'POST',
-										url : "obtenerListaSectores",
-										dataType : 'json',
-										success : function(data) {
-											
-											if(!$.isEmptyObject(data)){
-												//vaciar datatable
-												var oTable = $('#listaSectores').dataTable();
-												oTable.fnClearTable();
-												
-												//Llenar data table
-												for(var i=0;i<data.length;i++){
-													$('#listaSectores').dataTable().fnAddData(
+								$.ajax({
+											type : 'POST',
+											url : "obtenerListaSectores",
+											dataType : 'json',
+											success : function(data) {
 
-															[i + 1, data[i].nombre, data[i].superficie, '<a href="#" onclick="editarSector('+data[i].idSector+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarSector('+data[i].idSector+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+												if (!$.isEmptyObject(data)) {
+													//vaciar datatable
+													var oTable = $(
+															'#listaSectores')
+															.dataTable();
+													oTable
+															.fnClearTable();
 
-													);
+													//Llenar data table
+													for (var i = 0; i < data.length; i++) {
+														$(
+																'#listaSectores')
+																.dataTable()
+																.fnAddData(
+
+																		[i + 1,
+																				data[i].nombre,
+																				data[i].superficie,
+																				'<a href="#" onclick="editarSector('
+																						+ data[i].idSector
+																						+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarSector('
+																						+ data[i].idSector
+																						+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+
+																);
+													}
 												}
+
+											},
+											error : function(jqXHR,
+													errorThrown) {
+												toastr
+														.error("Error al obtener los sectores");
 											}
-											
+										}); 
+							            //
 
-										},
-										error : function(jqXHR, errorThrown) {
-											toastr.error("Error al obtener los sectores");
-										}
-									});
-							}else{
+							           } 
+							          	
+                                  },
+						         error : function(jqXHR, errorThrown) {
+							       
+						       }
+				             });
+							} 
+							else {
 								toastr.error("Error al obtener los sectores");
-							}
-
-						},
+							
+						}	
+                       },
 						error : function(jqXHR, errorThrown) {
-							toastr.error("Error al eliminar el sector");
-						}
-					});
-				  
+							toastr.error("Error al eliminar sector");
+					}
 				});
+			})
 		}
-		
- }
+			
+        }
  
+
  function guardarDatosSectorEditar(){
 		//Obtener los datos
 		var nombreSector = $('#nombreSectorEditar').val();

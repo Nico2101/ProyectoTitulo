@@ -70,7 +70,7 @@ public class SectorController {
 	}
 
 	@RequestMapping(value = "obtenerListaSectores")
-	public @ResponseBody List<Sector> obtenerListaSectores() {
+	public @ResponseBody List<Sector> obtenerListaSectores(){
 
 		List<Sector> lista = sectorService.listarSectores(false);
 
