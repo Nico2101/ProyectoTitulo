@@ -1,6 +1,7 @@
 package com.app.proyectotitulo.controller;
 
 import java.sql.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -64,20 +65,47 @@ public class PlanEjecucionController {
 			// Guardar plan
 			Plan_Ejecucion plan = planEjecucionService.saveAndFlush(p);
 
-			// Agregar actividades
-			for (int i = 0; i < actividades.length; i++) {
-				Actividad a = new Actividad();
-				a.setNombre(actividades[i]);
-				a.setActividadEliminada(false);
-				a.setPlanEjecucion(plan);
+			if (plan != null) {
+				// Agregar actividades
+				for (int i = 0; i < actividades.length; i++) {
+					Actividad a = new Actividad();
+					a.setNombre(actividades[i]);
+					a.setActividadEliminada(false);
+					a.setPlanEjecucion(plan);
 
-				// Guardar
-				actividadService.save(a);
+					// Guardar
+					actividadService.save(a);
+				}
+
+				return true;
 			}
 
-			return true;
 		}
 
 		return false;
+	}
+
+	@RequestMapping(value = "listarPlanes")
+	public ModelAndView listarPlanes(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
+
+		sesion = request.getSession(true);
+		Empleado e = (Empleado) sesion.getAttribute("empleado");
+
+		if (e != null) {
+
+			List<Plan_Ejecucion> lista = planEjecucionService.listaPlanes(false);
+
+			if (!lista.isEmpty()) {
+				vista.setViewName("listarPlanes");
+				vista.addObject("listaPlanes", lista);
+			}
+
+		} else {
+			vista.setViewName("login");
+			vista.addObject("empleado", new Empleado());
+			vista.addObject("sesionExpirada", "Su sesión ha expirado");
+
+		}
+		return vista;
 	}
 }
