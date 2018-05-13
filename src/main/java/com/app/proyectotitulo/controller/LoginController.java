@@ -41,7 +41,8 @@ public class LoginController {
 			}
 
 			if (validarRut(empleado.getRut()) && empleado.getClave().length() == 8) {
-				Empleado e = empleadoService.buscarEmpleado(EliminarCaracteres(empleado.getRut()), empleado.getClave());
+				Empleado e = empleadoService.buscarEmpleado(empleado.getRut(), empleado.getClave());
+
 				if (e != null) {
 
 					// Guardar los datos del usuario en sesion
@@ -61,12 +62,6 @@ public class LoginController {
 		}
 
 		return vista;
-	}
-
-	public String EliminarCaracteres(String rut) {
-		rut = rut.replace(".", "");
-		rut = rut.replace("-", "");
-		return rut;
 	}
 
 	public static boolean validarRut(String rut) {
