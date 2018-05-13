@@ -32,7 +32,7 @@ public class Empleado implements Serializable {
 	private String direccion;
 
 	@Column(name = "empleado_eliminado")
-	private byte empleadoEliminado;
+	private boolean empleadoEliminado;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_nac")
@@ -90,11 +90,11 @@ public class Empleado implements Serializable {
 		this.direccion = direccion;
 	}
 
-	public byte getEmpleadoEliminado() {
+	public boolean getEmpleadoEliminado() {
 		return this.empleadoEliminado;
 	}
 
-	public void setEmpleadoEliminado(byte empleadoEliminado) {
+	public void setEmpleadoEliminado(boolean empleadoEliminado) {
 		this.empleadoEliminado = empleadoEliminado;
 	}
 

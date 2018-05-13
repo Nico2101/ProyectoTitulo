@@ -531,7 +531,7 @@
 		}
 
 		//Validacion para el sector donde se ubica el predio
-		if (idSector ==-1) {
+		if (idSector == -1) {
 			document.getElementById('errorSector').style.display = 'inline';
 			document.getElementById('sectorSeleccionado').style.border = "1px solid red";
 		} else {
@@ -540,7 +540,7 @@
 		}
 
 		//Validacion para la superficie del predio a agregar
-		if (superficie =="") {
+		if (superficie == "") {
 			document.getElementById('errorSuperficieNoPuedeSerCero').style.display = 'none';
 			document.getElementById('errorSuperficie').style.display = 'inline';
 			document.getElementById('superficiePredio').style.border = "1px solid red";
@@ -741,22 +741,29 @@
 							$("#superficieDisponible").val(totalSECTOR-totalPREDIOS);
 							
 						
-						
+						if(($('#sectorEditar').val())==-1){
+						   document.getElementById('errorSectorEditar').style.display = 'inline';
+						   document.getElementById('sectorEditar').style.border = "1px solid red";
+								
+						} else{
+							document.getElementById('errorSectorEditar').style.display = 'none';
+							document.getElementById('sectorEditar').style.border = "";
+								}
 
 						document.getElementById('errorNombreEditar').style.display = 'none';
 						document.getElementById('nombrePredioEditar').style.border = "";
-
-						document.getElementById('errorSectorEditar').style.display = 'none';
-						document.getElementById('sectorEditar').style.border = "";
-
+						
+						
 						document.getElementById('errorSuperficieNegativaEditar').style.display = 'none';
 						document.getElementById('superficieEditar').style.border = "";
 						
 						document.getElementById('errorSuperficieEditar').style.display = 'none';
 						document.getElementById('superficieEditar').style.border = "";
 						
+						
 						document.getElementById('errorSubTotalEditar').style.display = 'none';
 						document.getElementById('superficieEditar').style.border = "";
+						
 						
 						document.getElementById('errorSuperficieNoPuedeSerCeroEditar').style.display = 'none';
 						document.getElementById('superficieEditar').style.border = "";
@@ -907,7 +914,7 @@
 		}
 
 		//Validacion para el sector donde se ubica el predio
-		if (idSector == -1) {
+		if (idSector== -1) {
 			document.getElementById('errorSectorEditar').style.display = 'inline';
 			document.getElementById('sectorEditar').style.border = "1px solid red";
 		} else {
@@ -946,7 +953,7 @@
 			document.getElementById('superficieEditar').style.border = "";
 		}
 		
-			
+	
 		
 		// cuando la superficie ingresada es superior a la disponible
 		if(superficieEditar>(superficieDisponible)){
@@ -958,7 +965,10 @@
 		}
 		
 		
-		
+		if(superficieDisponible==0 )	{
+			document.getElementById('errorSubTotalEditar').style.display = 'none';
+			document.getElementById('superficieEditar').style.border = "";
+		}
 		
 	
 		
