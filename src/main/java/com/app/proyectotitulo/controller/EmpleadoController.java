@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -156,6 +157,37 @@ public class EmpleadoController {
 		return false;
 
 	}
+	
+	@RequestMapping(value = "validarRut")
+	public @ResponseBody boolean  validarRut(@RequestParam String rut) {
+
+		
+		try {
+			rut = rut.toUpperCase();
+			rut = rut.replace(".", "");
+			rut = rut.replace("-", "");
+			int rutAux = Integer.parseInt(rut.substring(0, rut.length() - 1));
+
+			char dv = rut.charAt(rut.length() - 1);
+
+			int m = 0, s = 1;
+			for (; rutAux != 0; rutAux /= 10) {
+				s = (s + rutAux % 10 * (9 - m++ % 6)) % 11;
+			}
+			if (dv == (char) (s != 0 ? s + 47 : 75)) {
+				
+				
+				return true;
+			}
+
+		} catch (java.lang.NumberFormatException e) {
+		} catch (Exception e) {
+		}
+		return false;
+		
+	}
+	}
+	
 
 
-}
+
