@@ -9,6 +9,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 
+<style>
+.error {
+	color: #FF0000;
+}
+</style>
+
 </head>
 <body class="skin-blue sidebar-mini">
 	<div class="wrapper">
@@ -47,7 +53,7 @@
 												<th width="25px">N°</th>
 												<th>Nombre Plan</th>
 												<th>Fecha Creación</th>
-												<th width="150px"></th>
+												<th width="90px"></th>
 
 
 											</tr>
@@ -144,6 +150,51 @@
 				</div>
 			</div>
 
+
+			<!-- Modal Editar Plan -->
+			<div class="modal fade" id="modalEditarPlan" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<h4 class="modal-title" id="myModalLabel">Editar Plan</h4>
+						</div>
+						<div class="modal-body">
+
+
+							<div id="form-editar" class="form-group">
+
+
+								<label class="col-sm-4 control-label">Nombre Plan</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" id="nombrePlanEditar">
+									<span id="errorNombrePlanEditar" class="error"
+										style="display: none">Ingrese el nombre del plan</span>
+								</div>
+								<br> <br> <label class="col-sm-4 control-label">Fecha
+									Creación</label>
+								<div class="col-sm-6">
+									<input type="date" class="form-control"
+										id="fechaCreacionEditar"> <span
+										id="errorFechaCreacionEditar" class="error"
+										style="display: none">Ingrese la fecha de creación del
+										plan</span>
+								</div>
+
+							</div>
+
+						</div>
+						<br> <br>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger pull-left"
+								data-dismiss="modal">Cerrar</button>
+							<button type="button" class="btn btn-primary pull-right"
+								onclick="actualizarPlan();">Actualizar</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
 		</div>
 
@@ -275,6 +326,132 @@ function verPlan(idPlan){
 		});
 	}
 }
+
+
+function editarPlan(idPlan){
+	
+	document.getElementById('errorNombrePlanEditar').style.display = 'none';
+	document.getElementById('nombrePlanEditar').style.border = "";
+	
+	document.getElementById('errorFechaCreacionEditar').style.display = 'none';
+	document.getElementById('fechaCreacionEditar').style.border = "";
+	
+	if(idPlan>0){
+		//Obtener los datos del plan
+		$.ajax({
+			type : 'POST',
+			url : "obtenerDatosPlan",
+			dataType : 'json',
+			data:{
+				idPlan:idPlan
+			},
+			success : function(data) {
+				console.log(data);
+				if(!$.isEmptyObject(data)){
+					
+					//Cargar los datos en el modal
+					$('#nombrePlanEditar').val(data.nombre);
+				
+					$('#fechaCreacionEditar').val(data.fechaCreacion);
+					
+					localStorage.setItem("idPlan", idPlan);
+					
+					//Abrir modal
+					$('#modalEditarPlan').modal('show');
+					
+					
+				}
+			},
+			error : function(jqXHR, errorThrown) {
+				alert("Error al obtener los datos del plan seleccionado");
+			}
+		});
+	}
+}
+
+function actualizarPlan(){
+	var nombre=$('#nombrePlanEditar').val();
+	var fecha=$('#fechaCreacionEditar').val();
+	
+	if(nombre==""){
+		document.getElementById('errorNombrePlanEditar').style.display = 'inline';
+		document.getElementById('nombrePlanEditar').style.border = "1px solid red";
+	}else{
+		document.getElementById('errorNombrePlanEditar').style.display = 'none';
+		document.getElementById('nombrePlanEditar').style.border = "";
+	}
+	
+	if(fecha==""){
+		document.getElementById('errorFechaCreacionEditar').style.display = 'inline';
+		document.getElementById('fechaCreacionEditar').style.border = "1px solid red";
+	}else{
+		document.getElementById('errorFechaCreacionEditar').style.display = 'none';
+		document.getElementById('fechaCreacionEditar').style.border = "";
+	}
+	
+	if(nombre!="" && fecha!=""){
+		$.ajax({
+			type : 'POST',
+			url : "actualizarDatosPlan",
+			dataType : 'json',
+			data:{
+				idPlan: localStorage.getItem("idPlan"),
+				nombre:nombre,
+				fecha:fecha
+			},
+			success : function(data) {
+				console.log(data);
+				if(data==true){
+					
+					//Actualizar Tabla
+					$.ajax({
+						type : 'POST',
+						url : "obtenerListaPlanes",
+						dataType : 'json',
+						success : function(data) {
+							console.log(data);
+							if(!$.isEmptyObject(data)){
+								//vaciar datatable
+								var oTable = $('#listaPlanes').dataTable();
+								oTable.fnClearTable();
+								
+								//Llenar data table
+								for(var i=0;i<data.length;i++){
+									
+									//Formatear fechas
+									var fecha = moment(data[i].fechaCreacion,'YYYY/MM/DD');
+									fecha = fecha.format('DD-MM-YYYY');
+																	
+										$('#listaPlanes').dataTable().fnAddData(
+
+												[i + 1, data[i].nombre, fecha, '<a href="#" title="Ver" onclick="verPlan('+data[i].idPlanEjecucion+');"><i class="fa fa-eye fa-lg" style="color: blue"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="#" title="Editar" onclick="editarPlan('+data[i].idPlanEjecucion+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Eliminar" onclick="eliminarPlan('+data[i].idPlanEjecucion+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>'  ]
+
+										);
+									
+								}
+								
+								$('#modalEditarPlan').modal('hide');
+								
+							}
+						},
+						error : function(jqXHR, errorThrown) {
+							alert("Error al obtener los productos");
+						}
+					});
+					
+					
+					toastr.success("Plan editado correctamente");
+				}else{
+					toastr.error("Error al editar el plan");
+				}
+			},
+			error : function(jqXHR, errorThrown) {
+				alert("Error al obtener los productos");
+			}
+		});
+	}
+}
+
 
 </script>
 

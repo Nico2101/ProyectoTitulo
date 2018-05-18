@@ -77,6 +77,7 @@ public class TemporadaController {
 			// Buscar temporada
 			Temporada t = temporadaService.buscarTemporada(idTemporada);
 			if (t != null) {
+				System.out.println(t.getFechaInicio());
 				return t;
 			}
 		}

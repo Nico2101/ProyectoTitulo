@@ -161,4 +161,38 @@ public class PlanEjecucionController {
 			return false;
 		}
 	}
+
+	@RequestMapping(value = "obtenerDatosPlan")
+	public @ResponseBody Plan_Ejecucion obtenerDatosPlan(@RequestParam int idPlan) {
+
+		// Buscar el plan
+		Plan_Ejecucion p = planEjecucionService.buscarPlan(idPlan);
+		if (p != null) {
+			System.out.println(p.getFechaCreacion());
+			return p;
+		} else {
+			return new Plan_Ejecucion();
+		}
+
+	}
+
+	@RequestMapping(value = "actualizarDatosPlan")
+	public @ResponseBody boolean actualizarDatosPlan(@RequestParam int idPlan, @RequestParam String nombre,
+			@RequestParam Date fecha) {
+
+		// Buscar el plan
+		Plan_Ejecucion p = planEjecucionService.buscarPlan(idPlan);
+		if (p != null) {
+			p.setFechaCreacion(fecha);
+			p.setNombre(nombre);
+
+			planEjecucionService.actualizarPlan(p);
+
+			return true;
+
+		}
+		return false;
+
+	}
+
 }

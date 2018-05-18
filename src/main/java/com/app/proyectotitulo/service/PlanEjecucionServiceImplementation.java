@@ -42,4 +42,10 @@ public class PlanEjecucionServiceImplementation implements PlanEjecucionService 
 		planEjecucionRepo.save(p);
 	}
 
+	@Override
+	public void actualizarPlan(Plan_Ejecucion p) {
+		// TODO Auto-generated method stub
+		planEjecucionRepo.save(p);
+	}
+
 }

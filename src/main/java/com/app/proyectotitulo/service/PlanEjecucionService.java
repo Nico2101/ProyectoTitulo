@@ -14,4 +14,6 @@ public interface PlanEjecucionService {
 
 	public void eliminarPlan(Plan_Ejecucion p);
 
+	public void actualizarPlan(Plan_Ejecucion p);
+
 }
