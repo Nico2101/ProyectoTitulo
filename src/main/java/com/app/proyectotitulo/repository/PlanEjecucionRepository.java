@@ -12,4 +12,6 @@ public interface PlanEjecucionRepository extends JpaRepository<Plan_Ejecucion, I
 
 	List<Plan_Ejecucion> findByPlanEliminado(boolean planEliminado);
 
+	Plan_Ejecucion findByIdPlanEjecucion(int idPlan);
+
 }

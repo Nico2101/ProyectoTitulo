@@ -30,4 +30,16 @@ public class PlanEjecucionServiceImplementation implements PlanEjecucionService 
 		return planEjecucionRepo.findByPlanEliminado(planEliminado);
 	}
 
+	@Override
+	public Plan_Ejecucion buscarPlan(int idPlan) {
+		// TODO Auto-generated method stub
+		return planEjecucionRepo.findByIdPlanEjecucion(idPlan);
+	}
+
+	@Override
+	public void eliminarPlan(Plan_Ejecucion p) {
+		// TODO Auto-generated method stub
+		planEjecucionRepo.save(p);
+	}
+
 }
