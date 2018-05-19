@@ -122,13 +122,14 @@
 
 									<div id="form-editar" class="form-group">
 
-										<label class="col-sm-4 control-label">Nombre</label>
+										<label class="col-sm-4 control-label">* Nombre</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="nombreInsumo">
 											<span id="errorNombre" class="error" style="display: none">Ingrese
 												el nombre del insumo</span>
 										</div>
-										<br> <br> <label class="col-sm-4 control-label">Tipo</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Tipo</label>
 										<div class="col-sm-6">
 											<select class="form-control" id="tipoInsumo">
 												<option value="-1">Seleccione Tipo</option>
@@ -142,8 +143,8 @@
 												el tipo de insumo</span>
 										</div>
 
-										<br> <br> <label class="col-sm-4 control-label">Unidad
-											de Medida</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Unidad de Medida</label>
 
 										<div class="col-sm-6">
 											<select class="form-control" id="umInsumo">
@@ -155,11 +156,18 @@
 											</select> <span id="errorUM" class="error" style="display: none">Seleccione
 												la unidad de medida</span>
 										</div>
-										<br> <br> <label class="col-sm-4 control-label">Marca
-											(Opcional)</label>
+										<br> <br> <label class="col-sm-4 control-label">&nbsp;&nbsp;&nbsp;Marca</label>
 
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="marcaInsumo">
+										</div>
+
+										<br> <br> <br> <label
+											class="col-sm-4 control-label"></label>
+										<div class="col-sm-6">
+											<label class="pull-right"
+												style="font-weight: normal; color: red">* Campos
+												obligatorios</label>
 										</div>
 									</div>
 
@@ -204,14 +212,15 @@
 											<input id="idInsumoEditar" />
 										</div>
 
-										<label class="col-sm-4 control-label">Nombre</label>
+										<label class="col-sm-4 control-label">* Nombre</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
 												id="nombreInsumoEditar"> <span
 												id="errorNombreEditar" class="error" style="display: none">Ingrese
 												el nombre del insumo</span>
 										</div>
-										<br> <br> <label class="col-sm-4 control-label">Tipo</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Tipo</label>
 										<div class="col-sm-6">
 											<select class="form-control" id="tipoInsumoEditar">
 
@@ -220,8 +229,8 @@
 												style="display: none">Seleccione el tipo de insumo</span>
 										</div>
 
-										<br> <br> <label class="col-sm-4 control-label">Unidad
-											de Medida</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Unidad de Medida</label>
 
 										<div class="col-sm-6">
 											<select class="form-control" id="umInsumoEditar">
@@ -229,12 +238,19 @@
 											</select> <span id="errorUMEditar" class="error" style="display: none">Seleccione
 												la unidad de medida</span>
 										</div>
-										<br> <br> <label class="col-sm-4 control-label">Marca
-											(Opcional)</label>
+										<br> <br> <label class="col-sm-4 control-label">&nbsp;&nbsp;&nbsp;Marca</label>
 
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
 												id="marcaInsumoEditar">
+										</div>
+
+										<br> <br> <br> <label
+											class="col-sm-4 control-label"></label>
+										<div class="col-sm-6">
+											<label class="pull-right"
+												style="font-weight: normal; color: red">* Campos
+												obligatorios</label>
 										</div>
 									</div>
 

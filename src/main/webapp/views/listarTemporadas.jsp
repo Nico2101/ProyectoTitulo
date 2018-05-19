@@ -84,7 +84,7 @@
 													</c:if>
 
 													<c:if test="${listaTemporadas.estado!=true}">
-														<td><c:out value="Temporada Inactiva"></c:out></td>
+														<td><c:out value="Temporada Finalizada"></c:out></td>
 													</c:if>
 
 													<c:if test="${listaTemporadas.estado==true}">
@@ -146,23 +146,23 @@
 
 									<div id="form-editar" class="form-group">
 
-										<label class="col-sm-4 control-label">Nombre</label>
+										<label class="col-sm-4 control-label">* Nombre</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="nombreTemporada">
 											<span id="errorNombreTemporada" class="error"
 												style="display: none">Ingrese el nombre de la
 												temporada</span>
 										</div>
-										<br> <br> <label class="col-sm-4 control-label">Fecha
-											de inicio</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Fecha de inicio</label>
 										<div class="col-sm-6">
 											<input type="date" class="form-control" id="fechaInicio">
 											<span id="errorFechaInicio" class="error"
 												style="display: none">Indique la fecha de inicio</span>
 										</div>
 
-										<br> <br> <label class="col-sm-4 control-label">Fecha
-											de término</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Fecha de término</label>
 
 										<div class="col-sm-6">
 											<input type="date" class="form-control" id="fechaTermino">
@@ -171,6 +171,14 @@
 												id="errorFechaTerminoMenor" class="error"
 												style="display: none">La fecha de término debe ser
 												mayor a fecha de inicio</span>
+										</div>
+
+										<br> <br> <br> <label
+											class="col-sm-4 control-label"></label>
+										<div class="col-sm-6">
+											<label class="pull-right"
+												style="font-weight: normal; color: red">* Campos
+												obligatorios</label>
 										</div>
 
 									</div>
@@ -216,7 +224,7 @@
 											<input id="idTemporadaEditar" />
 										</div>
 
-										<label class="col-sm-4 control-label">Nombre</label>
+										<label class="col-sm-4 control-label">* Nombre</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
 												id="nombreTemporadaEditar"> <span
@@ -224,8 +232,8 @@
 												style="display: none">Ingrese el nombre de la
 												temporada</span>
 										</div>
-										<br> <br> <label class="col-sm-4 control-label">Fecha
-											de inicio</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Fecha de inicio</label>
 										<div class="col-sm-6">
 											<input type="date" class="form-control"
 												id="fechaInicioEditar"> <span
@@ -233,8 +241,8 @@
 												style="display: none">Indique la fecha de inicio</span>
 										</div>
 
-										<br> <br> <label class="col-sm-4 control-label">Fecha
-											de término</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Fecha de término</label>
 										<div class="col-sm-6">
 											<input type="date" class="form-control"
 												id="fechaTerminoEditar"> <span
@@ -243,6 +251,14 @@
 												id="errorFechaTerminoMenorEditar" class="error"
 												style="display: none">La fecha de término debe ser
 												mayor a fecha de inicio</span>
+										</div>
+
+										<br> <br> <br> <label
+											class="col-sm-4 control-label"></label>
+										<div class="col-sm-6">
+											<label class="pull-right"
+												style="font-weight: normal; color: red">* Campos
+												obligatorios</label>
 										</div>
 									</div>
 
@@ -392,7 +408,7 @@
 							if(data.estado==true){
 								estado="Temporada Activa";
 							}else{
-								estado="Temporada Inactiva";
+								estado="Temporada Finalizada";
 							}
 							
 							//Actualizar tabla
@@ -423,7 +439,7 @@
 											if(data[i].estado==true){
 												estado="Temporada Activa";
 											}else{
-												estado="Temporada Inactiva";
+												estado="Temporada Finalizada";
 											}
 											
 											if(data[i].estado==true){
@@ -558,7 +574,7 @@
 													if(data[i].estado==true){
 														estado="Temporada Activa";
 													}else{
-														estado="Temporada Inactiva";
+														estado="Temporada Finalizada";
 													}
 													
 													if(data[i].estado==true){
@@ -691,7 +707,7 @@
 											if(data[i].estado==true){
 												estado="Temporada Activa";
 											}else{
-												estado="Temporada Inactiva";
+												estado="Temporada Finalizada";
 											}
 											
 											if(data[i].estado==true){
@@ -746,81 +762,95 @@
 	
 	function finalizarTemporada(idTemporada){
 		if(idTemporada>0){
-			$.ajax({
-				type : 'POST',
-				url : "finalizarTemporada",
-				dataType : 'json',
-				data:{
-					idTemporada: idTemporada
+			swal({
+				  title: "¿Está seguro de finalizar la temporada?",
+				  text: "Esta acción no podrá ser recuperada",
+				  type: "warning",
+				  showCancelButton: true,
+				  confirmButtonClass: "btn-danger",
+				  cancelButtonText: "Cancelar",
+				  confirmButtonText: "Si, Finalizar",
+				  closeOnConfirm: false
 				},
-				success : function(data) {
-					console.log(data);
-					if(data==true){
-						//Actualizar el data table
-						 $.ajax({
-								type : 'POST',
-								url : "obtenerListaTemporadas",
-								dataType : 'json',
-								success : function(data) {
-									
-									if(!$.isEmptyObject(data)){
-										//vaciar datatable
-										var oTable = $('#listaTemporadas').dataTable();
-										oTable.fnClearTable();
-										
-										//Llenar data table
-										for(var i=0;i<data.length;i++){
+				function(){
+					swal.close();
+					$.ajax({
+						type : 'POST',
+						url : "finalizarTemporada",
+						dataType : 'json',
+						data:{
+							idTemporada: idTemporada
+						},
+						success : function(data) {
+							console.log(data);
+							if(data==true){
+								//Actualizar el data table
+								 $.ajax({
+										type : 'POST',
+										url : "obtenerListaTemporadas",
+										dataType : 'json',
+										success : function(data) {
 											
-											//Formatear fechas
-											var fechaInicio = moment(data[i].fechaInicio,'YYYY/MM/DD');
-											fechaInicio = fechaInicio.format('DD-MM-YYYY');
-											
-											var fechaTermino = moment(data[i].fechaTermino,'YYYY/MM/DD');
-											fechaTermino = fechaTermino.format('DD-MM-YYYY');
-											
-											var estado;
-											if(data[i].estado==true){
-												estado="Temporada Activa";
-											}else{
-												estado="Temporada Inactiva";
+											if(!$.isEmptyObject(data)){
+												//vaciar datatable
+												var oTable = $('#listaTemporadas').dataTable();
+												oTable.fnClearTable();
+												
+												//Llenar data table
+												for(var i=0;i<data.length;i++){
+													
+													//Formatear fechas
+													var fechaInicio = moment(data[i].fechaInicio,'YYYY/MM/DD');
+													fechaInicio = fechaInicio.format('DD-MM-YYYY');
+													
+													var fechaTermino = moment(data[i].fechaTermino,'YYYY/MM/DD');
+													fechaTermino = fechaTermino.format('DD-MM-YYYY');
+													
+													var estado;
+													if(data[i].estado==true){
+														estado="Temporada Activa";
+													}else{
+														estado="Temporada Finalizada";
+													}
+													
+													if(data[i].estado==true){
+														$('#listaTemporadas').dataTable().fnAddData(
+
+																[i + 1, data[i].nombre, fechaInicio,
+																		fechaTermino, estado, '<a href="#" title="Editar Temporada" onclick="editarTemporada('+data[i].idTemporada+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Eliminar Temporada" onclick="eliminarTemporada('+data[i].idTemporada+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Finalizar Temporada" onclick="finalizarTemporada('+data[i].idTemporada+');"><i class="fa fa-check fa-lg" style="color: green"></i></a>' ]
+
+														);
+													}else{
+														$('#listaTemporadas').dataTable().fnAddData(
+
+																[i + 1, data[i].nombre, fechaInicio,
+																		fechaTermino, estado, '' ]
+
+														);
+													}
+													
+													
+												}
 											}
 											
-											if(data[i].estado==true){
-												$('#listaTemporadas').dataTable().fnAddData(
-
-														[i + 1, data[i].nombre, fechaInicio,
-																fechaTermino, estado, '<a href="#" title="Editar Temporada" onclick="editarTemporada('+data[i].idTemporada+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Eliminar Temporada" onclick="eliminarTemporada('+data[i].idTemporada+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Finalizar Temporada" onclick="finalizarTemporada('+data[i].idTemporada+');"><i class="fa fa-check fa-lg" style="color: green"></i></a>' ]
-
-												);
-											}else{
-												$('#listaTemporadas').dataTable().fnAddData(
-
-														[i + 1, data[i].nombre, fechaInicio,
-																fechaTermino, estado, '' ]
-
-												);
-											}
 											
 											
+
+										},
+										error : function(jqXHR, errorThrown) {
+											toastr.error("Error al obtener las temporadas");
 										}
-									}
-									
-									
-									
-
-								},
-								error : function(jqXHR, errorThrown) {
-									toastr.error("Error al obtener las temporadas");
-								}
-							});
-						
-						toastr.success("La temporada seleccionada ha finalizado");
-					}
-				},
-				error : function(jqXHR, errorThrown) {
-					alert("Error al obtener los productos");
-				}
-			});
+									});
+								
+								toastr.success("La temporada seleccionada ha finalizado");
+							}
+						},
+						error : function(jqXHR, errorThrown) {
+							alert("Error al obtener los productos");
+						}
+					});
+				});
+			
 		}
 	}
 	

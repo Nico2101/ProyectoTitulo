@@ -11,7 +11,7 @@ import com.app.proyectotitulo.domain.Temporada;
 @Repository
 public interface TemporadaRepository extends JpaRepository<Temporada, Integer> {
 
-	List<Temporada> findByTemporadaEliminadaOrderByIdTemporadaDesc(boolean temporadaEliminada);
+	List<Temporada> findByTemporadaEliminadaOrderByEstadoDesc(boolean temporadaEliminada);
 
 	Temporada findByIdTemporada(int idTemporada);
 

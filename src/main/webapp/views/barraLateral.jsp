@@ -40,7 +40,7 @@
 
 
 	<li class="treeview"><a href="#"> <i class="fa fa-info-circle"></i>
-			<span><c:out value="Insumos"></c:out></span> <i
+			<span><c:out value="Gestión de Insumos"></c:out></span> <i
 			class="fa fa-angle-left pull-right"></i>
 
 	</a>
@@ -56,7 +56,7 @@
 
 
 	<li class="treeview"><a href="#"> <i class="fa fa-map-o"></i>
-			<span><c:out value="Sectores y Predios"></c:out></span> <i
+			<span><c:out value=" Gestión Sectores y Predios"></c:out></span> <i
 			class="fa fa-angle-left pull-right"></i>
 
 	</a>
