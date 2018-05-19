@@ -91,11 +91,10 @@ public class LoginController {
 
 	@RequestMapping(value = "logout")
 	public ModelAndView cerrarSesion(ModelAndView vista, HttpSession sesion, HttpServletRequest request) {
-		vista.addObject("empleado", new Empleado());
 		sesion = request.getSession(true);
 		sesion.removeAttribute("empleado");
 		sesion.invalidate();
-		vista.setViewName("login");
+		vista.setViewName("inicioPagina");
 		return vista;
 	}
 

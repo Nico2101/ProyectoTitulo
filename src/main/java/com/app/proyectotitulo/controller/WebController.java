@@ -11,6 +11,12 @@ public class WebController {
 
 	@RequestMapping(value = "/")
 	public ModelAndView inicioAPP(ModelAndView vista) {
+		vista.setViewName("inicioPagina");
+		return vista;
+	}
+
+	@RequestMapping(value = "login")
+	public ModelAndView login(ModelAndView vista) {
 		vista.addObject("empleado", new Empleado());
 		vista.setViewName("login");
 		return vista;
