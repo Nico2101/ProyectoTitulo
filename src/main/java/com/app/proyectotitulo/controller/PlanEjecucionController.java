@@ -1,6 +1,7 @@
 package com.app.proyectotitulo.controller;
 
 import java.sql.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -108,4 +109,90 @@ public class PlanEjecucionController {
 		}
 		return vista;
 	}
+
+	@RequestMapping(value = "obtenerActividadesPlan")
+	public @ResponseBody List<Actividad> obtenerActividadesPlan(@RequestParam int idPlan) {
+
+		if (idPlan > 0) {
+			List<Actividad> listaActividades = actividadService.listaActividadesPlan(idPlan, false);
+			return listaActividades;
+		} else {
+			return new LinkedList<Actividad>();
+		}
+	}
+
+	@RequestMapping(value = "obtenerListaPlanes")
+	public @ResponseBody List<Plan_Ejecucion> obtenerListaPlanes() {
+
+		List<Plan_Ejecucion> lista = planEjecucionService.listaPlanes(false);
+
+		return lista;
+	}
+
+	@RequestMapping(value = "eliminarPlan")
+	public @ResponseBody boolean eliminarPlan(@RequestParam int idPlan) {
+
+		if (idPlan > 0) {
+			// Buscar Plan
+			Plan_Ejecucion p = planEjecucionService.buscarPlan(idPlan);
+			if (p != null) {
+
+				// Eliminar actividades pertenecientes al plan
+				List<Actividad> actividades = p.getActividads();
+
+				for (int i = 0; i < actividades.size(); i++) {
+					Actividad a = actividadService.findByIdActividad(actividades.get(i).getIdActividad());
+
+					if (a != null) {
+						// Eliminar Actividad
+						a.setActividadEliminada(true);
+						actividadService.save(a);
+					}
+				}
+
+				// Eliminar plan
+				p.setPlanEliminado(true);
+				planEjecucionService.eliminarPlan(p);
+
+				return true;
+			}
+			return false;
+		} else {
+			return false;
+		}
+	}
+
+	@RequestMapping(value = "obtenerDatosPlan")
+	public @ResponseBody Plan_Ejecucion obtenerDatosPlan(@RequestParam int idPlan) {
+
+		// Buscar el plan
+		Plan_Ejecucion p = planEjecucionService.buscarPlan(idPlan);
+		if (p != null) {
+			System.out.println(p.getFechaCreacion());
+			return p;
+		} else {
+			return new Plan_Ejecucion();
+		}
+
+	}
+
+	@RequestMapping(value = "actualizarDatosPlan")
+	public @ResponseBody boolean actualizarDatosPlan(@RequestParam int idPlan, @RequestParam String nombre,
+			@RequestParam Date fecha) {
+
+		// Buscar el plan
+		Plan_Ejecucion p = planEjecucionService.buscarPlan(idPlan);
+		if (p != null) {
+			p.setFechaCreacion(fecha);
+			p.setNombre(nombre);
+
+			planEjecucionService.actualizarPlan(p);
+
+			return true;
+
+		}
+		return false;
+
+	}
+
 }

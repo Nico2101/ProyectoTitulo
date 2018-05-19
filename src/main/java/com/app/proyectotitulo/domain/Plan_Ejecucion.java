@@ -23,6 +23,7 @@ public class Plan_Ejecucion implements Serializable {
 	@Column(name = "id_plan_ejecucion")
 	private int idPlanEjecucion;
 
+	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_creacion")
 	private Date fechaCreacion;
 

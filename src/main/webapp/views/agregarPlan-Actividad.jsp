@@ -39,6 +39,9 @@
 						<div class="box-header">
 							<h3 class="box-title">Plan de Ejecución</h3>
 
+							<label class="pull-right" style="font-weight: normal; color: red">*
+								Campos obligatorios</label>
+
 						</div>
 						<!-- /.box-header -->
 						<div class="box-body">
@@ -46,7 +49,7 @@
 								<div class="form-group">
 
 									<div class="col-md-3 col-sm-6 col-xs-12">
-										<label>Nombre del Plan</label><input id="nombrePlan"
+										<label>* Nombre del Plan</label><input id="nombrePlan"
 											name="numeroOC" type="text"
 											class="form-control select2 select2-hidden-accessible" /> <span
 											id="errorNombrePlan" class="error" style="display: none">Ingrese
@@ -54,12 +57,13 @@
 									</div>
 
 									<div class="col-md-3 col-sm-6 col-xs-12">
-										<label>Fecha de Creación</label> <input id="fechaCreacion"
+										<label>* Fecha de Creación</label> <input id="fechaCreacion"
 											type="date"
 											class="form-control select2 select2-hidden-accessible"
 											name="daterange" value="" /> <span id="errorFechaCreacion"
 											class="error" style="display: none">Ingrese la fecha
-											de creación</span>
+											de creación</span> <span id="errorFechaCreacionMayor" class="error"
+											style="display: none">La fecha no puede ser futura</span>
 									</div>
 
 
@@ -133,6 +137,7 @@
 					<!-- /.box -->
 
 
+
 					<!-- /.box -->
 				</div>
 				<!-- /.col -->
@@ -156,12 +161,21 @@
 
 									<div id="form-editar" class="form-group">
 
-										<label class="col-sm-4 control-label">Nombre Actividad</label>
+										<label class="col-sm-4 control-label">* Nombre
+											Actividad</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="nombreActividad">
 											<span id="errorNombreActividad" class="error"
 												style="display: none">Ingrese el nombre de la
 												actividad</span>
+										</div>
+
+										<br> <br> <br> <label
+											class="col-sm-4 control-label"></label>
+										<div class="col-sm-6">
+											<label class="pull-right"
+												style="font-weight: normal; color: red">* Campos
+												obligatorios</label>
 										</div>
 
 									</div>
@@ -181,6 +195,64 @@
 					</div>
 				</div>
 			</div>
+
+
+
+			<!-- Modal Editar Actividad -->
+			<div class="modal fade" id="modalEditarActividad" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<h4 class="modal-title" id="myModalLabel">Agregar Actividad</h4>
+						</div>
+						<div class="modal-body">
+
+
+							<div class="row">
+
+								<div class="box-body">
+
+									<div id="form-editar" class="form-group">
+
+										<label class="col-sm-4 control-label">* Nombre
+											Actividad</label>
+										<div class="col-sm-6">
+											<input type="text" class="form-control"
+												id="nombreActividadEditar"> <span
+												id="errorNombreActividadEditar" class="error"
+												style="display: none">Ingrese el nombre de la
+												actividad</span>
+										</div>
+
+										<br> <br> <br> <label
+											class="col-sm-4 control-label"></label>
+										<div class="col-sm-6">
+											<label class="pull-right"
+												style="font-weight: normal; color: red">* Campos
+												obligatorios</label>
+										</div>
+
+									</div>
+
+
+								</div>
+
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger pull-left"
+									data-dismiss="modal">Cerrar</button>
+								<button id="botonGuardar" type="button" class="btn btn-primary"
+									onclick="agregarActividadEditada();">Actualizar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
 
 			</section>
 
@@ -202,6 +274,8 @@
 	function modalAgregarActividad() {
 		$('#nombreActividad').val("");
 		$('#modalAgregarActividad').modal('show');
+		document.getElementById('errorNombreActividad').style.display = 'none';
+		document.getElementById('nombreActividad').style.border = "";
 		//$('#nombreActividad').focus();
 	}
 
@@ -267,6 +341,37 @@
 		}
 	}
 
+	function agregarActividadEditada() {
+		var numFila = localStorage.getItem("numFila");
+		console.log(numFila);
+
+		var nombreActividad = $('#nombreActividadEditar').val();
+
+		if (nombreActividad == "") {
+			document.getElementById('errorNombreActividadEditar').style.display = 'inline';
+			document.getElementById('nombreActividadEditar').style.border = "1px solid red";
+		} else {
+			document.getElementById('errorNombreActividadEditar').style.display = 'none';
+			document.getElementById('nombreActividadEditar').style.border = "";
+		}
+
+		if (nombreActividad != "" && numFila > 0) {
+			var oTable = document.getElementById('tablaActividades');
+			//gets rows of table
+			var rowLength = oTable.rows.length;
+
+			//loops through rows    
+			for (i = 0; i < rowLength; i++) {
+				var oCells = oTable.rows.item(i).cells;//devuelve un objeto con la fila completa
+				if (numFila == oCells[0].textContent) {
+					oCells[1].innerHTML = nombreActividad;
+				}
+			}
+		}
+		
+		$('#modalEditarActividad').modal('hide');
+	}
+
 	function editarActividad(numFila) {
 		var oTable = document.getElementById('tablaActividades');
 		//gets rows of table
@@ -286,8 +391,13 @@
 
 					var nombre = oCells[1].textContent;
 
-					//mostrar el modal para editar la actividad
+					$('#nombreActividadEditar').val(nombre);
+					document.getElementById('errorNombreActividadEditar').style.display = 'none';
+					document.getElementById('nombreActividadEditar').style.border = "";
 
+					localStorage.setItem("numFila", numFila);
+					//mostrar el modal para editar la actividad
+					$('#modalEditarActividad').modal('show');
 				}
 			}
 
@@ -376,9 +486,25 @@
 		if (fechaCreacion == "") {
 			document.getElementById('errorFechaCreacion').style.display = 'inline';
 			document.getElementById('fechaCreacion').style.border = "1px solid red";
+			document.getElementById('errorFechaCreacionMayor').style.display = 'none';
 		} else {
-			document.getElementById('errorFechaCreacion').style.display = 'none';
-			document.getElementById('fechaCreacion').style.border = "";
+			var fecha = new Date();
+			fecha = moment(fecha, 'YYYY/MM/DD');
+			fecha = fecha.format('DD-MM-YYYY');
+
+			fechaC = moment(fechaCreacion, 'YYYY/MM/DD');
+			fechaC = fechaC.format('DD-MM-YYYY');
+
+			if (fechaC > fecha) {
+				document.getElementById('errorFechaCreacion').style.display = 'none';
+				document.getElementById('errorFechaCreacionMayor').style.display = 'inline';
+				document.getElementById('fechaCreacion').style.border = "1px solid red";
+			} else {
+				document.getElementById('errorFechaCreacion').style.display = 'none';
+				document.getElementById('fechaCreacion').style.border = "";
+				document.getElementById('errorFechaCreacionMayor').style.display = 'none';
+			}
+
 		}
 
 		var oTable = document.getElementById('tablaActividades');
