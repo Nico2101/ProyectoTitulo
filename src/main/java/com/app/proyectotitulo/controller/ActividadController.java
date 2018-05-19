@@ -7,13 +7,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.app.proyectotitulo.domain.Actividad;
+import com.app.proyectotitulo.domain.Plan_Ejecucion;
 import com.app.proyectotitulo.service.ActividadService;
+import com.app.proyectotitulo.service.PlanEjecucionService;
 
 @Controller
 public class ActividadController {
 
 	@Autowired
 	private ActividadService actividadService;
+
+	@Autowired
+	private PlanEjecucionService planEjecucionService;
 
 	@RequestMapping(value = "obtenerDatosActividad")
 	public @ResponseBody Actividad obtenerDatosActividad(@RequestParam int idActividad) {
@@ -53,6 +58,29 @@ public class ActividadController {
 			actividadService.save(a);
 			return true;
 		}
+		return false;
+
+	}
+
+	@RequestMapping(value = "agregarActividad")
+	public @ResponseBody boolean agregarActividad(@RequestParam int idPlan, @RequestParam String nombreActividad) {
+
+		// Agregar actividad
+
+		// Buscar Plan
+		Plan_Ejecucion p = planEjecucionService.buscarPlan(idPlan);
+		if (p != null) {
+			// Agregar actividad
+			Actividad a = new Actividad();
+			a.setNombre(nombreActividad);
+			a.setPlanEjecucion(p);
+
+			// Guardar
+			actividadService.save(a);
+
+			return true;
+		}
+
 		return false;
 
 	}

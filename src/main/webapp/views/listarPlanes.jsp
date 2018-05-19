@@ -258,6 +258,59 @@
 				</div>
 			</div>
 
+			<!-- Modal Agregar Actividad -->
+			<div class="modal fade" id="modalAgregarActividad" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<h4 class="modal-title" id="myModalLabel">Agregar Actividad</h4>
+						</div>
+						<div class="modal-body">
+
+
+							<div class="row">
+
+								<div class="box-body">
+
+									<div id="form-editar" class="form-group">
+
+										<label class="col-sm-4 control-label">* Nombre
+											Actividad</label>
+										<div class="col-sm-6">
+											<input type="text" class="form-control" id="nombreActividad">
+											<span id="errorNombreActividad" class="error"
+												style="display: none">Ingrese el nombre de la
+												actividad</span>
+										</div>
+
+										<br> <br> <br> <label
+											class="col-sm-4 control-label"></label>
+										<div class="col-sm-6">
+											<label class="pull-right"
+												style="font-weight: normal; color: red">* Campos
+												obligatorios</label>
+										</div>
+
+									</div>
+
+
+								</div>
+
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger pull-left"
+									data-dismiss="modal">Cerrar</button>
+								<button id="botonGuardar" type="button" class="btn btn-primary"
+									onclick="agregarActividad();">Agregar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 
 
 		</div>
@@ -727,6 +780,92 @@ function eliminarActividad (idActividad){
 				});
 			  
 			});
+	}
+}
+
+function modalAgregarActividad() {
+	$('#nombreActividad').val("");
+	$('#modalAgregarActividad').modal('show');
+	document.getElementById('errorNombreActividad').style.display = 'none';
+	document.getElementById('nombreActividad').style.border = "";
+	//$('#nombreActividad').focus();
+}
+
+function agregarActividad(){
+	var nombreActividad = $('#nombreActividad').val();
+	
+	if(nombreActividad==""){
+		document.getElementById('errorNombreActividad').style.display = 'inline';
+		document.getElementById('nombreActividad').style.border = "1px solid red";
+	}else{
+		document.getElementById('errorNombreActividad').style.display = 'none';
+		document.getElementById('nombreActividad').style.border = "";
+	}
+	var idPlan=localStorage.getItem("idPlan");
+	
+	if(nombreActividad!="" && idPlan>0){
+		$.ajax({
+			type : 'POST',
+			url : "agregarActividad",
+			dataType : 'json',
+			data:{
+				idPlan: idPlan,
+				nombreActividad: nombreActividad
+			},
+			success : function(data) {
+				console.log(data);
+				if(data==true){
+					toastr.success("Actividad agregada correctamente");
+					$('#modalAgregarActividad').modal('hide');
+					
+					//Actualizar tabla
+					var idPlan=localStorage.getItem("idPlan");
+					if(idPlan>0){
+						$.ajax({
+							type : 'POST',
+							url : "obtenerActividadesPlan",
+							dataType : 'json',
+							data:{
+								idPlan: idPlan
+							},
+							success : function(data) {
+								console.log(data);
+								$('#modalVerPlan').modal('show');
+								if(!$.isEmptyObject(data)){
+									
+									$('#tituloPlan').text("Detalle Plan: "+data[0].planEjecucion.nombre);
+									
+									//vaciar datatable
+									var oTable = $('#listaActividadesPlan').dataTable();
+									oTable.fnClearTable();
+									
+									//Llenar data table
+									for(var i=0;i<data.length;i++){
+										$('#listaActividadesPlan').dataTable().fnAddData(
+
+												[i + 1, data[i].nombre,  '<a href="#" onclick="editarActividad('+data[i].idActividad+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarActividad('+data[i].idActividad+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+
+										);
+									}
+								}
+								
+								//Close modal
+								$('#modalEditarActividad').modal('hide');
+								
+							},
+							error : function(jqXHR, errorThrown) {
+								alert("Error al obtener las actividades del plan");
+							}
+						});
+					}
+				}else{
+					toastr.error("Error al agregar la actividad");
+				}
+			},
+			error : function(jqXHR, errorThrown) {
+				alert("Error al agregar la actividad");
+			}
+		});
 	}
 }
 
