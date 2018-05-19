@@ -113,7 +113,8 @@
 					<div class="modal-content">
 						<div class="modal-header">
 
-							<h4 class="modal-title" id="myModalLabel">Detalle Plan</h4>
+							<h4 class="modal-title" id="tituloPlan"></h4>
+
 						</div>
 						<div class="modal-body">
 
@@ -159,6 +160,7 @@
 						<div class="modal-header">
 
 							<h4 class="modal-title" id="myModalLabel">Editar Plan</h4>
+
 						</div>
 						<div class="modal-body">
 
@@ -166,20 +168,70 @@
 							<div id="form-editar" class="form-group">
 
 
-								<label class="col-sm-4 control-label">Nombre Plan</label>
+								<label class="col-sm-4 control-label">* Nombre Plan</label>
 								<div class="col-sm-6">
 									<input type="text" class="form-control" id="nombrePlanEditar">
 									<span id="errorNombrePlanEditar" class="error"
 										style="display: none">Ingrese el nombre del plan</span>
 								</div>
-								<br> <br> <label class="col-sm-4 control-label">Fecha
-									Creación</label>
+								<br> <br> <label class="col-sm-4 control-label">*
+									Fecha Creación</label>
 								<div class="col-sm-6">
 									<input type="date" class="form-control"
 										id="fechaCreacionEditar"> <span
 										id="errorFechaCreacionEditar" class="error"
 										style="display: none">Ingrese la fecha de creación del
-										plan</span>
+										plan</span> <span id="errorFechaCreacionEditarMayor" class="error"
+										style="display: none">La fecha no puede ser futura</span>
+								</div>
+								<br> <br><br> <label class="col-sm-4 control-label"></label>
+								<div class="col-sm-6">
+									<label class="pull-right" style="font-weight:normal;color:red">* Campos obligatorios</label>
+								</div>
+							</div>
+
+						</div>
+
+						<br> <br>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger pull-left"
+								data-dismiss="modal">Cerrar</button>
+							<button type="button" class="btn btn-primary pull-right"
+								onclick="actualizarPlan();">Actualizar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- Modal Editar Actividad -->
+			<div class="modal fade" id="modalEditarActividad" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<h4 class="modal-title" id="myModalLabel">Editar Actividad</h4>
+
+						</div>
+						<div class="modal-body">
+
+
+							<div id="form-editar" class="form-group">
+
+
+								<label class="col-sm-4 control-label">* Nombre Actividad</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control"
+										id="nombreActividadEditar"> <span
+										id="errorNombrePlanEditar" class="error" style="display: none">Ingrese
+										el nombre de la actividad</span>
+								</div>
+								
+								<br> <br><br> <label class="col-sm-4 control-label"></label>
+								<div class="col-sm-6">
+									<label class="pull-right" style="font-weight:normal;color:red">* Campos obligatorios</label>
 								</div>
 
 							</div>
@@ -190,11 +242,13 @@
 							<button type="button" class="btn btn-danger pull-left"
 								data-dismiss="modal">Cerrar</button>
 							<button type="button" class="btn btn-primary pull-right"
-								onclick="actualizarPlan();">Actualizar</button>
+								onclick="actualizarActividadPlan();">Actualizar</button>
 						</div>
 					</div>
 				</div>
 			</div>
+
+
 
 		</div>
 
@@ -291,6 +345,7 @@ function eliminarPlan(idPlan){
 function verPlan(idPlan){
 	console.log(idPlan);
 	if(idPlan>0){
+		localStorage.setItem("idPlan", idPlan);
 		$.ajax({
 			type : 'POST',
 			url : "obtenerActividadesPlan",
@@ -302,6 +357,9 @@ function verPlan(idPlan){
 				console.log(data);
 				$('#modalVerPlan').modal('show');
 				if(!$.isEmptyObject(data)){
+					
+					$('#tituloPlan').text("Detalle Plan: "+data[0].planEjecucion.nombre);
+					
 					//vaciar datatable
 					var oTable = $('#listaActividadesPlan').dataTable();
 					oTable.fnClearTable();
@@ -380,16 +438,32 @@ function actualizarPlan(){
 		document.getElementById('errorNombrePlanEditar').style.display = 'none';
 		document.getElementById('nombrePlanEditar').style.border = "";
 	}
-	
+	var fechaActual=new Date();
+	var f=moment(fecha,'YYYY/MM/DD');
 	if(fecha==""){
 		document.getElementById('errorFechaCreacionEditar').style.display = 'inline';
 		document.getElementById('fechaCreacionEditar').style.border = "1px solid red";
+		document.getElementById('errorFechaCreacionEditarMayor').style.display = 'none';
 	}else{
-		document.getElementById('errorFechaCreacionEditar').style.display = 'none';
-		document.getElementById('fechaCreacionEditar').style.border = "";
+		
+		fechaActual = moment(fechaActual,'YYYY/MM/DD');
+		fechaActual = fechaActual.format('DD-MM-YYYY');
+		
+		f=f.format('DD-MM-YYYY');
+		
+		if(f>fechaActual){
+			document.getElementById('errorFechaCreacionEditar').style.display = 'none';
+			document.getElementById('errorFechaCreacionEditarMayor').style.display = 'inline';
+			document.getElementById('fechaCreacionEditar').style.border = "1px solid red";
+		}else{
+			document.getElementById('errorFechaCreacionEditar').style.display = 'none';
+			document.getElementById('fechaCreacionEditar').style.border = "";
+			document.getElementById('errorFechaCreacionEditarMayor').style.display = 'none';
+		}
+		
 	}
 	
-	if(nombre!="" && fecha!=""){
+	if(nombre!="" && fecha!="" && f<=fechaActual){
 		$.ajax({
 			type : 'POST',
 			url : "actualizarDatosPlan",
@@ -449,7 +523,33 @@ function actualizarPlan(){
 				alert("Error al obtener los productos");
 			}
 		});
+		
+		localStorage.removeItem("idPlan");
 	}
+}
+
+function editarActividad(idActividad){
+	
+	if(idActividad >0){
+		$.ajax({
+			type : 'POST',
+			url : "obtenerDatosActividad",
+			dataType : 'json',
+			data:{
+				idActividad:idActividad
+			},
+			success : function(data) {
+				console.log(data);
+				if(!$.isEmptyObject(data)){
+					
+				}
+			},
+			error : function(jqXHR, errorThrown) {
+				alert("Error al obtener los productos");
+			}
+		});
+	}
+	
 }
 
 
