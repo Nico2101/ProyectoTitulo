@@ -252,6 +252,12 @@
 												empleado</span>
 										</div>
 
+										<br> <br> <label class="col-sm-4 control-label">Rut</label>
+										<div class="col-sm-6">
+											<input type="text" class="form-control" id="rutEditar"
+												disabled>
+										</div>
+
 										<br> <br> <label class="col-sm-4 control-label">Fecha
 											nacimiento</label>
 										<div class="col-sm-6">
@@ -360,6 +366,9 @@
 		document.getElementById('errorRutEmpleadoInvalido').style.display = 'none';
 		document.getElementById('rutEmpleado').style.border = "";
 
+		document.getElementById('errorFechaNacimientoSuperior').style.display = 'none';
+		document.getElementById('fechaNacimientoEmpleado').style.border = "";
+
 	}
 
 	function guardarDatosEmpleado() {
@@ -418,6 +427,15 @@
 			document.getElementById('errorApellidosEmpleado').style.display = 'none';
 			document.getElementById('apellidosEmpleado').style.border = "";
 		}
+		
+		//valida que la fecha sea inferior
+		if (fechaNacimiento > hoy) {
+			document.getElementById('errorFechaNacimientoSuperior').style.display = 'inline';
+			document.getElementById('fechaNacimientoEmpleado').style.border = "1px solid red";
+		} else {
+			document.getElementById('errorFechaNacimientoSuperior').style.display = 'none';
+			document.getElementById('fechaNacimientoEmpleado').style.border = "";
+		}
 
 		//Validacion par la fecha nacimiento
 		if (fechaNacimientoEmpleado == "") {
@@ -428,13 +446,7 @@
 			document.getElementById('fechaNacimientoEmpleado').style.border = "";
 		}
 
-		if (fechaNacimiento > hoy) {
-			document.getElementById('errorFechaNacimientoSuperior').style.display = 'inline';
-			document.getElementById('fechaNacimientoEmpleado').style.border = "1px solid red";
-		} else {
-			document.getElementById('errorFechaNacimientoSuperior').style.display = 'none';
-			document.getElementById('fechaNacimientoEmpleado').style.border = "";
-		}
+		
 
 		//Validacion para la direccion
 		if (direccionEmpleado == "") {
@@ -585,6 +597,7 @@
 								$('#nombreEmpleadoEditar').val(data.nombre);
 								$('#apellidosEmpleadoEditar').val(
 										data.apellidos);
+								$('#rutEditar').val(data.rut);
 								$('#fechaNacimientoEmpleadoEditar').val(
 										data.fechaNac);
 								$('#direccionEmpleadoEditar').val(
@@ -640,6 +653,11 @@
 								document
 										.getElementById('errorCargoEmpleadoEditar').style.display = 'none';
 								document.getElementById('cargoEmpleadoEditar').style.border = "";
+
+								document
+										.getElementById('errorFechaNacimientoSuperiorEditar').style.display = 'none';
+								document
+										.getElementById('fechaNacimientoEmpleadoEditar').style.border = "";
 
 								//Cargar el rut del empleado en el input oculto
 								$('#rutEmpleadoEditar').val(rut);
