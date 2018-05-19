@@ -114,7 +114,7 @@ public class PlanEjecucionController {
 	public @ResponseBody List<Actividad> obtenerActividadesPlan(@RequestParam int idPlan) {
 
 		if (idPlan > 0) {
-			List<Actividad> listaActividades = actividadService.listaActividadesPlan(idPlan);
+			List<Actividad> listaActividades = actividadService.listaActividadesPlan(idPlan, false);
 			return listaActividades;
 		} else {
 			return new LinkedList<Actividad>();

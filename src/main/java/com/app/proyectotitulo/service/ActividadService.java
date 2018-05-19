@@ -8,7 +8,7 @@ public interface ActividadService {
 
 	public void save(Actividad a);
 
-	List<Actividad> listaActividadesPlan(int idPlan);
+	List<Actividad> listaActividadesPlan(int idPlan, boolean actividadEliminada);
 
 	Actividad findByIdActividad(int idActividad);
 

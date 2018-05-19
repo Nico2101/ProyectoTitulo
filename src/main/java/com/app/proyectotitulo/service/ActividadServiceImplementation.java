@@ -25,9 +25,9 @@ public class ActividadServiceImplementation implements ActividadService {
 	}
 
 	@Override
-	public List<Actividad> listaActividadesPlan(int idPlan) {
+	public List<Actividad> listaActividadesPlan(int idPlan, boolean actividadEliminada) {
 		// TODO Auto-generated method stub
-		return actividadRepo.findByPlanEjecucionIdPlanEjecucion(idPlan);
+		return actividadRepo.findByPlanEjecucionIdPlanEjecucionAndActividadEliminada(idPlan, actividadEliminada);
 	}
 
 	@Override

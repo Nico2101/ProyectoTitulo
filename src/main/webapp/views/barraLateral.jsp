@@ -24,11 +24,6 @@
 
 			</a></li>
 
-			<li><a href="#"> <i class="fa fa-circle-o"></i> <span><c:out
-							value="Agregar actividad a plan"></c:out></span>
-
-			</a></li>
-
 			<li><a href="listarPlanes"> <i class="fa fa-circle-o"></i> <span><c:out
 							value="Ver Planes"></c:out></span>
 
