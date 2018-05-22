@@ -126,14 +126,15 @@
 									<div id="form-editar" class="form-group">
 
 
-										<label class="col-sm-4 control-label">Nombre</label>
+										<label class="col-sm-4 control-label">* Nombre</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="nombreEmpleado">
 											<span id="errorNombreEmpleado" class="error"
 												style="display: none">Ingrese el nombre del empleado</span>
 										</div>
 
-										<br> <br> <label class="col-sm-4 control-label">Apellidos</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Apellidos</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
 												id="apellidosEmpleado"> <span
@@ -143,7 +144,8 @@
 										</div>
 
 
-										<br> <br> <label class="col-sm-4 control-label">Rut</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Rut</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="rutEmpleado">
 											<span id="errorRutEmpleado" class="error"
@@ -153,19 +155,20 @@
 
 										</div>
 
-										<br> <br> <label class="col-sm-4 control-label">Fecha
-											nacimiento</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Fecha nacimiento</label>
 										<div class="col-sm-6">
 											<input type="date" class="form-control"
 												id="fechaNacimientoEmpleado"> <span
 												id="errorFechaNacimientoEmpleado" class="error"
 												style="display: none">Ingrese fecha de nacimiento del
-												empleado</span> <span id="errorFechaNacimientoSuperior"
+												empleado</span> <span id="errorFechaNacimientoSup"
 												class="error" style="display: none">Ingrese una fecha
 												de nacimiento inferior </span>
 										</div>
 
-										<br> <br> <label class="col-sm-4 control-label">Dirección</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Dirección</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
 												id="direccionEmpleado"> <span
@@ -173,14 +176,16 @@
 												style="display: none">Ingrese dirección del empleado</span>
 										</div>
 
-										<br> <br> <label class="col-sm-4 control-label">Telefono</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Telefono</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="telefonoEmpleado">
 											<span id="errorTelefonoEmpleado" class="error"
 												style="display: none">Ingrese telefono del empleado</span>
 										</div>
 
-										<br> <br> <label class="col-sm-4 control-label">Cargo</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Cargo</label>
 
 										<div class="col-sm-6">
 											<select class="form-control" id="cargoEmpleado">
@@ -192,6 +197,12 @@
 												empleado</span>
 
 
+										</div>
+										<br> <br> <label class="col-sm-4 control-label"></label>
+										<div class="col-sm-6">
+											<label class="pull-right"
+												style="font-weight: normal; color: red">* Campos
+												obligatorios</label>
 										</div>
 
 
@@ -235,7 +246,7 @@
 											<input id="rutEmpleadoEditar" />
 										</div>
 
-										<label class="col-sm-4 control-label">Nombre</label>
+										<label class="col-sm-4 control-label">* Nombre</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
 												id="nombreEmpleadoEditar"> <span
@@ -243,7 +254,8 @@
 												style="display: none">Ingrese el nombre del empleado</span>
 										</div>
 
-										<br> <br> <label class="col-sm-4 control-label">Apellidos</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Apellidos</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
 												id="apellidosEmpleadoEditar"> <span
@@ -252,14 +264,15 @@
 												empleado</span>
 										</div>
 
-										<br> <br> <label class="col-sm-4 control-label">Rut</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Rut</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="rutEditar"
 												disabled>
 										</div>
 
-										<br> <br> <label class="col-sm-4 control-label">Fecha
-											nacimiento</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Fecha nacimiento</label>
 										<div class="col-sm-6">
 											<input type="date" class="form-control"
 												id="fechaNacimientoEmpleadoEditar"> <span
@@ -270,7 +283,8 @@
 												de nacimiento inferior </span>
 										</div>
 
-										<br> <br> <label class="col-sm-4 control-label">Dirección</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Dirección</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
 												id="direccionEmpleadoEditar"> <span
@@ -278,7 +292,8 @@
 												style="display: none">Ingrese dirección del empleado</span>
 										</div>
 
-										<br> <br> <label class="col-sm-4 control-label">Telefono</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Telefono</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
 												id="telefonoEmpleadoEditar"> <span
@@ -287,12 +302,20 @@
 										</div>
 
 
-										<br> <br> <label class="col-sm-4 control-label">Cargo</label>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Cargo</label>
 										<div class="col-sm-6">
 											<select class="form-control" id="cargoEmpleadoEditar">
 											</select> <span id="errorCargoEmpleadoEditar" class="error"
 												style="display: none">Debe seleccionar cargo del
 												empleado</span>
+										</div>
+
+										<br> <br> <label class="col-sm-4 control-label"></label>
+										<div class="col-sm-6">
+											<label class="pull-right"
+												style="font-weight: normal; color: red">* Campos
+												obligatorios</label>
 										</div>
 
 
@@ -368,6 +391,9 @@
 
 		document.getElementById('errorFechaNacimientoSuperior').style.display = 'none';
 		document.getElementById('fechaNacimientoEmpleado').style.border = "";
+		
+		
+		
 
 	}
 
@@ -405,6 +431,7 @@
 		if (rutEmpleado == "") {
 			document.getElementById('errorRutEmpleado').style.display = 'inline';
 			document.getElementById('rutEmpleado').style.border = "1px solid red";
+
 		} else {
 			document.getElementById('errorRutEmpleado').style.display = 'none';
 			document.getElementById('rutEmpleado').style.border = "";
@@ -427,13 +454,13 @@
 			document.getElementById('errorApellidosEmpleado').style.display = 'none';
 			document.getElementById('apellidosEmpleado').style.border = "";
 		}
-		
+
 		//valida que la fecha sea inferior
 		if (fechaNacimiento > hoy) {
-			document.getElementById('errorFechaNacimientoSuperior').style.display = 'inline';
+			document.getElementById('errorFechaNacimientoSup').style.display = 'inline';
 			document.getElementById('fechaNacimientoEmpleado').style.border = "1px solid red";
 		} else {
-			document.getElementById('errorFechaNacimientoSuperior').style.display = 'none';
+			document.getElementById('errorFechaNacimientoSup').style.display = 'none';
 			document.getElementById('fechaNacimientoEmpleado').style.border = "";
 		}
 
@@ -445,8 +472,6 @@
 			document.getElementById('errorFechaNacimientoEmpleado').style.display = 'none';
 			document.getElementById('fechaNacimientoEmpleado').style.border = "";
 		}
-
-		
 
 		//Validacion para la direccion
 		if (direccionEmpleado == "") {
@@ -473,25 +498,31 @@
 		} else {
 			document.getElementById('errorCargoEmpleado').style.display = 'none';
 			document.getElementById('cargoEmpleado').style.border = "";
+
 		}
 
-		if (nombreEmpleado != "" && apellidosEmpleado != ""
-				&& rutEmpleado != "" && fechaNacimientoEmpleado != ""
-				&& fechaNacimiento < hoy && direccionEmpleado != ""
-				&& telefonoEmpleado != ""
-				&& cargoEmpleado != "Seleccione cargo") {
+		$
+				.ajax({
+					type : 'POST',
+					url : "validarRut",
+					dataType : 'json',
+					data : {
+						rut : rutEmpleado
+					},
+					success : function(data) {
+						if (data == true) {
+							swal.close();
+							document
+							.getElementById('errorRutEmpleadoInvalido').style.display = 'none';
+					document.getElementById('rutEmpleado').style.border = "";
 
-			$
-					.ajax({
-						type : 'POST',
-						url : "validarRut",
-						dataType : 'json',
-						data : {
-							rut : rutEmpleado
-						},
-						success : function(data) {
-							if (data == true) {
-								swal.close();
+							if (nombreEmpleado != "" && apellidosEmpleado != ""
+									&& rutEmpleado != ""
+									&& fechaNacimientoEmpleado != ""
+									&& fechaNacimiento < hoy
+									&& direccionEmpleado != ""
+									&& telefonoEmpleado != ""
+									&& cargoEmpleado != "Seleccione cargo") {
 
 								$
 										.ajax({
@@ -560,20 +591,32 @@
 														.error("Error al agregar el empleado");
 											}
 										});
+							}
+
+						} else {
+
+							if (rutEmpleado == "") {
+								document
+										.getElementById('errorRutEmpleadoInvalido').style.display = 'none';
+								document.getElementById('rutEmpleado').style.border = "";
+								document.getElementById('errorRutEmpleado').style.display = 'inline';
+								document.getElementById('rutEmpleado').style.border = "1px solid red";
 
 							} else {
+								if (rutEmpleado !=""){
 								document
 										.getElementById('errorRutEmpleadoInvalido').style.display = 'inline';
 								document.getElementById('rutEmpleado').style.border = "1px solid red";
 							}
 
-						},
-						error : function(jqXHR, errorThrown) {
-
+							}
 						}
-					});
 
-		}
+					},
+					error : function(jqXHR, errorThrown) {
+
+					}
+				});
 
 	}
 
