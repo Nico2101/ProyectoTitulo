@@ -10,7 +10,7 @@ import com.app.proyectotitulo.domain.Sector;
 @Repository
 public interface SectorRepository extends JpaRepository<Sector, Integer> {
 	
-	List<Sector> findBySectorEliminado(boolean sectorEliminado);
+	List<Sector> findBySectorEliminadoOrderByNombreAsc(boolean sectorEliminado);
 	
 	Sector findByIdSector(int idSector);
 	

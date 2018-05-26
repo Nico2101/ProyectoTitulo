@@ -20,42 +20,44 @@ public class PredioServiceImplementation implements PredioService {
 	@Override
 	public List<Predio> listarTodosLosPredios(boolean predioEliminado) {
 		// TODO Auto-generated method stub
-		return predioRepo.findByPredioEliminado(predioEliminado);
+		return predioRepo.findByPredioEliminadoOrderByNombreAsc(predioEliminado);
 	}
-	
+
 	@Override
 	public Predio saveAndFlush(Predio p) {
 		// TODO Auto-generated method stub
 		return predioRepo.saveAndFlush(p);
-	
-   
+
 	}
-	
+
 	@Override
-	public Integer  TotalSuperficiePredios(int id_sector) {
+	public Integer TotalSuperficiePredios(int id_sector) {
 		// TODO Auto-generated method stub
-		return predioRepo.superficieTotal( id_sector);
+		return predioRepo.superficieTotal(id_sector);
 	}
-	
+
 	@Override
 	public Predio eliminarPredio(Predio p) {
 		// TODO Auto-generated method stub
 		return predioRepo.save(p);
 	}
-	
+
 	@Override
 	public Predio findByIdPredio(int idPredio) {
 		// TODO Auto-generated method stub
 		return predioRepo.findByIdPredio(idPredio);
 	}
-	
+
 	@Override
 	public Predio editarPredio(Predio p) {
 		// TODO Auto-generated method stub
 		return predioRepo.save(p);
 	}
-	
-	
-	
+
+	@Override
+	public List<Predio> getListaPrediosConPlanesAsignados(int idSector) {
+		// TODO Auto-generated method stub
+		return predioRepo.listaPrediosConPlanesAsignados(idSector);
+	}
 
 }

@@ -32,7 +32,7 @@
 
 		</ul></li>
 
-	<li><a href="#"> <i class="fa fa-edit"></i> <span><c:out
+	<li><a href="registrarActividadRealizada"> <i class="fa fa-edit"></i> <span><c:out
 					value="Registrar Actividad"></c:out></span>
 
 	</a></li>
