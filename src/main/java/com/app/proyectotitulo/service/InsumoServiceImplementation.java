@@ -21,7 +21,7 @@ public class InsumoServiceImplementation implements InsumoService {
 	@Override
 	public List<Insumo> listarTodosLosInsumos(boolean insumoEliminado) {
 		// TODO Auto-generated method stub
-		return insumoRepo.findByInsumoEliminado(insumoEliminado);
+		return insumoRepo.findByInsumoEliminadoOrderByNombreAsc(insumoEliminado);
 	}
 
 	@Override

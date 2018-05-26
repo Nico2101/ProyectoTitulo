@@ -13,11 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.app.proyectotitulo.domain.Actividad_Insumo;
 import com.app.proyectotitulo.domain.Actividad_Realizada;
 import com.app.proyectotitulo.domain.Empleado;
+import com.app.proyectotitulo.domain.Insumo;
 import com.app.proyectotitulo.domain.Predio;
 import com.app.proyectotitulo.domain.Sector;
+import com.app.proyectotitulo.service.ActividadInsumoService;
 import com.app.proyectotitulo.service.ActividadRealizadaService;
+import com.app.proyectotitulo.service.InsumoService;
 import com.app.proyectotitulo.service.PredioService;
 import com.app.proyectotitulo.service.SectorService;
 
@@ -31,7 +35,13 @@ public class ActividadRealizadaController {
 	private SectorService sectorService;
 
 	@Autowired
+	private InsumoService insumoService;
+
+	@Autowired
 	private ActividadRealizadaService actividadRealizadaService;
+
+	@Autowired
+	private ActividadInsumoService actividadInsumoService;
 
 	@RequestMapping(value = "registrarActividadRealizada")
 	public ModelAndView registrarActividadRealizada(ModelAndView vista, HttpServletRequest request,
@@ -72,6 +82,95 @@ public class ActividadRealizadaController {
 		}
 
 		return new LinkedList<Actividad_Realizada>();
+
+	}
+
+	@RequestMapping(value = "guardarDatosInsumoUtilizado")
+	public @ResponseBody boolean guardarDatosInsumoUtilizado(@RequestParam int idActividadRealizada,
+			@RequestParam int idInsumo, @RequestParam int cantidad, @RequestParam int costo) {
+
+		if (idActividadRealizada > 0 && idInsumo > 0 && cantidad > 0 && costo > 0) {
+			// Buscar Insumo
+			Insumo i = insumoService.findByIdInsumo(idInsumo);
+
+			// Buscar Actividad Relizada
+			Actividad_Realizada ar = actividadRealizadaService.buscarActividad(idActividadRealizada);
+
+			if (i != null && ar != null) {
+				// Guardar los datos en la tabla intermedia entre Insumo y Actividad_Realizada
+				Actividad_Insumo ai = new Actividad_Insumo();
+
+				ai.setActividadRealizada(ar);
+				ai.setInsumo(i);
+				ai.setCantidad(cantidad);
+				ai.setCosto(costo);
+
+				// Guardar
+				actividadInsumoService.save(ai);
+				return true;
+
+			} else {
+				return false;
+			}
+		}
+
+		return false;
+
+	}
+
+	@RequestMapping(value = "obtenerInsumosUtilizadosEnLaActividad")
+	public @ResponseBody List<Actividad_Insumo> obtenerInsumosUtilizadosEnLaActividad(@RequestParam int idActividad) {
+
+		if (idActividad > 0) {
+			// Buscar actividad realizada
+			Actividad_Realizada ar = actividadRealizadaService.buscarActividad(idActividad);
+			if (ar != null) {
+				// Obtener lista de insumos utilizados en la actividad
+				List<Actividad_Insumo> listaInsumosUtilizados = actividadInsumoService
+						.listaInsumosActividadRealizada(idActividad);
+
+				return listaInsumosUtilizados;
+			} else {
+				return new LinkedList<Actividad_Insumo>();
+			}
+		} else {
+			return new LinkedList<Actividad_Insumo>();
+		}
+
+	}
+
+	@RequestMapping(value = "eliminarInsumoUtilizadoEnLaActividad")
+	public @ResponseBody boolean eliminarInsumoUtilizadoEnLaActividad(@RequestParam int idActividadInsumo) {
+
+		if (idActividadInsumo > 0) {
+			// Buscar actividad insumo
+			Actividad_Insumo ai = actividadInsumoService.buscarActividadInsumo(idActividadInsumo);
+			if (ai != null) {
+				actividadInsumoService.delete(ai);
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+
+	}
+
+	@RequestMapping(value = "obtenerDatosActividadInsumo")
+	public @ResponseBody Actividad_Insumo obtenerDatosActividadInsumo(@RequestParam int idActividadInsumo) {
+
+		if (idActividadInsumo > 0) {
+			// Buscar
+			Actividad_Insumo ai = actividadInsumoService.buscarActividadInsumo(idActividadInsumo);
+			if (ai != null) {
+				return ai;
+			} else {
+				return new Actividad_Insumo();
+			}
+		} else {
+			return new Actividad_Insumo();
+		}
 
 	}
 

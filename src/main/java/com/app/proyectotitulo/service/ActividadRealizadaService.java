@@ -8,4 +8,6 @@ public interface ActividadRealizadaService {
 
 	List<Actividad_Realizada> listaActividadesAsignadasAPredio(int idPredio);
 
+	Actividad_Realizada buscarActividad(int idActividadRealizada);
+
 }

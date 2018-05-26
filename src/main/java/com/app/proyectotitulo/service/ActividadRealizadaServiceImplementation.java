@@ -24,4 +24,10 @@ public class ActividadRealizadaServiceImplementation implements ActividadRealiza
 		return actividadRealizadaRepo.listaActividadesAsiganadasAlPredio(idPredio);
 	}
 
+	@Override
+	public Actividad_Realizada buscarActividad(int idActividadRealizada) {
+		// TODO Auto-generated method stub
+		return actividadRealizadaRepo.findByIdActividadRealizada(idActividadRealizada);
+	}
+
 }

@@ -10,7 +10,8 @@ import com.app.proyectotitulo.domain.Insumo;
 @Repository
 public interface InsumoRepository extends JpaRepository<Insumo, Integer> {
 
-	List<Insumo> findByInsumoEliminado(boolean insumoEliminado);// FindAll insumos que no están eliminados
+	List<Insumo> findByInsumoEliminadoOrderByNombreAsc(boolean insumoEliminado);// FindAll insumos que no están
+																				// eliminados
 
 	Insumo findByIdInsumo(int idInsumo);
 }
