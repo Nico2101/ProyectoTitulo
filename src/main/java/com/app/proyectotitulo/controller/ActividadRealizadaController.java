@@ -174,4 +174,24 @@ public class ActividadRealizadaController {
 
 	}
 
+	@RequestMapping(value = "actualizarInsumoUtilizadoEnActividad")
+	public @ResponseBody boolean actualizarInsumoUtilizadoEnActividad(@RequestParam int idActividadInsumo,
+			@RequestParam int cantidad, @RequestParam int costo) {
+
+		if (idActividadInsumo > 0 && cantidad > 0 && costo > 0) {
+			// Buscar la actividad insumo
+			Actividad_Insumo ai = actividadInsumoService.buscarActividadInsumo(idActividadInsumo);
+			if (ai != null) {
+				ai.setCantidad(cantidad);
+				ai.setCosto(costo);
+
+				// Guardar
+				actividadInsumoService.save(ai);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }

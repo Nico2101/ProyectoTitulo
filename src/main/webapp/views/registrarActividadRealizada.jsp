@@ -296,6 +296,89 @@
 				</div>
 			</div>
 
+
+			<!-- Modal Editar insumo utilizado -->
+			<div class="modal fade" id="modalEditarInsumo" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<h4 class="modal-title" id="myModalLabel">Editar Insumo
+								Utilizado en la Actividad</h4>
+						</div>
+						<div class="modal-body">
+
+
+							<div class="row">
+
+								<div class="box-body">
+
+									<div id="form-editar" class="form-group">
+
+										<label class="col-sm-4 control-label">Insumo</label>
+										<div class="col-sm-6">
+											<input id="insumoEditar" class="form-control" disabled />
+										</div>
+
+
+										<br> <br> <label class="col-sm-4 control-label">Unidad
+											de Medida</label>
+										<div class="col-sm-6">
+											<input type="text" class="form-control" id="umInsumoEditar"
+												disabled>
+										</div>
+
+
+										<br> <br> <label class="col-sm-4 control-label">*
+											Cantidad</label>
+										<div class="col-sm-6">
+											<input type="text" class="form-control"
+												id="cantidadInsumoEditar"> <span
+												id="errorCantidadInsumoEditar" class="error"
+												style="display: none">Ingrese la cantidad de insumo
+												utilizado</span> <span id="errorCantidadCeroEditar" class="error"
+												style="display: none">La cantidad no puede ser 0</span>
+										</div>
+
+
+										<br> <br> <label class="col-sm-4 control-label">*
+											Costo</label>
+										<div class="col-sm-6">
+											<input type="text" class="form-control"
+												id="costoInsumoEditar"> <span
+												id="errorCostoInsumoEditar" class="error"
+												style="display: none">Ingrese el costo del insumo
+												utilizado</span> <span id="errorCostoCeroEditar" class="error"
+												style="display: none">El costo no puede ser 0</span>
+										</div>
+
+										<br> <br> <br> <label
+											class="col-sm-4 control-label"></label>
+										<div class="col-sm-6">
+											<label class="pull-right"
+												style="font-weight: normal; color: red">* Campos
+												obligatorios</label>
+										</div>
+
+									</div>
+
+
+								</div>
+
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger pull-left"
+									data-dismiss="modal">Cerrar</button>
+								<button id="botonGuardar" type="button" class="btn btn-primary"
+									onclick="guardarInsumoEditado();">Actualizar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			</section>
 
 		</div>
@@ -656,7 +739,8 @@
 
 		}
 
-		if (idInsumo > 0 && cantidad != "" && costo != "") {
+		if (idInsumo > 0 && cantidad != "" && cantidad > 0 && costo != ""
+				&& costo > 0) {
 			//Guardar los datos
 
 			//Obtener el id de la actividad
@@ -839,11 +923,7 @@
 																}
 
 															}
-															//Mostrar modal
-															$(
-																	'#modalVerInsumos')
-																	.modal(
-																			'show');
+
 														},
 														error : function(jqXHR,
 																errorThrown) {
@@ -870,6 +950,7 @@
 	function editarInsumoUtilizado(idActividadInsumo) {
 		if (idActividadInsumo > 0) {
 			//Obtener los datos de la actividadInsumo
+			localStorage.setItem("idActividadInsumo", idActividadInsumo);
 			$.ajax({
 				type : 'POST',
 				url : "obtenerDatosActividadInsumo",
@@ -880,11 +961,147 @@
 				success : function(data) {
 					console.log(data);
 
+					//Mostrar datos
+					$('#insumoEditar').val(data.insumo.nombre);
+					$('#umInsumoEditar').val(data.insumo.unidadMedida);
+					$('#cantidadInsumoEditar').val(data.cantidad);
+					$('#costoInsumoEditar').val(data.costo);
+
+					//Mostrar Modal
+					$('#modalEditarInsumo').modal("show");
+
 				},
 				error : function(jqXHR, errorThrown) {
 					alert("Error al obtener los productos");
 				}
 			});
+		}
+	}
+
+	function guardarInsumoEditado() {
+		//obtener el id actividad insumo
+		var idActividadInsumo = localStorage.getItem("idActividadInsumo");
+
+		var cantidad = $('#cantidadInsumoEditar').val();
+		var costo = $('#costoInsumoEditar').val();
+
+		if (cantidad == "") {
+			document.getElementById('errorCantidadInsumoEditar').style.display = 'inline';
+			document.getElementById('cantidadInsumoEditar').style.border = "1px solid red";
+		} else {
+			if (cantidad == 0) {
+				document.getElementById('errorCantidadInsumoEditar').style.display = 'none';
+				document.getElementById('errorCantidadCeroEditar').style.display = 'inline';
+				document.getElementById('cantidadInsumoEditar').style.border = "1px solid red";
+			} else {
+				document.getElementById('errorCantidadInsumoEditar').style.display = 'none';
+				document.getElementById('cantidadInsumoEditar').style.border = "";
+				document.getElementById('errorCantidadCeroEditar').style.display = 'none';
+			}
+
+		}
+
+		if (costo == "") {
+			document.getElementById('errorCostoInsumoEditar').style.display = 'inline';
+			document.getElementById('costoInsumoEditar').style.border = "1px solid red";
+		} else {
+			if (costo == 0) {
+				document.getElementById('errorCostoInsumoEditar').style.display = 'none';
+				document.getElementById('errorCostoCeroEditar').style.display = 'inline';
+				document.getElementById('costoInsumoEditar').style.border = "1px solid red";
+			} else {
+				document.getElementById('errorCostoInsumoEditar').style.display = 'none';
+				document.getElementById('costoInsumoEditar').style.border = "";
+				document.getElementById('errorCostoCeroEditar').style.display = 'none';
+			}
+
+		}
+
+		if (idActividadInsumo > 0 && cantidad != "" && cantidad > 0
+				&& costo != "" && costo > 0) {
+
+			//Actualizar datos
+			$
+					.ajax({
+						type : 'POST',
+						url : "actualizarInsumoUtilizadoEnActividad",
+						dataType : 'json',
+						data : {
+							idActividadInsumo : idActividadInsumo,
+							cantidad : cantidad,
+							costo : costo
+						},
+						success : function(data) {
+							console.log(data);
+							if (data == true) {
+								toastr
+										.success("El insumo utilizado fue editado correctamente");
+
+								//Recargar Data Table
+								//Actualizar el data table
+								var idActividad = localStorage
+										.getItem("idActividadRealizada");
+								$
+										.ajax({
+											type : 'POST',
+											url : "obtenerInsumosUtilizadosEnLaActividad",
+											dataType : 'json',
+											data : {
+												idActividad : idActividad
+											},
+											success : function(data) {
+												console.log(data);
+												//vaciar datatable
+												var oTable = $('#listaInsumos')
+														.dataTable();
+												oTable.fnClearTable();
+												if (!$.isEmptyObject(data)) {
+
+													//Llenar data table
+													for (var i = 0; i < data.length; i++) {
+														$('#listaInsumos')
+																.dataTable()
+																.fnAddData(
+
+																		[
+																				i + 1,
+																				data[i].insumo.nombre,
+																				data[i].insumo.tipo,
+																				data[i].insumo.unidadMedida,
+																				data[i].insumo.marca,
+																				data[i].cantidad,
+																				"$  "
+																						+ currency(
+																								data[i].costo,
+																								1),
+																				'<a href="#" onclick="editarInsumoUtilizado('
+																						+ data[i].idActividadInsumo
+																						+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarInsumoUtilizado('
+																						+ data[i].idActividadInsumo
+																						+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+
+																);
+													}
+
+												}
+												//Mostrar modal
+												$('#modalEditarInsumo').modal(
+														'hide');
+											},
+											error : function(jqXHR, errorThrown) {
+												alert("Error al obtener los productos");
+											}
+										});
+
+							} else {
+								toastr
+										.error("Error al editar el insumo utilizado");
+							}
+						},
+						error : function(jqXHR, errorThrown) {
+							alert("Error al obtener los productos");
+						}
+					});
 		}
 	}
 
