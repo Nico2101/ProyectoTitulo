@@ -13,4 +13,7 @@ public interface TemporadaService {
 	Temporada buscarTemporada(int idTemporada);
 	
 	Integer totalTemporadasActivas();
+	
+	
+	List<Temporada> listarTemporadasActivas();
 }

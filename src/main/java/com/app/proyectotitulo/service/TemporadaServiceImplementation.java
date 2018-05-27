@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.proyectotitulo.domain.Empleado;
 import com.app.proyectotitulo.domain.Temporada;
 import com.app.proyectotitulo.repository.TemporadaRepository;
 
@@ -40,6 +41,12 @@ public class TemporadaServiceImplementation implements TemporadaService {
 	public Integer totalTemporadasActivas() {
 		// TODO Auto-generated method stub
 		return temporadaRepo.obtenerTotalTemporadasActivas();
+	}
+	
+	@Override
+	public List<Temporada> listarTemporadasActivas() {
+		// TODO Auto-generated method stub
+		return temporadaRepo.totalTemporadasActivas();
 	}
 
 }

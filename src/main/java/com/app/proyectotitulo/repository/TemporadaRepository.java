@@ -17,5 +17,10 @@ public interface TemporadaRepository extends JpaRepository<Temporada, Integer> {
 
 	@Query(value = "SELECT SUM( t.estado ) AS total FROM Temporada t WHERE t.estado = true", nativeQuery = true)
 	Integer obtenerTotalTemporadasActivas();
+	
+
+	@Query(value = "SELECT *  FROM Temporada WHERE estado ='1' AND temporada_Eliminada ='0'", nativeQuery = true)
+	List<Temporada>  totalTemporadasActivas();
+	
 
 }

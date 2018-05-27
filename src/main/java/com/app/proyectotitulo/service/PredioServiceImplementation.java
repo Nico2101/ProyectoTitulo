@@ -55,7 +55,11 @@ public class PredioServiceImplementation implements PredioService {
 		return predioRepo.save(p);
 	}
 	
-	
+	@Override
+	public List<Predio> listarPrediosDeUnSector(int idSector) {
+		// TODO Auto-generated method stub
+		return predioRepo.prediosDeUnSector(idSector);
+	}
 	
 
 }
