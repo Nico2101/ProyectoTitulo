@@ -543,8 +543,16 @@
 
 										var idFecha = "fechaEjecucion" + num;
 
+										var min = new Date();
+										console.log(min);
+										fechaMin = moment(min, 'YYYY/MM/DD');
+										fechaMin = fechaMin
+												.format('YYYY-MM-DD');
+										
+										console.log(fechaMin);
+
 										if (data[i].fechaEjecucionReal == null) {
-											cell4.innerHTML = '<input type="date" id="'+idFecha+'" class="form-control select2 select2-hidden-accessible"/>';
+											cell4.innerHTML = '<input type="date" id="'+idFecha+'" min="'+fechaMin+'" class="form-control select2 select2-hidden-accessible"/>';
 											cell6.innerHTML = '<a href="#" title="Agregar Insumo" onclick="agregarInsumos('
 													+ data[i].idActividadRealizada
 													+ ');">	<i class="fa fa-plus-circle fa-lg" style="color: #F27812"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Ver Insumos Utilizados" onclick="verInsumosUtilizados('
