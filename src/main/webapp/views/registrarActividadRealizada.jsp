@@ -606,6 +606,7 @@
 					});
 		} else {
 			document.getElementById('divPlanAsignado').style.display = 'none';
+			document.getElementById('divTablaRegistrarActividadRealizada').style.display = 'none';
 		}
 	}
 
@@ -1179,101 +1180,113 @@
 				//Recorrer nuevamente el arreglo para preguntar si agregó insumos utilizados
 				//Recorrer ambos arreglos
 				var cont1 = 0, cont2 = 0;
-				for (var i = 0; i < arregloDatos.length / 2; i++) {
-					//Buscar si la actividad tiene insumos agregados
-					$
-							.ajax({
-								type : 'POST',
-								url : "verificarActividadInsumo",
-								dataType : 'json',
-								async : false,
-								data : {
-									idActividadRealizada : parseInt(arregloDatos[i])
-								},
-								success : function(data) {
-									if (data == false) {
-										//Obtener nombre actividad
-										$
-												.ajax({
-													type : 'POST',
-													url : "obtenerDatosActividadRealizada",
-													dataType : 'json',
-													async : false,
-													data : {
-														idActividadRealizada : parseInt(arregloDatos[i])
-													},
-													success : function(data) {
-														console.log(data);
-														toastr
-																.error("Debe agregar insumos a la actividad: "
-																		+ data.actividad.nombre);
-													},
-													error : function(jqXHR,
-															errorThrown) {
-														alert("Error al obtener los de la actividad realizada");
-													}
-												});
 
-									} else {
-										cont1++;
+				if (arregloDatos.length > 0) {
+					for (var i = 0; i < arregloDatos.length / 2; i++) {
+						//Buscar si la actividad tiene insumos agregados
+						$
+								.ajax({
+									type : 'POST',
+									url : "verificarActividadInsumo",
+									dataType : 'json',
+									async : false,
+									data : {
+										idActividadRealizada : parseInt(arregloDatos[i])
+									},
+									success : function(data) {
+										if (data == false) {
+											//Obtener nombre actividad
+											$
+													.ajax({
+														type : 'POST',
+														url : "obtenerDatosActividadRealizada",
+														dataType : 'json',
+														async : false,
+														data : {
+															idActividadRealizada : parseInt(arregloDatos[i])
+														},
+														success : function(data) {
+															console.log(data);
+															toastr
+																	.error("Debe agregar insumos a la actividad: "
+																			+ data.actividad.nombre);
+														},
+														error : function(jqXHR,
+																errorThrown) {
+															alert("Error al obtener los de la actividad realizada");
+														}
+													});
+											cont1 += 10000000;
+
+										} else {
+											cont1++;
+										}
+
+									},
+									error : function(jqXHR, errorThrown) {
+										alert("Error al buscar datos actividad_insumo");
 									}
-
-								},
-								error : function(jqXHR, errorThrown) {
-									alert("Error al buscar datos actividad_insumo");
-								}
-							});
-					i += 2;
+								});
+						i += 2;
+					}
 				}
 
-				for (var i = 0; i < arregloDatosCosecha.length / 3; i++) {
-					//Buscar si la actividad tiene insumos agregados
-					$
-							.ajax({
-								type : 'POST',
-								url : "verificarActividadInsumo",
-								dataType : 'json',
-								async : false,
-								data : {
-									idActividadRealizada : parseInt(arregloDatosCosecha[i])
-								},
-								success : function(data) {
-									if (data == false) {
-										//Obtener nombre actividad
-										$
-												.ajax({
-													type : 'POST',
-													url : "obtenerDatosActividadRealizada",
-													dataType : 'json',
-													async : false,
-													data : {
-														idActividadRealizada : parseInt(arregloDatosCosecha[i])
-													},
-													success : function(data) {
-														console.log(data);
-														toastr
-																.error("Debe agregar insumos a la actividad: "
-																		+ data.actividad.nombre);
-													},
-													error : function(jqXHR,
-															errorThrown) {
-														alert("Error al obtener los de la actividad realizada");
-													}
-												});
-									} else {
-										cont2++;
-									}
+				if (arregloDatosCosecha.length > 0) {
+					for (var i = 0; i < arregloDatosCosecha.length / 3; i++) {
+						//Buscar si la actividad tiene insumos agregados
+						$
+								.ajax({
+									type : 'POST',
+									url : "verificarActividadInsumo",
+									dataType : 'json',
+									async : false,
+									data : {
+										idActividadRealizada : parseInt(arregloDatosCosecha[i])
+									},
+									success : function(data) {
+										if (data == false) {
+											//Obtener nombre actividad
+											$
+													.ajax({
+														type : 'POST',
+														url : "obtenerDatosActividadRealizada",
+														dataType : 'json',
+														async : false,
+														data : {
+															idActividadRealizada : parseInt(arregloDatosCosecha[i])
+														},
+														success : function(data) {
+															console.log(data);
+															toastr
+																	.error("Debe agregar insumos a la actividad: "
+																			+ data.actividad.nombre);
+														},
+														error : function(jqXHR,
+																errorThrown) {
+															alert("Error al obtener los de la actividad realizada");
+														}
+													});
+											cont2 += 10000000;
 
-								},
-								error : function(jqXHR, errorThrown) {
-									alert("Error al buscar datos actividad_insumo");
-								}
-							});
-					i += 3;
+										} else {
+											cont2++;
+										}
+
+									},
+									error : function(jqXHR, errorThrown) {
+										alert("Error al buscar datos actividad_insumo");
+									}
+								});
+						i += 3;
+					}
 				}
 
+				console.log(cont1);
+				console.log(cont2);
+				console.log(arregloDatos.length);
+				console.log(arregloDatosCosecha.length);
 				//guardar los datos de arregloDatos
-				if (cont1 == arregloDatos.length / 2) {
+				if (cont1 == arregloDatos.length / 2 && arregloDatos.length > 0) {
 					//Enviar arreglo
 					$
 							.ajax({
@@ -1294,13 +1307,14 @@
 									}
 								},
 								error : function(jqXHR, errorThrown) {
-									alert("Error al obtener los productos");
+									alert("Error al guardar los datos");
 								}
 							});
 				}
 
 				//guardar los datos de arregloDatosCosecha
-				if (cont1 == arregloDatosCosecha.length / 3) {
+				if (cont2 == arregloDatosCosecha.length / 3
+						&& arregloDatosCosecha.length > 0) {
 					//Enviar arreglo
 					$
 							.ajax({
@@ -1321,7 +1335,7 @@
 									}
 								},
 								error : function(jqXHR, errorThrown) {
-									alert("Error al obtener los productos");
+									alert("Error al guardar los datos de cosecha");
 								}
 							});
 				}
@@ -1339,7 +1353,12 @@
 				$('#sector').val(-1);*/
 
 				//recargar tabla actividades
-				mostrarActividades();
+				if (cont2 == (arregloDatosCosecha.length / 3)) {
+					if (cont1 == (arregloDatos.length / 2)) {
+						mostrarActividades();
+					}
+				}
+
 			}
 
 		}
