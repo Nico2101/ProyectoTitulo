@@ -227,6 +227,7 @@
 											data,
 											function(key, predio) {
 												$("#predioSeleccionado")
+												
 														.prepend(
 																"<option value='-1'>Seleccione predio</option>");
 												$("#predioSeleccionado")

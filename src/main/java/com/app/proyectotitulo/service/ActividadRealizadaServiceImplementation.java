@@ -1,5 +1,7 @@
 package com.app.proyectotitulo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,24 @@ public class ActividadRealizadaServiceImplementation implements ActividadRealiza
 	public Actividad_Realizada saveAndFlush(Actividad_Realizada ar) {
 		// TODO Auto-generated method stub
 		return actividadRealizadaRepo.saveAndFlush(ar);
+	}
+
+	@Override
+	public List<Actividad_Realizada> listaActividadesAsignadasAPredio(int idPredio) {
+		// TODO Auto-generated method stub
+		return actividadRealizadaRepo.listaActividadesAsiganadasAlPredio(idPredio);
+	}
+
+	@Override
+	public Actividad_Realizada buscarActividad(int idActividadRealizada) {
+		// TODO Auto-generated method stub
+		return actividadRealizadaRepo.findByIdActividadRealizada(idActividadRealizada);
+	}
+
+	@Override
+	public void save(Actividad_Realizada ar) {
+		// TODO Auto-generated method stub
+		actividadRealizadaRepo.save(ar);
 	}
 
 }

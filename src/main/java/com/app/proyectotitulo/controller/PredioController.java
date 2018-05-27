@@ -1,5 +1,6 @@
 package com.app.proyectotitulo.controller;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +25,7 @@ import com.app.proyectotitulo.service.SectorService;
 public class PredioController {
 
 	@Autowired
-	private PredioService PredioService;
+	private PredioService predioService;
 
 	@Autowired
 	private SectorService sectorService;
@@ -38,7 +39,7 @@ public class PredioController {
 
 		if (e != null) {
 
-			List<Predio> listaPredios = PredioService.listarTodosLosPredios(false);
+			List<Predio> listaPredios = predioService.listarTodosLosPredios(false);
 			List<Sector> sectores = sectorService.listarSectores(false);
 			vista.addObject("listaPredios", listaPredios);
 			vista.addObject("sectores", sectores);
@@ -70,7 +71,7 @@ public class PredioController {
 			p.setSuperficie(superficie);
 			p.setSector(sector);// quiero guardar el id del sector que estoy agregando
 			// Guardar
-			predio = PredioService.saveAndFlush(p);
+			predio = predioService.saveAndFlush(p);
 			return predio;
 
 		}
@@ -82,7 +83,7 @@ public class PredioController {
 	@RequestMapping(value = "obtenerTotalSuperficePrediosSector")
 	public @ResponseBody Integer obtenerTotalSuperficie(@RequestParam int idSector) {
 
-		Integer TotalSuperficieAcomulado = PredioService.TotalSuperficiePredios(idSector);
+		Integer TotalSuperficieAcomulado = predioService.TotalSuperficiePredios(idSector);
 		if (TotalSuperficieAcomulado != null) {
 			return TotalSuperficieAcomulado;
 		} else {
@@ -90,61 +91,54 @@ public class PredioController {
 		}
 
 	}
-	
-	
 
 	@RequestMapping(value = "obtenerListaPredios")
 	public @ResponseBody List<Predio> obtenerListaPredios() {
 
-		List<Predio> lista = PredioService.listarTodosLosPredios(false);
+		List<Predio> lista = predioService.listarTodosLosPredios(false);
 
 		return lista;
 	}
 
 	@RequestMapping(value = "eliminarPredio")
 	public @ResponseBody boolean eliminarPredio(@RequestParam int idPredio) {
-		
 
-		Predio p = PredioService.findByIdPredio(idPredio);
+		Predio p = predioService.findByIdPredio(idPredio);
 		if (p != null) {
 			p.setPredioEliminado(true);
 
-			PredioService.eliminarPredio(p);
+			predioService.eliminarPredio(p);
 			return true;
 		}
 
 		return false;
 	}
-	
-	
-	//Permite eliminar los predios asociados a un sector
+
+	// Permite eliminar los predios asociados a un sector
 	@RequestMapping(value = "eliminarPrediosDeUnSector")
-	public @ResponseBody boolean eliminarPrediosDeUnSector( @RequestParam int idSector) {
-		
-		List<Predio> lista1 = PredioService.listarTodosLosPredios(false);
+	public @ResponseBody boolean eliminarPrediosDeUnSector(@RequestParam int idSector) {
+
+		List<Predio> lista1 = predioService.listarTodosLosPredios(false);
 		Sector s = sectorService.findByIdSector(idSector);
-		
+
 		if (s != null) {
-			for(int i =0; i < lista1.size(); i++ ) {
-				Predio p = PredioService.findByIdPredio(lista1.get(i).getIdPredio());
-				if(lista1.get(i).getSector().equals(s)) {
+			for (int i = 0; i < lista1.size(); i++) {
+				Predio p = predioService.findByIdPredio(lista1.get(i).getIdPredio());
+				if (lista1.get(i).getSector().equals(s)) {
 					p.setPredioEliminado(true);
-					PredioService.eliminarPredio(p);
-					
-					
+					predioService.eliminarPredio(p);
+
 				}
-					
-				}
+
+			}
 		}
 		return true;
-		}
-		
-	
-	
+	}
+
 	@RequestMapping(value = "obtenerPredioAEditar")
 	public @ResponseBody Predio obtenerPredioAEditar(@RequestParam int idPredio) {
 
-		Predio p = PredioService.findByIdPredio(idPredio);
+		Predio p = predioService.findByIdPredio(idPredio);
 		if (p != null) {
 			return p;
 		} else {
@@ -169,18 +163,36 @@ public class PredioController {
 		if (!nombre.equalsIgnoreCase("") && !(superficie == (0)) && idSector > 0 && sector != null) {
 
 			// Buscar el predio
-			p = PredioService.findByIdPredio(idPredio);
+			p = predioService.findByIdPredio(idPredio);
 			p.setNombre(nombre);
 			p.setSuperficie(superficie);
 			p.setSector(sector);
 
 			// Guardar el predio editado
-			PredioService.editarPredio(p);
+			predioService.editarPredio(p);
 			return true;
 
 		}
 
 		return false;
+
+	}
+
+	@RequestMapping(value = "obtenerPrediosDelSectorConPlanAsignado")
+	public @ResponseBody List<Predio> obtenerPrediosDelSectorConPlanAsignado(@RequestParam int idSector) {
+
+		if (idSector > 0) {
+			// Buscar Sector
+			Sector s = sectorService.findByIdSector(idSector);
+
+			if (s != null) {
+				// Obtener los predios con plan asignado del sector
+				List<Predio> listaPredio = predioService.getListaPrediosConPlanesAsignados(idSector);
+				return listaPredio;
+			}
+		}
+
+		return new LinkedList<Predio>();
 
 	}
 }

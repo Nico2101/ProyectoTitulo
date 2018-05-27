@@ -22,7 +22,7 @@ public class SectorServiceImplementation implements SectorService {
 	@Override
 	public List<Sector> listarSectores(boolean sectorEliminado) {
 		// TODO Auto-generated method stub
-		return sectorRepo.findBySectorEliminado(sectorEliminado);
+		return sectorRepo.findBySectorEliminadoOrderByNombreAsc(sectorEliminado);
 	}
 	@Override
 	public Sector saveAndFlush(Sector s) {
