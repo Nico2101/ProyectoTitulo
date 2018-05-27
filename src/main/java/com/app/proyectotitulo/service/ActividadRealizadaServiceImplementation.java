@@ -30,4 +30,10 @@ public class ActividadRealizadaServiceImplementation implements ActividadRealiza
 		return actividadRealizadaRepo.findByIdActividadRealizada(idActividadRealizada);
 	}
 
+	@Override
+	public void save(Actividad_Realizada ar) {
+		// TODO Auto-generated method stub
+		actividadRealizadaRepo.save(ar);
+	}
+
 }

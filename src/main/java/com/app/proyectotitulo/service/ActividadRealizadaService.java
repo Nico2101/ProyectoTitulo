@@ -10,4 +10,6 @@ public interface ActividadRealizadaService {
 
 	Actividad_Realizada buscarActividad(int idActividadRealizada);
 
+	public void save(Actividad_Realizada ar);
+
 }

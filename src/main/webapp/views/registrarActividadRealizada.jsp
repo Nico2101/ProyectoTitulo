@@ -440,6 +440,8 @@
 								document.getElementById('sector').style.border = "1px solid red";
 								document.getElementById('sinPredio').style.display = 'inline';
 								document.getElementById('divPlanAsignado').style.display = 'none';
+								document
+										.getElementById('divTablaRegistrarActividadRealizada').style.display = 'none';
 							}
 						},
 						error : function(jqXHR, errorThrown) {
@@ -451,6 +453,9 @@
 			document.getElementById('errorSector').style.display = 'inline';
 			document.getElementById('divPredio').style.display = 'none';
 			document.getElementById('sector').style.border = "1px solid red";
+			document.getElementById('divPlanAsignado').style.display = 'none';
+			document.getElementById('sinPredio').style.display = 'none';
+			document.getElementById('divTablaRegistrarActividadRealizada').style.display = 'none';
 		}
 
 	}
@@ -536,8 +541,10 @@
 										fecha = fecha.format('DD-MM-YYYY');
 										cell3.innerHTML = fecha;
 
+										var idFecha = "fechaEjecucion" + num;
+
 										if (data[i].fechaEjecucionReal == null) {
-											cell4.innerHTML = '<input type="date" class="form-control select2 select2-hidden-accessible"/>';
+											cell4.innerHTML = '<input type="date" id="'+idFecha+'" class="form-control select2 select2-hidden-accessible"/>';
 											cell6.innerHTML = '<a href="#" title="Agregar Insumo" onclick="agregarInsumos('
 													+ data[i].idActividadRealizada
 													+ ');">	<i class="fa fa-plus-circle fa-lg" style="color: #F27812"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" title="Ver Insumos Utilizados" onclick="verInsumosUtilizados('
@@ -557,7 +564,7 @@
 
 										if (data[i].actividad.nombre == "Cosecha"
 												|| data[i].actividad.nombre == "cosecha") {
-											cell5.innerHTML = '<input type="number" class="form-control select2 select2-hidden-accessible">';
+											cell5.innerHTML = '<input type="number" id="cantidadCosechada" class="form-control select2 select2-hidden-accessible">';
 										} else {
 											cell5.innerHTML = "";
 										}
@@ -1107,6 +1114,236 @@
 
 	function guardarDatos() {
 		//Recorrer Tabla y Guardar los datos en un arreglo
+
+		//obtener los dato de la tabla
+		var oTable = document.getElementById('tablaActividades');
+		//gets rows of table
+		var rowLength = oTable.rows.length;
+		console.log(rowLength);
+		var cont = 0;
+
+		var arregloDatos = Array();
+		var arregloDatosCosecha = Array();
+
+		if (rowLength > 1) {
+			//loops through rows    
+			for (i = 1; i < rowLength; i++) {
+				var oCells = oTable.rows.item(i).cells;//devuelve un objeto con la fila completa
+				console.log(oCells[0].innerHTML);//Numero Fila
+				console.log(oCells[1].innerHTML);//Nombre Actividad
+				console.log(oCells[2].innerHTML);//Fecha Estimada
+				console.log(oCells[4].innerHTML);//Cantidad cosechada
+				console.log(oCells[6].innerHTML);//Id Actividad
+
+				var idFecha = "fechaEjecucion" + oCells[0].innerHTML;
+				var fecha = $('#' + idFecha).val();
+				if (typeof fecha != 'undefined' && fecha != "") {
+					console.log(fecha); //Imprimir Fecha Ejecucion Real
+					cont++;
+
+					//Agregar los datos en un arreglo
+
+					if (oCells[1].innerHTML == "Cosecha"
+							|| oCells[1].innerHTML == "cosecha") {
+						var cantCosechada = $('#cantidadCosechada').val();
+						if (cantCosechada == "") {
+							toastr
+									.warning("Debe ingresar la cantidad cosechada");
+							$('#cantidadCosechada').focus();
+							break;
+						} else {
+							arregloDatosCosecha.push(oCells[6].innerHTML);//id actividad
+							arregloDatosCosecha.push(oCells[2].innerHTML);//fecha ejecucion real
+							arregloDatosCosecha.push(cantCosechada);//Cantidad Cosechada
+						}
+
+					} else {
+						//la actividad no es cosecha por lo tanto se guarda en otro arreglo
+						arregloDatos.push(oCells[6].innerHTML);//id actividad
+						arregloDatos.push(oCells[2].innerHTML);//fecha ejecucion real
+					}
+
+				}
+
+				//agregar al arreglo los datos
+
+			}
+		}
+
+		if (cont == 0) {
+			toastr
+					.warning("Debe indicar la fecha de ejecución real por lo menos en una actividad");
+		} else {
+
+			if (arregloDatos.length > 0 || arregloDatosCosecha.length > 0) {
+				//Recorrer nuevamente el arreglo para preguntar si agregó insumos utilizados
+				//Recorrer ambos arreglos
+				var cont1 = 0, cont2 = 0;
+				for (var i = 0; i < arregloDatos.length / 2; i++) {
+					//Buscar si la actividad tiene insumos agregados
+					$
+							.ajax({
+								type : 'POST',
+								url : "verificarActividadInsumo",
+								dataType : 'json',
+								async : false,
+								data : {
+									idActividadRealizada : parseInt(arregloDatos[i])
+								},
+								success : function(data) {
+									if (data == false) {
+										//Obtener nombre actividad
+										$
+												.ajax({
+													type : 'POST',
+													url : "obtenerDatosActividadRealizada",
+													dataType : 'json',
+													async : false,
+													data : {
+														idActividadRealizada : parseInt(arregloDatos[i])
+													},
+													success : function(data) {
+														console.log(data);
+														toastr
+																.error("Debe agregar insumos a la actividad: "
+																		+ data.actividad.nombre);
+													},
+													error : function(jqXHR,
+															errorThrown) {
+														alert("Error al obtener los de la actividad realizada");
+													}
+												});
+
+									} else {
+										cont1++;
+									}
+
+								},
+								error : function(jqXHR, errorThrown) {
+									alert("Error al buscar datos actividad_insumo");
+								}
+							});
+					i += 2;
+				}
+
+				for (var i = 0; i < arregloDatosCosecha.length / 3; i++) {
+					//Buscar si la actividad tiene insumos agregados
+					$
+							.ajax({
+								type : 'POST',
+								url : "verificarActividadInsumo",
+								dataType : 'json',
+								async : false,
+								data : {
+									idActividadRealizada : parseInt(arregloDatosCosecha[i])
+								},
+								success : function(data) {
+									if (data == false) {
+										//Obtener nombre actividad
+										$
+												.ajax({
+													type : 'POST',
+													url : "obtenerDatosActividadRealizada",
+													dataType : 'json',
+													async : false,
+													data : {
+														idActividadRealizada : parseInt(arregloDatosCosecha[i])
+													},
+													success : function(data) {
+														console.log(data);
+														toastr
+																.error("Debe agregar insumos a la actividad: "
+																		+ data.actividad.nombre);
+													},
+													error : function(jqXHR,
+															errorThrown) {
+														alert("Error al obtener los de la actividad realizada");
+													}
+												});
+									} else {
+										cont2++;
+									}
+
+								},
+								error : function(jqXHR, errorThrown) {
+									alert("Error al buscar datos actividad_insumo");
+								}
+							});
+					i += 3;
+				}
+
+				//guardar los datos de arregloDatos
+				if (cont1 == arregloDatos.length / 2) {
+					//Enviar arreglo
+					$
+							.ajax({
+								type : 'POST',
+								url : "guardarDatosActividadRealizada",
+								dataType : 'json',
+								async : false,
+								data : {
+									datos : arregloDatos
+								},
+								success : function(data) {
+									if (data == true) {
+										toastr
+												.success("Actividad realizada registrada correctamente");
+									} else {
+										toastr
+												.error("Error al registrar la actividad realizada");
+									}
+								},
+								error : function(jqXHR, errorThrown) {
+									alert("Error al obtener los productos");
+								}
+							});
+				}
+
+				//guardar los datos de arregloDatosCosecha
+				if (cont1 == arregloDatosCosecha.length / 3) {
+					//Enviar arreglo
+					$
+							.ajax({
+								type : 'POST',
+								url : "guardarDatosActividadRealizadaCosecha",
+								async : false,
+								data : {
+									datos : arregloDatosCosecha
+								},
+								dataType : 'json',
+								success : function(data) {
+									if (data == true) {
+										toastr
+												.success("Actividad realizada registrada correctamente");
+									} else {
+										toastr
+												.error("Error al registrar la actividad realizada");
+									}
+								},
+								error : function(jqXHR, errorThrown) {
+									alert("Error al obtener los productos");
+								}
+							});
+				}
+
+				//recargar pagina
+
+				/*
+				//ocultar div tabla
+				document.getElementById('divTablaRegistrarActividadRealizada').style.display = 'none';
+
+				//ocultar predio y plan
+				document.getElementById('divPlanAsignado').style.display = 'none';
+				document.getElementById('divPredio').style.display = 'none';
+
+				$('#sector').val(-1);*/
+
+				//recargar tabla actividades
+				mostrarActividades();
+			}
+
+		}
+
 	}
 
 	function currency(value, decimals, separators) {

@@ -1,7 +1,11 @@
 package com.app.proyectotitulo.controller;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -194,4 +198,100 @@ public class ActividadRealizadaController {
 		return false;
 	}
 
+	@RequestMapping(value = "verificarActividadInsumo")
+	public @ResponseBody boolean verificarActividadInsumo(@RequestParam int idActividadRealizada) {
+
+		if (idActividadRealizada > 0) {
+			// Verificar si la actividad tiene insumos agregados
+			List<Actividad_Insumo> listaInsumosActividad = actividadInsumoService
+					.listaInsumosActividadRealizada(idActividadRealizada);
+
+			if (listaInsumosActividad.size() > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		return false;
+	}
+
+	@RequestMapping(value = "obtenerDatosActividadRealizada")
+	public @ResponseBody Actividad_Realizada obtenerDatosActividadRealizada(@RequestParam int idActividadRealizada) {
+
+		if (idActividadRealizada > 0) {
+			// obtener datos
+			Actividad_Realizada ar = actividadRealizadaService.buscarActividad(idActividadRealizada);
+			if (ar != null) {
+				return ar;
+			} else {
+				return new Actividad_Realizada();
+			}
+
+		} else {
+			return new Actividad_Realizada();
+		}
+
+	}
+
+	@RequestMapping(value = "guardarDatosActividadRealizadaCosecha")
+	public @ResponseBody boolean guardarDatosActividadRealizadaCosecha(
+			@RequestParam(value = "datos[]") String[] datos) {
+
+		if (datos.length > 0) {
+			for (int i = 0; i < datos.length / 3; i++) {
+				// Buscar Actividad
+				Actividad_Realizada ar = actividadRealizadaService.buscarActividad(Integer.parseInt(datos[i]));
+				if (ar != null) {
+					// DateFormat dt=new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH);
+					LocalDate date = LocalDate.parse(datos[i + 1], formatter);
+
+					Date dateInicio = java.sql.Date.valueOf(date);
+
+					ar.setFechaEjecucionReal(dateInicio);
+					ar.setCantidadCosechada(Integer.parseInt(datos[i + 2]));
+
+					// Guardar
+					actividadRealizadaService.save(ar);
+				}
+
+				i += 3;
+			}
+			return true;
+
+		}
+
+		return false;
+	}
+
+	@RequestMapping(value = "guardarDatosActividadRealizada")
+	public @ResponseBody boolean guardarDatosActividadRealizada(@RequestParam(value = "datos[]") String[] datos) {
+
+		if (datos.length > 0) {
+			for (int i = 0; i < datos.length / 2; i++) {
+				// Buscar Actividad
+				Actividad_Realizada ar = actividadRealizadaService.buscarActividad(Integer.parseInt(datos[i]));
+				if (ar != null) {
+					// DateFormat dt=new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH);
+					LocalDate date = LocalDate.parse(datos[i + 1], formatter);
+
+					Date dateInicio = java.sql.Date.valueOf(date);
+
+					ar.setFechaEjecucionReal(dateInicio);
+
+					// Guardar
+					actividadRealizadaService.save(ar);
+
+				}
+
+				i += 2;
+			}
+			return true;
+		}
+
+		return false;
+
+	}
 }
