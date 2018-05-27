@@ -109,14 +109,14 @@
 
 									<div id="form-editar" class="form-group">
 
-										<label class="col-sm-4 control-label">Nombre</label>
+										<label class="col-sm-4 control-label">* Nombre</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="nombreSector">
 											<span id="errorNombre" class="error" style="display: none">Ingrese
 												el nombre del sector</span>
 										</div>
-										<br> <br> <label class="col-sm-4 control-label">Superficie
-											(m<sup>2</sup>)
+										<br> <br> <label class="col-sm-4 control-label">*
+											Superficie (m<sup>2</sup>)
 										</label>
 
 										<div class="col-sm-6">
@@ -126,6 +126,13 @@
 												sector</span> <span id="errorSuperficieNegativa" class="error"
 												style="display: none">La superficie no puede ser
 												negativa</span>
+										</div>
+
+										<br> <br> <label class="col-sm-4 control-label"></label>
+										<div class="col-sm-6">
+											<label class="pull-right"
+												style="font-weight: normal; color: red">* Campos
+												obligatorios</label>
 										</div>
 									</div>
 								</div>
@@ -166,7 +173,7 @@
 											<input id="idSectorEditar" />
 										</div>
 
-										<label class="col-sm-4 control-label">Nombre</label>
+										<label class="col-sm-4 control-label">* Nombre</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
 												id="nombreSectorEditar"> <span
@@ -174,8 +181,8 @@
 												el nombre del sector</span>
 
 										</div>
-										<br> <br> <label class="col-sm-4 control-label">Superficie
-											(m<sup>2</sup>)
+										<br> <br> <label class="col-sm-4 control-label">*
+											Superficie (m<sup>2</sup>)
 										</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
@@ -186,6 +193,13 @@
 												class="error" style="display: none">La superficie no
 												puede ser negativa</span>
 
+										</div>
+
+										<br> <br> <label class="col-sm-4 control-label"></label>
+										<div class="col-sm-6">
+											<label class="pull-right"
+												style="font-weight: normal; color: red">* Campos
+												obligatorios</label>
 										</div>
 									</div>
 
@@ -201,8 +215,8 @@
 						</div>
 					</div>
 				</div>
+			</div>
 
-				<!-- Main content -->
 			</section>
 		</div>
 
