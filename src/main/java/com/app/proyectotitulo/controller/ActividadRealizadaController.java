@@ -146,7 +146,7 @@ public class ActividadRealizadaController {
 	public @ResponseBody boolean agregarPlanAPredio(@RequestParam int idPredio, @RequestParam int idTemporada,
 
 			@RequestParam(value = "actividades[]") String[] actividades,
-			@RequestParam(value = "actividadesFecha[]") Date[] actividadesFecha) throws ParseException {
+			@RequestParam(value = "actividadesFecha[]") String[] actividadesFecha) throws ParseException {
 
 		if (idPredio > 0 && idTemporada > 0 && actividades.length > 0 && actividadesFecha.length > 0) {
 
@@ -154,15 +154,19 @@ public class ActividadRealizadaController {
 			Actividad_Realizada actividadRealizada = new Actividad_Realizada();
 
 			for (int i = 0; i < actividades.length; i++) {
-				for (int j = 0; j < actividadesFecha.length; i++) {
+				for (int j = 0; j < actividadesFecha.length; j++) {
+					
 					Predio predio = predioService.findByIdPredio(idPredio);
-					String ids = actividades[i];
-					int IDS = Integer.parseInt(ids);
 
-					Actividad actividad = actividadService.findByIdActividad(IDS);
+					Actividad actividad = actividadService.findByIdActividad(Integer.parseInt(actividades[i]));
 					Temporada temporada = temporadaService.buscarTemporada(idTemporada);
+					
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH);
+					LocalDate date = LocalDate.parse(actividadesFecha[j + 1], formatter);
+					Date fechaESTIMADA = java.sql.Date.valueOf(date);
+					
 					ar.setPredio(predio);
-					ar.setFechaEstimada(actividadesFecha[i]);
+					ar.setFechaEstimada(fechaESTIMADA);
 					ar.setTemporada(temporada);
 					ar.setActividad(actividad);
 

@@ -20,7 +20,7 @@ public interface PredioRepository extends JpaRepository<Predio, Integer> {
 	@Query(value = "select sum(superficie) as totalSuperficie from Predio p where id_sector=? and predio_Eliminado='0'", nativeQuery = true)
 	Integer superficieTotal(int id_sector);
 
-	@Query(value = "select* from Predio p where id_sector=? and predio_Eliminado='0'", nativeQuery = true)
+	@Query(value = "SELECT *  FROM Predio p WHERE p.id_sector =? AND p.id_predio NOT IN (SELECT ar.id_predio FROM Actividad_Realizada ar JOIN Temporada t ON ar.id_temporada = t.id_temporada WHERE t.estado =1 AND t.temporada_eliminada =0 AND p.id_predio = ar.id_predio) AND p.predio_eliminado =0", nativeQuery = true)
 	List<Predio> prediosDeUnSector(int idSector);
 
 	@Query(value = "SELECT * FROM Predio p WHERE p.id_predio IN (SELECT ar.id_predio FROM Actividad_Realizada ar JOIN Temporada t ON ar.id_temporada = t.id_temporada WHERE t.estado =1 AND t.temporada_eliminada=0 AND p.id_predio = ar.id_predio AND p.estado !=  'Cosechado' AND p.predio_eliminado =0 and p.id_sector=:id_sector)", nativeQuery = true)
