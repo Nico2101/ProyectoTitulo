@@ -22,6 +22,10 @@ public class Reprogramacion implements Serializable {
 	private int idReprogramacion;
 
 	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_estimada_anterior")
+	private Date fechaEstimadaAnterior;
+
+	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_reprogramacion")
 	private Date fechaReprogramacion;
 
@@ -66,6 +70,14 @@ public class Reprogramacion implements Serializable {
 
 	public void setActividadRealizada(Actividad_Realizada actividadRealizada) {
 		this.actividadRealizada = actividadRealizada;
+	}
+
+	public Date getFechaEstimadaAnterior() {
+		return fechaEstimadaAnterior;
+	}
+
+	public void setFechaEstimadaAnterior(Date fechaEstimadaAnterior) {
+		this.fechaEstimadaAnterior = fechaEstimadaAnterior;
 	}
 
 }
