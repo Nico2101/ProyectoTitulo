@@ -404,7 +404,8 @@
 		if (idSector > 0) {
 			document.getElementById('errorSector').style.display = 'none';
 			document.getElementById('sector').style.border = "";
-
+			document.getElementById('divTablaRegistrarActividadRealizada').style.display = 'none';
+			document.getElementById('divPlanAsignado').style.display = 'none';
 			//Obtener los predios
 			$
 					.ajax({
@@ -579,7 +580,14 @@
 
 										if (data[i].actividad.nombre == "Cosecha"
 												|| data[i].actividad.nombre == "cosecha") {
-											cell5.innerHTML = '<input type="number" id="cantidadCosechada" class="form-control select2 select2-hidden-accessible">';
+											if (data[i].fechaEjecucionReal == null) {
+												cell5.innerHTML = '<input type="number" id="cantidadCosechada" class="form-control select2 select2-hidden-accessible">';
+											} else {
+												cell5.innerHTML = currency(
+														data[i].cantidadCosechada,
+														1) + " Kg.";
+											}
+
 										} else {
 											cell5.innerHTML = "";
 										}

@@ -62,6 +62,7 @@ public class ActividadRealizadaController {
 	@Autowired
 	private ActividadService actividadService;
 
+	@Autowired
 	private InsumoService insumoService;
 
 	@Autowired
@@ -160,6 +161,10 @@ public class ActividadRealizadaController {
 
 					// Guardar
 					actividadRealizada = actividadRealizadaService.saveAndFlush(ar);
+
+					// Cambiar estado del predio a En Proceso
+					predio.setEstado("En Proceso");
+					predioService.save(predio);
 
 				}
 			}
@@ -351,6 +356,11 @@ public class ActividadRealizadaController {
 					ar.setFechaEjecucionReal(dateInicio);
 					ar.setCantidadCosechada(Integer.parseInt(datos[i + 2]));
 
+					if (ar.getActividad().getNombre().equalsIgnoreCase("Cosecha")
+							|| ar.getActividad().getNombre().equalsIgnoreCase("cosecha")) {
+						ar.getPredio().setEstado("Cosechado");
+					}
+
 					// Guardar
 					actividadRealizadaService.save(ar);
 				}
@@ -379,6 +389,13 @@ public class ActividadRealizadaController {
 					Date dateInicio = java.sql.Date.valueOf(date);
 
 					ar.setFechaEjecucionReal(dateInicio);
+
+					// Consultar por el nombre de la actividad
+					if (ar.getActividad().getNombre().equalsIgnoreCase("Siembra")
+							|| ar.getActividad().getNombre().equalsIgnoreCase("siembra")) {
+						ar.getPredio().setEstado("Sembrado");
+
+					}
 
 					// Guardar
 					actividadRealizadaService.save(ar);

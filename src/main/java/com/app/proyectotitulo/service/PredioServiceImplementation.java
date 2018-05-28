@@ -54,13 +54,11 @@ public class PredioServiceImplementation implements PredioService {
 		return predioRepo.save(p);
 	}
 
-	
 	@Override
 	public List<Predio> listarPrediosDeUnSector(int idSector) {
 		// TODO Auto-generated method stub
 		return predioRepo.prediosDeUnSector(idSector);
 	}
-	
 
 	@Override
 	public List<Predio> getListaPrediosConPlanesAsignados(int idSector) {
@@ -68,5 +66,10 @@ public class PredioServiceImplementation implements PredioService {
 		return predioRepo.listaPrediosConPlanesAsignados(idSector);
 	}
 
+	@Override
+	public void save(Predio p) {
+		// TODO Auto-generated method stub
+		predioRepo.save(p);
+	}
 
 }
