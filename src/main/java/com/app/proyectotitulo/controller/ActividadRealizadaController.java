@@ -103,14 +103,6 @@ public class ActividadRealizadaController {
 
 		if (e != null) {
 
-			List<Sector> sectores = sectorService.listarSectores(false);
-			List<Plan_Ejecucion> listaPlanes = planEjecucionService.listaPlanes(false);
-			List<Temporada> listaTemporadasActivas = temporadaService.listarTemporadasActivas();
-			vista.addObject("sectores", sectores);
-			vista.addObject("listaPlanes", listaPlanes);
-			vista.addObject("listaTemporadasActivas", listaTemporadasActivas);
-			vista.setViewName("asignarPlan");
-
 			// Get Sectores
 			List<Sector> listaSectores = sectorService.listarSectores(false);
 			vista.addObject("listaSectores", listaSectores);
