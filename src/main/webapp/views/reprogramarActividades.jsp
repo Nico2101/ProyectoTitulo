@@ -318,8 +318,9 @@
 												data[i].fechaEstimada,
 												'YYYY/MM/DD');
 										fecha = fecha.format('DD-MM-YYYY');
-										$('#fechaEstimada').val(fecha);
 										
+										
+										$('#fechaEstimada').val(fecha); //sirve para poner la fecha en el input
 
 										cell3.innerHTML = '<input type="date" name="fecha" id="fechaEstimada"   class="form-control select2 select2-hidden-accessible"/>';
 										
