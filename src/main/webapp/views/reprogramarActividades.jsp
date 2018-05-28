@@ -129,9 +129,12 @@
 													<th>id actividad</th>
 
 												</tr>
+												
 											</thead>
 
 										</table>
+										<label>Motivo de reprogramación de actividades:</label>
+										<p> <textarea name="motivo" id="motivo" cols="103" rows="3"></textarea></p>
 
 									</div>
 									<div class="col-sm-3"></div>
@@ -315,11 +318,11 @@
 												data[i].fechaEstimada,
 												'YYYY/MM/DD');
 										fecha = fecha.format('DD-MM-YYYY');
-										
+										$('#fechaEstimada').val(fecha);
 										
 
 										cell3.innerHTML = '<input type="date" name="fecha" id="fechaEstimada"   class="form-control select2 select2-hidden-accessible"/>';
-										$('#fechaEstimada').val(fecha);
+										
 										cell4.innerHTML = data[i].idActividadRealizada;
 
 										$('#planAsignado')
@@ -361,7 +364,7 @@
 		}
 	}
 
-	function guardarDatos() {
+	/*function guardarDatos() {
 		//Recorrer Tabla y Guardar los datos en un arreglo
 
 		//obtener los dato de la tabla
@@ -601,7 +604,7 @@
 				$('#sector').val(-1);*/
 
 				//recargar tabla actividades
-				if (cont2 == (arregloDatosCosecha.length / 3)) {
+			/*	if (cont2 == (arregloDatosCosecha.length / 3)) {
 					if (cont1 == (arregloDatos.length / 2)) {
 						mostrarActividades();
 					}
@@ -611,7 +614,7 @@
 
 		}
 
-	}
+	}  */
 </script>
 
 
