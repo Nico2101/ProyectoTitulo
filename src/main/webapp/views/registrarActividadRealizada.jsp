@@ -62,7 +62,7 @@
 										</select> <span id="errorSector" class="error" style="display: none">Seleccione
 											un sector</span> <span id="sinPredio" class="error"
 											style="display: none">Sector no tiene predios con
-											planes asignados</span>
+											planes asignados o todos sus predios están cosechados</span>
 									</div>
 
 									<div class="col-md-3 col-sm-6 col-xs-12" id="divPredio"

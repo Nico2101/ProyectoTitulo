@@ -16,5 +16,8 @@ public interface ActividadRealizadaRepository extends JpaRepository<Actividad_Re
 	List<Actividad_Realizada> listaActividadesAsiganadasAlPredio(@Param("id_predio") int idPredio);
 
 	Actividad_Realizada findByIdActividadRealizada(int idActividadRealizada);
+	
+	
+	
 
 }
