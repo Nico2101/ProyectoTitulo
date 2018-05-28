@@ -150,30 +150,28 @@ public class ActividadRealizadaController {
 
 		if (idPredio > 0 && idTemporada > 0 && actividades.length > 0 && actividadesFecha.length > 0) {
 
-			
 			for (int j = 0; j < actividadesFecha.length; j++) {
-				
-					Actividad_Realizada ar = new Actividad_Realizada();
-					Predio predio = predioService.findByIdPredio(idPredio);
 
-					Actividad actividad = actividadService.findByIdActividad(Integer.parseInt(actividades[j]));
-					Temporada temporada = temporadaService.buscarTemporada(idTemporada);
+				Actividad_Realizada ar = new Actividad_Realizada();
+				Predio predio = predioService.findByIdPredio(idPredio);
 
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
-					LocalDate date = LocalDate.parse(actividadesFecha[j], formatter);
-					Date fechaESTIMADA = java.sql.Date.valueOf(date);
+				Actividad actividad = actividadService.findByIdActividad(Integer.parseInt(actividades[j]));
+				Temporada temporada = temporadaService.buscarTemporada(idTemporada);
 
-					ar.setPredio(predio);
-					ar.setFechaEstimada(fechaESTIMADA);
-					ar.setTemporada(temporada);
-					ar.setActividad(actividad);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+				LocalDate date = LocalDate.parse(actividadesFecha[j], formatter);
+				Date fechaESTIMADA = java.sql.Date.valueOf(date);
 
-					// Guardar
-					actividadRealizadaService.save(ar);
+				ar.setPredio(predio);
+				ar.setFechaEstimada(fechaESTIMADA);
+				ar.setTemporada(temporada);
+				ar.setActividad(actividad);
 
-				}
+				// Guardar
+				actividadRealizadaService.save(ar);
+
 			}
-		
+		}
 
 		return true;
 	}
@@ -402,5 +400,27 @@ public class ActividadRealizadaController {
 
 		return false;
 
+	}
+
+	@RequestMapping(value = "reprogramarActividades")
+	public ModelAndView reprogramarActividades(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
+
+		sesion = request.getSession(true);
+		Empleado e = (Empleado) sesion.getAttribute("empleado");
+
+		if (e != null) {
+			// Get Sectores
+			List<Sector> listaSectores = sectorService.listarSectores(false);
+			vista.addObject("listaSectores", listaSectores);
+
+			vista.setViewName("reprogramarActividades");
+
+		} else {
+			vista.setViewName("login");
+			vista.addObject("empleado", new Empleado());
+			vista.addObject("sesionExpirada", "Su sesión ha expirado");
+
+		}
+		return vista;
 	}
 }
