@@ -41,6 +41,21 @@
 					value="Registrar Actividad"></c:out></span>
 
 	</a></li>
+	
+	
+	<li class="treeview"><a href="#"> <i class="fa fa-calendar-check-o"></i>
+			<span><c:out value="Actividades"></c:out></span> <i
+			class="fa fa-angle-left pull-right"></i>
+
+	</a>
+		<ul class="treeview-menu">
+			<li><a href="reprogramarActividades"> <i class="fa fa-circle-o"></i>
+					<span><c:out value="Reprogramar actividades"></c:out></span>
+
+			</a></li>
+
+
+		</ul></li>
 
 
 

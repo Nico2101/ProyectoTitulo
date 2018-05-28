@@ -146,36 +146,34 @@ public class ActividadRealizadaController {
 	public @ResponseBody boolean agregarPlanAPredio(@RequestParam int idPredio, @RequestParam int idTemporada,
 
 			@RequestParam(value = "actividades[]") String[] actividades,
-			@RequestParam(value = "actividadesFecha[]") String[] actividadesFecha) throws ParseException {
+			@RequestParam(value = "actividadesFecha[]") String[] actividadesFecha) {
 
 		if (idPredio > 0 && idTemporada > 0 && actividades.length > 0 && actividadesFecha.length > 0) {
 
-			Actividad_Realizada ar = new Actividad_Realizada();
-			Actividad_Realizada actividadRealizada = new Actividad_Realizada();
-
-			for (int i = 0; i < actividades.length; i++) {
-				for (int j = 0; j < actividadesFecha.length; j++) {
-					
+			
+			for (int j = 0; j < actividadesFecha.length; j++) {
+				
+					Actividad_Realizada ar = new Actividad_Realizada();
 					Predio predio = predioService.findByIdPredio(idPredio);
 
-					Actividad actividad = actividadService.findByIdActividad(Integer.parseInt(actividades[i]));
+					Actividad actividad = actividadService.findByIdActividad(Integer.parseInt(actividades[j]));
 					Temporada temporada = temporadaService.buscarTemporada(idTemporada);
-					
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH);
-					LocalDate date = LocalDate.parse(actividadesFecha[j + 1], formatter);
+
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+					LocalDate date = LocalDate.parse(actividadesFecha[j], formatter);
 					Date fechaESTIMADA = java.sql.Date.valueOf(date);
-					
+
 					ar.setPredio(predio);
 					ar.setFechaEstimada(fechaESTIMADA);
 					ar.setTemporada(temporada);
 					ar.setActividad(actividad);
 
 					// Guardar
-					actividadRealizada = actividadRealizadaService.saveAndFlush(ar);
+					actividadRealizadaService.save(ar);
 
 				}
 			}
-		}
+		
 
 		return true;
 	}

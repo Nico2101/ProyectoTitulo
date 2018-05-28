@@ -9,6 +9,7 @@ import com.app.proyectotitulo.domain.Actividad_Realizada;
 public interface ActividadRealizadaService {
 	
 	
+	
 	Actividad_Realizada saveAndFlush(Actividad_Realizada ar);
 
 	List<Actividad_Realizada> listaActividadesAsignadasAPredio(int idPredio);

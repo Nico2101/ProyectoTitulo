@@ -146,9 +146,9 @@
 										<thead>
 											<tr>
 
-												<th><center>N°</center></th>
-												<th><center>Nombre Actividad</center></th>
-												<th><center>Fecha estimada de realización</center></th>
+												<th width="50px">N°</th>
+												<th width="260px">Nombre Actividad</th>
+												<th width="200px">Fecha estimada de realización</th>
 												<th><center>Id</center></th>
 
 
@@ -321,8 +321,15 @@
 										var cell4 = row.insertCell(3);
 										cell1.innerHTML = num;
 										cell2.innerHTML = data[i].nombre;
+										var min = new Date();
+										console.log(min);
+										fechaMin = moment(min, 'YYYY/MM/DD');
+										fechaMin = fechaMin
+												.format('YYYY-MM-DD');
 
-										cell3.innerHTML = '<center><input type="date" id="fechaEstimada"  style="width:200px;height:30px;text-align: center"/></center>';
+										console.log(fechaMin);
+
+										cell3.innerHTML = '<input type="date" id="fechaEstimada"  style="width:200px;height:30px;text-align: center" min="'+fechaMin+'" class="form-control select2 select2-hidden-accessible"/>';
 
 										cell4.innerHTML = data[i].idActividad;
 
@@ -377,16 +384,25 @@
 				console.log(oCells[1].innerHTML);//Nombre Actividad
 				console.log(oCells[2].innerHTML);//Fecha estimada
 				console.log(oCells[3].innerHTML);//id actividad
-				
-				var fecha = $('#fechaEstimada').val();
-				arregloFechas.push(fecha);
-				arregloIds.push(oCells[3].innerHTML);//almacena los ids
 
-               console.log(arregloFechas);
+				//var fecha = $('#fechaEstimada').val();
+				//arregloFechas.push(oCells[2].value);
+				arregloIds.push(oCells[3].innerHTML);//almacena los ids
 				console.log(arregloIds);
 
 			}
 		}
+
+		var filas = $("#tablaActividades").find("tr"); //devulve las filas del body de tu tabla segun el ejemplo que brindaste
+		var fechas = "";
+		for (i = 1; i < filas.length; i++) { //Recorre las filas 1 a 1
+			var celdas = $(filas[i]).find("td"); //devolverá las celdas de una fila
+			fechas = $($(celdas[2]).children("input")[0]).val();
+			arregloFechas.push(fechas);
+
+		}
+
+		console.log(arregloFechas);
 
 		//Obtener los datos del sector
 		var sectorSeleccionado = $('#sectorSeleccionado').val();
@@ -430,18 +446,6 @@
 			document.getElementById('errorPlan').style.display = 'none';
 			document.getElementById('planSeleccionado').style.border = "";
 		}
-
-		/*if (fechaEstimada == "") {
-			document.getElementById('errorFechaEstimada').style.display = 'inline';
-			document.getElementById('fechaEstimada').style.border = "1px solid red";
-		} else {
-			document.getElementById('errorFechaEstimada').style.display = 'none';
-			document.getElementById('fechaEstimada').style.border = "";
-		}  */
-
-		var oTable = document.getElementById('tablaActividades');
-		//obtiene filas de la tabla
-		var rowLength = oTable.rows.length;
 
 		if (sectorSeleccionado > 0 && predioSeleccionado > 0
 				&& temporadaSeleccionada > 0 && planSeleccionado > 0) {
@@ -455,158 +459,33 @@
 						data : {
 							idPredio : predioSeleccionado,
 							idTemporada : temporadaSeleccionada,
-							actividades : arregloFechas,
-							actividadesFecha : arregloIds
+							actividadesFecha : arregloFechas,
+							actividades : arregloIds
 
 						},
 						success : function(data) {
 							if (data == true) {
 								toastr.success("Asignación exitosa");
+								document.getElementById('mostrar').style.display = 'none';
+								$('#sectorSeleccionado').val(-1);
+								$('#predioSeleccionado').val(-1);
+								$('#temporadaSeleccionado').val(-1);
+								$('#planSeleccionado').val(-1);
+								//$('#predioSeleccionado').val("");
+
 							} else {
 								toastr
 										.error("Error al registrar la actividad realizada");
 							}
 						},
 						error : function(jqXHR, errorThrown) {
-							alert("Error al guardar los datos");
+							toastr
+									.error("Error al guardar los datos, verifique los datos ingresados");
 						}
 					});
 		}
 
 	}
-
-	/*function guardarDatos() {
-
-		//Obtener los datos del sector
-		var sectorSeleccionado = $('#sectorSeleccionado').val();
-		//Obtener los datos del predio
-		var predioSeleccionado = $('#predioSeleccionado').val();
-
-		//Obtener los datos de la temporada
-		var temporadaSeleccionada = $('#temporadaSeleccionada').val();
-		//Obtener los datos del plan
-		var planSeleccionado = $('#planSeleccionado').val();
-		var fechaEstimada = $('#fechaEstimada').val();
-
-		if (sectorSeleccionado == -1) {
-			document.getElementById('errorSector').style.display = 'inline';
-			document.getElementById('sectorSeleccionado').style.border = "1px solid red";
-		} else {
-			document.getElementById('errorSector').style.display = 'none';
-			document.getElementById('sectorSeleccionado').style.border = "";
-		}
-
-		if (predioSeleccionado < 0) {
-			document.getElementById('errorPredio').style.display = 'inline';
-			document.getElementById('predioSeleccionado').style.border = "1px solid red";
-		} else {
-			document.getElementById('errorPredio').style.display = 'none';
-			document.getElementById('predioSeleccionado').style.border = "";
-		}
-
-		if (temporadaSeleccionada == -1) {
-			document.getElementById('errorTemporada').style.display = 'inline';
-			document.getElementById('temporadaSeleccionada').style.border = "1px solid red";
-		} else {
-			document.getElementById('errorTemporada').style.display = 'none';
-			document.getElementById('temporadaSeleccionada').style.border = "";
-		}
-
-		if (planSeleccionado < 0) {
-			document.getElementById('errorPlan').style.display = 'inline';
-			document.getElementById('planSeleccionado').style.border = "1px solid red";
-		} else {
-			document.getElementById('errorPlan').style.display = 'none';
-			document.getElementById('planSeleccionado').style.border = "";
-		}
-
-		/*if (fechaEstimada == "") {
-			document.getElementById('errorFechaEstimada').style.display = 'inline';
-			document.getElementById('fechaEstimada').style.border = "1px solid red";
-		} else {
-			document.getElementById('errorFechaEstimada').style.display = 'none';
-			document.getElementById('fechaEstimada').style.border = "";
-		}  */
-
-	/*var oTable = document.getElementById('tablaActividades');
-	//obtiene filas de la tabla
-	var rowLength = oTable.rows.length;
-
-	if (sectorSeleccionado > 0 && predioSeleccionado > 0
-			&& temporadaSeleccionada > 0 && planSeleccionado > 0) {
-
-		var arregloActividades = new Array();
-
-		//obteniene el id de las actividades de la tabla
-		for (var i = 1; i < rowLength; i++) {
-			var oCells = oTable.rows.item(i).cells;//devuelve un objeto con la fila completa
-			arregloActividades.push(oCells[3].innerText);
-		}
-
-		console.log(arregloActividades);
-
-		var arregloFechas = new Array();
-
-		//obtiene las fechas estimadas de las  actividades de la tabla
-		for (var i = 1; i < rowLength; i++) {
-			var fechas = document.getElementById("fechaEstimada").value;
-			arregloFechas.push(fechas);
-
-		}
-
-		console.log(arregloFechas);
-
-		$
-				.ajax({
-					type : 'POST',
-					url : "agregarPlanAPredio",
-					dataType : 'json',
-					data : {
-						idPredio : predioSeleccionado,
-						idTemporada : temporadaSeleccionada,
-						actividades : arregloActividades,
-						actividadesFecha : arregloFechas
-
-					},
-					success : function(data) {
-						console.log(data);
-						if (data == true) {
-							toastr
-									.success("El plan ha sido agregado correctamente al predio");
-							$('#sectorSeleccionado').val("");
-							$('#predioSeleccionado').val("");
-							$('#temporadaSeleccionada').val("");
-							$('#planSeleccionado').val("");
-
-							//Vaciar tabla
-							//Vaciar tabla materiales
-							var ot = document
-									.getElementById('tablaActividades');
-							var tam = ot.rows.length;
-							//loops through rows  
-							var w = 0;
-							for (w = 1; w < tam; w++) {
-								var ot2 = document
-										.getElementById('tablaActividades');
-								if (ot2.rows.length > 0) {
-									ot2.deleteRow(1);
-
-								}
-							}
-
-						} else {
-							toastr
-									.error("Se ha producido un error al asignar un plan al predio");
-						}
-
-					},
-					error : function(jqXHR, errorThrown) {
-						alert("Error al guardar el plan");
-					}
-				});
-
-	}
-	}*/
 </script>
 
 </html>
