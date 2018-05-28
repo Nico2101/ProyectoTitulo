@@ -1,3 +1,4 @@
+
 package com.app.proyectotitulo.controller;
 
 import java.sql.Date;
@@ -424,3 +425,4 @@ public class ActividadRealizadaController {
 		return vista;
 	}
 }
+
