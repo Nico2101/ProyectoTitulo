@@ -469,7 +469,7 @@
 								document.getElementById('mostrar').style.display = 'none';
 								$('#sectorSeleccionado').val(-1);
 								$('#predioSeleccionado').val(-1);
-								$('#temporadaSeleccionado').val(-1);
+								$('#temporadaSeleccionada').val(-1);
 								$('#planSeleccionado').val(-1);
 								//$('#predioSeleccionado').val("");
 

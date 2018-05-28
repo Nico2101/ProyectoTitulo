@@ -62,7 +62,8 @@ public class ActividadRealizadaController {
 
 	@Autowired
 	private ActividadService actividadService;
-
+	
+	@Autowired
 	private InsumoService insumoService;
 
 	@Autowired
@@ -425,4 +426,3 @@ public class ActividadRealizadaController {
 		return vista;
 	}
 }
-
