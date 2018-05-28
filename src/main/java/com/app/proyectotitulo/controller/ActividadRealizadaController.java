@@ -62,7 +62,7 @@ public class ActividadRealizadaController {
 
 	@Autowired
 	private ActividadService actividadService;
-	
+
 	@Autowired
 	private InsumoService insumoService;
 
@@ -105,14 +105,6 @@ public class ActividadRealizadaController {
 
 		if (e != null) {
 
-			List<Sector> sectores = sectorService.listarSectores(false);
-			List<Plan_Ejecucion> listaPlanes = planEjecucionService.listaPlanes(false);
-			List<Temporada> listaTemporadasActivas = temporadaService.listarTemporadasActivas();
-			vista.addObject("sectores", sectores);
-			vista.addObject("listaPlanes", listaPlanes);
-			vista.addObject("listaTemporadasActivas", listaTemporadasActivas);
-			vista.setViewName("asignarPlan");
-
 			// Get Sectores
 			List<Sector> listaSectores = sectorService.listarSectores(false);
 			vista.addObject("listaSectores", listaSectores);
@@ -148,30 +140,34 @@ public class ActividadRealizadaController {
 	public @ResponseBody boolean agregarPlanAPredio(@RequestParam int idPredio, @RequestParam int idTemporada,
 
 			@RequestParam(value = "actividades[]") String[] actividades,
-			@RequestParam(value = "actividadesFecha[]") String[] actividadesFecha) {
+			@RequestParam(value = "actividadesFecha[]") Date[] actividadesFecha) throws ParseException {
 
 		if (idPredio > 0 && idTemporada > 0 && actividades.length > 0 && actividadesFecha.length > 0) {
 
-			for (int j = 0; j < actividadesFecha.length; j++) {
+			Actividad_Realizada ar = new Actividad_Realizada();
+			Actividad_Realizada actividadRealizada = new Actividad_Realizada();
 
-				Actividad_Realizada ar = new Actividad_Realizada();
-				Predio predio = predioService.findByIdPredio(idPredio);
+			for (int i = 0; i < actividades.length; i++) {
+				for (int j = 0; j < actividadesFecha.length; i++) {
+					Predio predio = predioService.findByIdPredio(idPredio);
+					String ids = actividades[i];
+					int IDS = Integer.parseInt(ids);
 
-				Actividad actividad = actividadService.findByIdActividad(Integer.parseInt(actividades[j]));
-				Temporada temporada = temporadaService.buscarTemporada(idTemporada);
+					Actividad actividad = actividadService.findByIdActividad(IDS);
+					Temporada temporada = temporadaService.buscarTemporada(idTemporada);
+					ar.setPredio(predio);
+					ar.setFechaEstimada(actividadesFecha[i]);
+					ar.setTemporada(temporada);
+					ar.setActividad(actividad);
 
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
-				LocalDate date = LocalDate.parse(actividadesFecha[j], formatter);
-				Date fechaESTIMADA = java.sql.Date.valueOf(date);
+					// Guardar
+					actividadRealizada = actividadRealizadaService.saveAndFlush(ar);
 
-				ar.setPredio(predio);
-				ar.setFechaEstimada(fechaESTIMADA);
-				ar.setTemporada(temporada);
-				ar.setActividad(actividad);
+					// Cambiar estado del predio a En Proceso
+					predio.setEstado("En Proceso");
+					predioService.save(predio);
 
-				// Guardar
-				actividadRealizadaService.save(ar);
-
+				}
 			}
 		}
 
@@ -361,6 +357,11 @@ public class ActividadRealizadaController {
 					ar.setFechaEjecucionReal(dateInicio);
 					ar.setCantidadCosechada(Integer.parseInt(datos[i + 2]));
 
+					if (ar.getActividad().getNombre().equalsIgnoreCase("Cosecha")
+							|| ar.getActividad().getNombre().equalsIgnoreCase("cosecha")) {
+						ar.getPredio().setEstado("Cosechado");
+					}
+
 					// Guardar
 					actividadRealizadaService.save(ar);
 				}
@@ -390,6 +391,13 @@ public class ActividadRealizadaController {
 
 					ar.setFechaEjecucionReal(dateInicio);
 
+					// Consultar por el nombre de la actividad
+					if (ar.getActividad().getNombre().equalsIgnoreCase("Siembra")
+							|| ar.getActividad().getNombre().equalsIgnoreCase("siembra")) {
+						ar.getPredio().setEstado("Sembrado");
+
+					}
+
 					// Guardar
 					actividadRealizadaService.save(ar);
 
@@ -402,27 +410,5 @@ public class ActividadRealizadaController {
 
 		return false;
 
-	}
-
-	@RequestMapping(value = "reprogramarActividades")
-	public ModelAndView reprogramarActividades(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
-
-		sesion = request.getSession(true);
-		Empleado e = (Empleado) sesion.getAttribute("empleado");
-
-		if (e != null) {
-			// Get Sectores
-			List<Sector> listaSectores = sectorService.listarSectores(false);
-			vista.addObject("listaSectores", listaSectores);
-
-			vista.setViewName("reprogramarActividades");
-
-		} else {
-			vista.setViewName("login");
-			vista.addObject("empleado", new Empleado());
-			vista.addObject("sesionExpirada", "Su sesión ha expirado");
-
-		}
-		return vista;
 	}
 }

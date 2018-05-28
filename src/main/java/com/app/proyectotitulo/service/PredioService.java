@@ -20,13 +20,11 @@ public interface PredioService {
 	// Editar Predio
 	Predio editarPredio(Predio p);
 
-	
 	List<Predio> listarPrediosDeUnSector(int idSector);
-	
 
+	public void save(Predio p);
 
 	// Predios que tienen planes asignados
 	List<Predio> getListaPrediosConPlanesAsignados(int idSector);
-
 
 }
