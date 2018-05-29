@@ -59,8 +59,10 @@
 											</c:forEach>
 
 										</select> <span id="errorSector" class="error" style="display: none">Debe
-											seleccionar un sector</span>
+											seleccionar un sector</span> <span id="sinPredio" class="error"
+											style="display: none">Sector no tiene predios</span>
 									</div>
+
 
 
 
@@ -233,6 +235,9 @@
 													+ '</option>');
 
 								}
+							} else {
+								document.getElementById('sectorSeleccionado').style.border = "1px solid red";
+								document.getElementById('sinPredio').style.display = 'inline';
 							}
 
 						},
@@ -241,7 +246,12 @@
 						}
 					});
 
+		} else {
+			document.getElementById('sinPredio').style.display = 'none';
+			document.getElementById('errorSector').style.display = 'inline';
+			document.getElementById('sectorSeleccionado').style.border = "1px solid red";
 		}
+
 	}
 
 	function actividadesDeUnPlan() {

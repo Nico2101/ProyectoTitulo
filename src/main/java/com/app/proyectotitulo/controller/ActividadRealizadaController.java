@@ -140,35 +140,34 @@ public class ActividadRealizadaController {
 	public @ResponseBody boolean agregarPlanAPredio(@RequestParam int idPredio, @RequestParam int idTemporada,
 
 			@RequestParam(value = "actividades[]") String[] actividades,
-			@RequestParam(value = "actividadesFecha[]") Date[] actividadesFecha) throws ParseException {
+			@RequestParam(value = "actividadesFecha[]") String[] actividadesFecha) throws ParseException {
 
 		if (idPredio > 0 && idTemporada > 0 && actividades.length > 0 && actividadesFecha.length > 0) {
 
-			Actividad_Realizada ar = new Actividad_Realizada();
-			Actividad_Realizada actividadRealizada = new Actividad_Realizada();
+			for (int j = 0; j < actividadesFecha.length; j++) {
+				Actividad_Realizada ar = new Actividad_Realizada();
+				// DateFormat dt=new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+				LocalDate date = LocalDate.parse(actividadesFecha[j], formatter);
+				Date fechaEstimada = java.sql.Date.valueOf(date);
+				Predio predio = predioService.findByIdPredio(idPredio);
 
-			for (int i = 0; i < actividades.length; i++) {
-				for (int j = 0; j < actividadesFecha.length; i++) {
-					Predio predio = predioService.findByIdPredio(idPredio);
-					String ids = actividades[i];
-					int IDS = Integer.parseInt(ids);
+				Actividad actividad = actividadService.findByIdActividad(Integer.parseInt(actividades[j]));
+				Temporada temporada = temporadaService.buscarTemporada(idTemporada);
+				ar.setPredio(predio);
+				ar.setFechaEstimada(fechaEstimada);
+				ar.setTemporada(temporada);
+				ar.setActividad(actividad);
 
-					Actividad actividad = actividadService.findByIdActividad(IDS);
-					Temporada temporada = temporadaService.buscarTemporada(idTemporada);
-					ar.setPredio(predio);
-					ar.setFechaEstimada(actividadesFecha[i]);
-					ar.setTemporada(temporada);
-					ar.setActividad(actividad);
+				// Guardar
+				actividadRealizadaService.save(ar);
 
-					// Guardar
-					actividadRealizada = actividadRealizadaService.saveAndFlush(ar);
+				// Cambiar estado del predio a En Proceso
+				predio.setEstado("En Proceso");
+				predioService.save(predio);
 
-					// Cambiar estado del predio a En Proceso
-					predio.setEstado("En Proceso");
-					predioService.save(predio);
-
-				}
 			}
+
 		}
 
 		return true;
