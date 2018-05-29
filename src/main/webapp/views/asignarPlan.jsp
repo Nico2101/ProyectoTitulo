@@ -127,61 +127,63 @@
 
 
 			<!-- Actividades -->
-			<div class="row" id="mostrar" style="display: none">
-				<div class="col-xs-12">
-					<div class="box box-primary">
+			<div id="divTablaActividades" style="display: none">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="box box-primary">
 
-						<!-- /.box-header -->
-						<div class="box-body">
-							<h4 class="box-title">
-								<center>
-									<strong>Actividades del plan</strong>
-								</center>
-							</h4>
-							<div class="row">
-								<div class="col-sm-2" style="text-align: center;"></div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<h4 class="box-title">
+									<center>
+										<strong>Actividades del plan</strong>
+									</center>
+								</h4>
+								<div class="row">
+									<div class="col-sm-2" style="text-align: center;"></div>
 
-								<div class="col-sm-7">
-									<table id="tablaActividades"
-										class="table table-striped table-bordered table-hover">
+									<div class="col-sm-7">
+										<table id="tablaActividades"
+											class="table table-striped table-bordered table-hover">
 
-										<thead>
-											<tr>
+											<thead>
+												<tr>
 
-												<th width="50px">N°</th>
-												<th width="260px">Nombre Actividad</th>
-												<th width="200px">Fecha estimada de realización</th>
-												<th><center>Id</center></th>
+													<th width="50px">N°</th>
+													<th width="260px">Nombre Actividad</th>
+													<th width="200px">Fecha estimada de realización</th>
+													<th><center>Id</center></th>
 
 
-											</tr>
-										</thead>
-										<tbody id="contenido">
+												</tr>
+											</thead>
+											<tbody id="contenido">
 
-										</tbody>
-									</table>
+											</tbody>
+										</table>
+
+									</div>
+									<div class="col-sm-3"></div>
 
 								</div>
-								<div class="col-sm-3"></div>
+								<br>
+
+								<button type="button" class="btn btn-primary pull-right"
+									onclick="guardarDatos();">
+									<i class="fa fa-save"> Guardar</i>
+								</button>
 
 							</div>
-							<br>
-
-							<button type="button" class="btn btn-primary pull-right"
-								onclick="guardarDatos();">
-								<i class="fa fa-save"> Guardar</i>
-							</button>
-
+							<!-- /.box-body -->
 						</div>
-						<!-- /.box-body -->
+						<!-- /.box -->
+
+
+
+						<!-- /.box -->
 					</div>
-					<!-- /.box -->
-
-
-
-					<!-- /.box -->
+					<!-- /.col -->
 				</div>
-				<!-- /.col -->
 			</div>
 
 
@@ -223,6 +225,10 @@
 						success : function(data) {
 
 							if (!$.isEmptyObject(data)) {
+								document.getElementById('sectorSeleccionado').style.border = "";
+								document.getElementById('sinPredio').style.display = 'none';
+								
+								
 								//Vaciar select
 								$("#predioSeleccionado").empty();
 								$("#predioSeleccionado")
@@ -238,6 +244,10 @@
 							} else {
 								document.getElementById('sectorSeleccionado').style.border = "1px solid red";
 								document.getElementById('sinPredio').style.display = 'inline';
+								$("#predioSeleccionado").empty();
+								$("#predioSeleccionado")
+								.append(
+										'<option value="-1">Seleccione un predio</option>');
 							}
 
 						},
@@ -246,24 +256,14 @@
 						}
 					});
 
-		} else {
-			document.getElementById('sinPredio').style.display = 'none';
-			document.getElementById('errorSector').style.display = 'inline';
-			document.getElementById('sectorSeleccionado').style.border = "1px solid red";
-		}
+		} 
+		document.getElementById('sinPredio').style.display = 'none';
 
 	}
 
 	function actividadesDeUnPlan() {
 		var idPlan = $("#planSeleccionado").val();
 
-		if (idPlan > 0) {
-			//habilita los input
-			document.getElementById('mostrar').style.display = 'inline';
-		} else {
-			document.getElementById('mostrar').style.display = 'none';
-
-		}
 		//Vaciar tabla
 		var oTableIngre = document.getElementById('tablaActividades');
 
@@ -363,6 +363,7 @@
 									}
 
 								}
+								document.getElementById('divTablaActividades').style.display = 'inline';
 
 							}
 						},
@@ -370,6 +371,8 @@
 							alert("Error al obtener las actividades");
 						}
 					});
+		} else {
+			document.getElementById('divTablaActividades').style.display = 'none';
 		}
 	}
 
@@ -476,9 +479,12 @@
 						success : function(data) {
 							if (data == true) {
 								toastr.success("Asignación exitosa");
-								document.getElementById('mostrar').style.display = 'none';
+								document.getElementById('divTablaActividades').style.display = 'none';
 								$('#sectorSeleccionado').val(-1);
-								$('#predioSeleccionado').val(-1);
+								$("#predioSeleccionado").empty();
+								$("#predioSeleccionado")
+								.append(
+										'<option value="-1">Seleccione un predio</option>');
 								$('#temporadaSeleccionada').val(-1);
 								$('#planSeleccionado').val(-1);
 								//$('#predioSeleccionado').val("");

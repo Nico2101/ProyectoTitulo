@@ -126,6 +126,7 @@
 													<th>N°</th>
 													<th width="400px">Nombre Actividad</th>
 													<th width="250px">Fecha Estimada</th>
+													<th width="250px">Nueva Fecha Estimada</th>
 													<th>id actividad</th>
 
 												</tr>
@@ -134,7 +135,7 @@
 
 										</table>
 										<label>Motivo de reprogramación de actividades:</label>
-										<p> <textarea name="motivo" id="motivo" cols="103" rows="3"></textarea></p>
+										<p> <textarea name="motivo" id="motivo" cols="102" rows="3"></textarea></p>
 
 									</div>
 									<div class="col-sm-3"></div>
@@ -308,7 +309,8 @@
 										var cell1 = row.insertCell(0); //numero
 										var cell2 = row.insertCell(1);//nombre
 										var cell3 = row.insertCell(2);//fechaEstimada
-										var cell4 = row.insertCell(3);//idActividad
+										var cell4 = row.insertCell(3);//nueva fecha estimada
+										var cell5 = row.insertCell(4);//idActividad
 
 										// Add some text to the new cells:
 										cell1.innerHTML = num;
@@ -318,12 +320,12 @@
 												data[i].fechaEstimada,
 												'YYYY/MM/DD');
 										fecha = fecha.format('DD-MM-YYYY');
-										$('#fechaEstimada').val(fecha);
 										
+										cell3.innerHTML=fecha;
 
-										cell3.innerHTML = '<input type="date" name="fecha" id="fechaEstimada"   class="form-control select2 select2-hidden-accessible"/>';
+										cell4.innerHTML = '<input type="date" name="fecha" id="NuevaFechaEstimada"   class="form-control select2 select2-hidden-accessible"/>';
 										
-										cell4.innerHTML = data[i].idActividadRealizada;
+										cell5.innerHTML = data[i].idActividadRealizada;
 
 										$('#planAsignado')
 												.val(
@@ -342,7 +344,7 @@
 
 										tbl.rows[i].cells[j].style.display = "";
 
-										if (j == 3)
+										if (j == 4)
 
 											tbl.rows[i].cells[j].style.display = "none";
 
