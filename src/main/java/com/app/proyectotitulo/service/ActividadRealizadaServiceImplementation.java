@@ -42,5 +42,11 @@ public class ActividadRealizadaServiceImplementation implements ActividadRealiza
 		// TODO Auto-generated method stub
 		actividadRealizadaRepo.save(ar);
 	}
+	
+	@Override
+	public Actividad_Realizada editarActividad_Realizada(Actividad_Realizada a) {
+		// TODO Auto-generated method stub
+		return actividadRealizadaRepo.save(a);
+	}
 
 }

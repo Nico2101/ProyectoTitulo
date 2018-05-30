@@ -17,5 +17,9 @@ public interface ActividadRealizadaService {
 	Actividad_Realizada buscarActividad(int idActividadRealizada);
 
 	public void save(Actividad_Realizada ar);
+	
+	
+	// Editar actividad realizada
+	Actividad_Realizada editarActividad_Realizada(Actividad_Realizada a);
 
 }

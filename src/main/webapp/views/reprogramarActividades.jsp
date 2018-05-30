@@ -101,7 +101,7 @@
 				<!-- /.col -->
 			</div>
 
-			<div id="divTablaRegistrarActividadRealizada" style="display: none">
+			<div id="divTablaActividades" style="display: none">
 
 				<div class="row">
 					<div class="col-xs-12">
@@ -130,12 +130,16 @@
 													<th>id actividad</th>
 
 												</tr>
-												
+
 											</thead>
 
 										</table>
 										<label>Motivo de reprogramación de actividades:</label>
-										<p> <textarea name="motivo" id="motivo" cols="102" rows="3"></textarea></p>
+										<p>
+											<textarea name="motivo" id="motivo" cols="102" rows="3"></textarea>
+											<span id="errorMotivo" class="error" style="display: none">Debe
+												ingresar un motivo</span>
+										</p>
 
 									</div>
 									<div class="col-sm-3"></div>
@@ -144,7 +148,7 @@
 								<br>
 
 								<button type="button" class="btn btn-primary pull-right"
-									onclick="guardarDatos();">
+									onclick="guardarDatosReprogramacionFecha();">
 									<i class="fa fa-save"> Guardar</i>
 								</button>
 
@@ -224,7 +228,7 @@
 								document.getElementById('sinPredio').style.display = 'inline';
 								document.getElementById('divPlanAsignado').style.display = 'none';
 								document
-										.getElementById('divTablaRegistrarActividadRealizada').style.display = 'none';
+										.getElementById('divTablaActividades').style.display = 'none';
 							}
 						},
 						error : function(jqXHR, errorThrown) {
@@ -238,7 +242,7 @@
 			document.getElementById('sector').style.border = "1px solid red";
 			document.getElementById('divPlanAsignado').style.display = 'none';
 			document.getElementById('sinPredio').style.display = 'none';
-			document.getElementById('divTablaRegistrarActividadRealizada').style.display = 'none';
+			document.getElementById('divTablaActividades').style.display = 'none';
 		}
 
 	}
@@ -320,11 +324,22 @@
 												data[i].fechaEstimada,
 												'YYYY/MM/DD');
 										fecha = fecha.format('DD-MM-YYYY');
-										
-										cell3.innerHTML=fecha;
 
-										cell4.innerHTML = '<input type="date" name="fecha" id="NuevaFechaEstimada"   class="form-control select2 select2-hidden-accessible"/>';
-										
+										cell3.innerHTML = fecha;
+
+										fecha = moment(fecha, 'DD/MM/YYYY');
+										var min = new Date(fecha);
+										var dias = 1;
+										min.setDate(min.getDate() + 1);
+										console.log(min);
+										fechaMin = moment(min, 'YYYY/MM/DD');
+										fechaMin = fechaMin
+												.format('YYYY-MM-DD');
+
+										console.log(fechaMin);
+
+										cell4.innerHTML = '<input type="date" name="fecha" id="NuevaFechaEstimada"  min="'+fechaMin+'"  class="form-control select2 select2-hidden-accessible"/>';
+
 										cell5.innerHTML = data[i].idActividadRealizada;
 
 										$('#planAsignado')
@@ -352,8 +367,11 @@
 
 								}
 								document.getElementById('divPlanAsignado').style.display = 'inline';
-								document
-										.getElementById('divTablaRegistrarActividadRealizada').style.display = 'inline';
+								document.getElementById('divTablaActividades').style.display = 'inline';
+								
+								document.getElementById('errorMotivo').style.display = 'none';
+								document.getElementById('motivo').style.border = "";
+								
 							}
 						},
 						error : function(jqXHR, errorThrown) {
@@ -362,13 +380,14 @@
 					});
 		} else {
 			document.getElementById('divPlanAsignado').style.display = 'none';
-			document.getElementById('divTablaRegistrarActividadRealizada').style.display = 'none';
+			document.getElementById('divTablaActividades').style.display = 'none';
 		}
 	}
 
-	/*function guardarDatos() {
+	function guardarDatosReprogramacionFecha() {
 		//Recorrer Tabla y Guardar los datos en un arreglo
-
+		//Obteniene el motivo de la reprogramacion
+		var motivo = $('#motivo').val();
 		//obtener los dato de la tabla
 		var oTable = document.getElementById('tablaActividades');
 		//gets rows of table
@@ -376,247 +395,108 @@
 		console.log(rowLength);
 		var cont = 0;
 
-		var arregloDatos = Array();
-		var arregloDatosCosecha = Array();
+		var arregloFechasEstimadas = Array();
+		var arregloFechasReprogramadas = Array();
+		var arregloFechasRealesReprogramadas = Array();
+		var arregloIds = Array();
+
+		var filas = $("#tablaActividades").find("tr"); //devulve las filas del body de tu tabla segun el ejemplo que brindaste
+		var fechas = "";
+		for (i = 1; i < filas.length; i++) { //Recorre las filas 1 a 1
+			var celdas = $(filas[i]).find("td"); //devolverá las celdas de una fila
+			fechas = $($(celdas[3]).children("input")[0]).val();
+			arregloFechasReprogramadas.push(fechas);
+		}
 
 		if (rowLength > 1) {
 			//loops through rows    
 			for (i = 1; i < rowLength; i++) {
 				var oCells = oTable.rows.item(i).cells;//devuelve un objeto con la fila completa
-				console.log(oCells[0].innerHTML);//Numero Fila
-				console.log(oCells[1].innerHTML);//Nombre Actividad
-				console.log(oCells[2].innerHTML);//Fecha Estimada
-				console.log(oCells[4].innerHTML);//Cantidad cosechada
-				console.log(oCells[6].innerHTML);//Id Actividad
+				arregloFechasEstimadas.push(oCells[2].innerHTML);//fechas estimadas
+				arregloIds.push(oCells[4].innerHTML);//almacena los ids
 
-				var idFecha = "fechaEjecucion" + oCells[0].innerHTML;
-				var fecha = $('#' + idFecha).val();
-				if (typeof fecha != 'undefined' && fecha != "") {
-					console.log(fecha); //Imprimir Fecha Ejecucion Real
-					cont++;
+			}
 
-					//Agregar los datos en un arreglo
+		}
+		// console.log(arregloFechasEstimadas);
+		//console.log(arregloIds);
+		// console.log(arregloFechasReprogramadas);
 
-					if (oCells[1].innerHTML == "Cosecha"
-							|| oCells[1].innerHTML == "cosecha") {
-						var cantCosechada = $('#cantidadCosechada').val();
-						if (cantCosechada == "") {
-							toastr
-									.warning("Debe ingresar la cantidad cosechada");
-							$('#cantidadCosechada').focus();
-							break;
-						} else {
-							arregloDatosCosecha.push(oCells[6].innerHTML);//id actividad
-							arregloDatosCosecha.push(oCells[2].innerHTML);//fecha ejecucion real
-							arregloDatosCosecha.push(cantCosechada);//Cantidad Cosechada
+		var arregloIdsReprogramados = Array();
+		var arregloFechasEstiamdasReprogramadas = Array();
+
+		for (i = 0; i < arregloFechasReprogramadas.length; i++) {
+			if (arregloFechasReprogramadas[i] != "") {
+				arregloFechasEstiamdasReprogramadas
+						.push(arregloFechasEstimadas[i]);//almacena las fechas estimadas que se reprogramaron
+				arregloFechasRealesReprogramadas
+						.push(arregloFechasReprogramadas[i]);//almacena fechas reales reprogramadas
+				arregloIdsReprogramados.push(arregloIds[i]);//almacena los Ids de las actividades reprogramadas reales
+
+			}
+
+		}
+
+		console.log(arregloFechasEstiamdasReprogramadas);
+		console.log(arregloFechasRealesReprogramadas);
+		console.log(arregloIdsReprogramados);
+		console.log(arregloFechasReprogramadas);
+
+	
+
+		if (arregloFechasEstimadas.length > 0
+				&& arregloFechasRealesReprogramadas.length > 0
+				&& arregloIds.length > 0 && motivo != "") {
+			//Enviar arreglo
+			$
+					.ajax({
+						type : 'POST',
+						url : "guardarReprogramacionDeActividades",
+						dataType : 'json',
+						async : false,
+						data : {
+							fechasEstimadas : arregloFechasEstiamdasReprogramadas,
+							fechasRealesReprogramadas : arregloFechasRealesReprogramadas,
+							Ids : arregloIdsReprogramados,
+							motivo : motivo
+
+						},
+						success : function(data) {
+							if (data == true) {
+								toastr
+										.success("Actividades reprogramadas correctamente");
+								document.getElementById('divTablaActividades').style.display = 'none';
+								$('#sector').val(-1);
+								$("#predio").empty();
+								$("#predio")
+										.append(
+												'<option value="-1">Seleccione un predio</option>');
+								$('#motivo').val("");
+								
+								document.getElementById('divPlanAsignado').style.display = 'none';
+								
+							} else {
+								toastr
+										.error("Error al reprogramar las actividades");
+							}
+						},
+						error : function(jqXHR, errorThrown) {
+							alert("Error al guardar los datos");
 						}
-
-					} else {
-						//la actividad no es cosecha por lo tanto se guarda en otro arreglo
-						arregloDatos.push(oCells[6].innerHTML);//id actividad
-						arregloDatos.push(oCells[2].innerHTML);//fecha ejecucion real
-					}
-
-				}
-
-				//agregar al arreglo los datos
-
-			}
-		}
-
-		if (cont == 0) {
-			toastr
-					.warning("Debe indicar la fecha de ejecución real por lo menos en una actividad");
+					});
 		} else {
-
-			if (arregloDatos.length > 0 || arregloDatosCosecha.length > 0) {
-				//Recorrer nuevamente el arreglo para preguntar si agregó insumos utilizados
-				//Recorrer ambos arreglos
-				var cont1 = 0, cont2 = 0;
-
-				if (arregloDatos.length > 0) {
-					for (var i = 0; i < arregloDatos.length / 2; i++) {
-						//Buscar si la actividad tiene insumos agregados
-						$
-								.ajax({
-									type : 'POST',
-									url : "verificarActividadInsumo",
-									dataType : 'json',
-									async : false,
-									data : {
-										idActividadRealizada : parseInt(arregloDatos[i])
-									},
-									success : function(data) {
-										if (data == false) {
-											//Obtener nombre actividad
-											$
-													.ajax({
-														type : 'POST',
-														url : "obtenerDatosActividadRealizada",
-														dataType : 'json',
-														async : false,
-														data : {
-															idActividadRealizada : parseInt(arregloDatos[i])
-														},
-														success : function(data) {
-															console.log(data);
-															toastr
-																	.error("Debe agregar insumos a la actividad: "
-																			+ data.actividad.nombre);
-														},
-														error : function(jqXHR,
-																errorThrown) {
-															alert("Error al obtener los de la actividad realizada");
-														}
-													});
-											cont1 += 10000000;
-
-										} else {
-											cont1++;
-										}
-
-									},
-									error : function(jqXHR, errorThrown) {
-										alert("Error al buscar datos actividad_insumo");
-									}
-								});
-						i += 2;
-					}
-				}
-
-				if (arregloDatosCosecha.length > 0) {
-					for (var i = 0; i < arregloDatosCosecha.length / 3; i++) {
-						//Buscar si la actividad tiene insumos agregados
-						$
-								.ajax({
-									type : 'POST',
-									url : "verificarActividadInsumo",
-									dataType : 'json',
-									async : false,
-									data : {
-										idActividadRealizada : parseInt(arregloDatosCosecha[i])
-									},
-									success : function(data) {
-										if (data == false) {
-											//Obtener nombre actividad
-											$
-													.ajax({
-														type : 'POST',
-														url : "obtenerDatosActividadRealizada",
-														dataType : 'json',
-														async : false,
-														data : {
-															idActividadRealizada : parseInt(arregloDatosCosecha[i])
-														},
-														success : function(data) {
-															console.log(data);
-															toastr
-																	.error("Debe agregar insumos a la actividad: "
-																			+ data.actividad.nombre);
-														},
-														error : function(jqXHR,
-																errorThrown) {
-															alert("Error al obtener los de la actividad realizada");
-														}
-													});
-											cont2 += 10000000;
-
-										} else {
-											cont2++;
-										}
-
-									},
-									error : function(jqXHR, errorThrown) {
-										alert("Error al buscar datos actividad_insumo");
-									}
-								});
-						i += 3;
-					}
-				}
-
-				console.log(cont1);
-				console.log(cont2);
-				console.log(arregloDatos.length);
-				console.log(arregloDatosCosecha.length);
-				//guardar los datos de arregloDatos
-				if (cont1 == arregloDatos.length / 2 && arregloDatos.length > 0) {
-					//Enviar arreglo
-					$
-							.ajax({
-								type : 'POST',
-								url : "guardarDatosActividadRealizada",
-								dataType : 'json',
-								async : false,
-								data : {
-									datos : arregloDatos
-								},
-								success : function(data) {
-									if (data == true) {
-										toastr
-												.success("Actividad realizada registrada correctamente");
-									} else {
-										toastr
-												.error("Error al registrar la actividad realizada");
-									}
-								},
-								error : function(jqXHR, errorThrown) {
-									alert("Error al guardar los datos");
-								}
-							});
-				}
-
-				//guardar los datos de arregloDatosCosecha
-				if (cont2 == arregloDatosCosecha.length / 3
-						&& arregloDatosCosecha.length > 0) {
-					//Enviar arreglo
-					$
-							.ajax({
-								type : 'POST',
-								url : "guardarDatosActividadRealizadaCosecha",
-								async : false,
-								data : {
-									datos : arregloDatosCosecha
-								},
-								dataType : 'json',
-								success : function(data) {
-									if (data == true) {
-										toastr
-												.success("Actividad realizada registrada correctamente");
-									} else {
-										toastr
-												.error("Error al registrar la actividad realizada");
-									}
-								},
-								error : function(jqXHR, errorThrown) {
-									alert("Error al guardar los datos de cosecha");
-								}
-							});
-				}
-
-				//recargar pagina
-
-				/*
-				//ocultar div tabla
-				document.getElementById('divTablaRegistrarActividadRealizada').style.display = 'none';
-
-				//ocultar predio y plan
-				document.getElementById('divPlanAsignado').style.display = 'none';
-				document.getElementById('divPredio').style.display = 'none';
-
-				$('#sector').val(-1);*/
-
-				//recargar tabla actividades
-			/*	if (cont2 == (arregloDatosCosecha.length / 3)) {
-					if (cont1 == (arregloDatos.length / 2)) {
-						mostrarActividades();
-					}
-				}
-
+			if(motivo==""){
+				document.getElementById('errorMotivo').style.display = 'inline';
+				document.getElementById('motivo').style.border = "1px solid red";
+			}else{
+				document.getElementById('errorMotivo').style.display = 'none';
+				document.getElementById('motivo').style.border = "";
+				toastr.error("Error debe ingresar nueva fecha estimada");
 			}
-
+			
 		}
 
-	}  */
+	}
 </script>
 
 

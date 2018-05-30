@@ -410,29 +410,5 @@ public class ActividadRealizadaController {
 		return false;
 
 	}
-	
-	@RequestMapping(value = "reprogramarActividades")
-	public ModelAndView reprogramarActividades(ModelAndView vista, HttpServletRequest request,
-			HttpSession sesion) {
 
-		sesion = request.getSession(true);
-		Empleado e = (Empleado) sesion.getAttribute("empleado");
-
-		if (e != null) {
-
-			// Get Sectores
-			List<Sector> listaSectores = sectorService.listarSectores(false);
-			vista.addObject("listaSectores", listaSectores);
-
-			vista.setViewName("reprogramarActividades");
-
-		} else {
-			vista.setViewName("login");
-			vista.addObject("empleado", new Empleado());
-			vista.addObject("sesionExpirada", "Su sesión ha expirado");
-
-		}
-		return vista;
-	}
-	
 }
