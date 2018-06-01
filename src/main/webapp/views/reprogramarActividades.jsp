@@ -137,6 +137,7 @@
 										<label>Motivo de reprogramación de actividades:</label>
 										<p>
 											<textarea name="motivo" id="motivo" cols="102" rows="3"></textarea>
+											<br>
 											<span id="errorMotivo" class="error" style="display: none">Debe
 												ingresar un motivo</span>
 										</p>
@@ -227,8 +228,7 @@
 								document.getElementById('sector').style.border = "1px solid red";
 								document.getElementById('sinPredio').style.display = 'inline';
 								document.getElementById('divPlanAsignado').style.display = 'none';
-								document
-										.getElementById('divTablaActividades').style.display = 'none';
+								document.getElementById('divTablaActividades').style.display = 'none';
 							}
 						},
 						error : function(jqXHR, errorThrown) {
@@ -337,9 +337,15 @@
 												.format('YYYY-MM-DD');
 
 										console.log(fechaMin);
-
-										cell4.innerHTML = '<input type="date" name="fecha" id="NuevaFechaEstimada"  min="'+fechaMin+'"  class="form-control select2 select2-hidden-accessible"/>';
-
+										if (data[i].fechaEjecucionReal == null) {
+											cell4.innerHTML = '<input type="date" name="fecha" id="NuevaFechaEstimada"  min="'+fechaMin+'"  class="form-control select2 select2-hidden-accessible"/>';
+										} else {
+											fecha = moment(
+													data[i].fechaEjecucionReal,
+													'YYYY/MM/DD');
+											fecha = fecha.format('DD-MM-YYYY');
+											cell4.innerHTML = "Actividad realizada el "+ fecha;
+										}
 										cell5.innerHTML = data[i].idActividadRealizada;
 
 										$('#planAsignado')
@@ -368,10 +374,10 @@
 								}
 								document.getElementById('divPlanAsignado').style.display = 'inline';
 								document.getElementById('divTablaActividades').style.display = 'inline';
-								
+
 								document.getElementById('errorMotivo').style.display = 'none';
 								document.getElementById('motivo').style.border = "";
-								
+
 							}
 						},
 						error : function(jqXHR, errorThrown) {
@@ -399,14 +405,17 @@
 		var arregloFechasReprogramadas = Array();
 		var arregloFechasRealesReprogramadas = Array();
 		var arregloIds = Array();
+		var arregloFechasEstimadas = Array();
 
 		var filas = $("#tablaActividades").find("tr"); //devulve las filas del body de tu tabla segun el ejemplo que brindaste
 		var fechas = "";
 		for (i = 1; i < filas.length; i++) { //Recorre las filas 1 a 1
-			var celdas = $(filas[i]).find("td"); //devolverá las celdas de una fila
-			fechas = $($(celdas[3]).children("input")[0]).val();
-			arregloFechasReprogramadas.push(fechas);
+				var celdas = $(filas[i]).find("td"); //devolverá las celdas de una fila
+				fechas = $($(celdas[3]).children("input")[0]).val();
+				arregloFechasReprogramadas.push(fechas);
+			
 		}
+		
 
 		if (rowLength > 1) {
 			//loops through rows    
@@ -426,7 +435,7 @@
 		var arregloFechasEstiamdasReprogramadas = Array();
 
 		for (i = 0; i < arregloFechasReprogramadas.length; i++) {
-			if (arregloFechasReprogramadas[i] != "") {
+			if (typeof arregloFechasReprogramadas[i] !='undefined' && arregloFechasReprogramadas[i] != "") {
 				arregloFechasEstiamdasReprogramadas
 						.push(arregloFechasEstimadas[i]);//almacena las fechas estimadas que se reprogramaron
 				arregloFechasRealesReprogramadas
@@ -442,9 +451,7 @@
 		console.log(arregloIdsReprogramados);
 		console.log(arregloFechasReprogramadas);
 
-	
-
-		if (arregloFechasEstimadas.length > 0
+		if (arregloFechasEstiamdasReprogramadas.length > 0
 				&& arregloFechasRealesReprogramadas.length > 0
 				&& arregloIds.length > 0 && motivo != "") {
 			//Enviar arreglo
@@ -472,9 +479,9 @@
 										.append(
 												'<option value="-1">Seleccione un predio</option>');
 								$('#motivo').val("");
-								
+
 								document.getElementById('divPlanAsignado').style.display = 'none';
-								
+
 							} else {
 								toastr
 										.error("Error al reprogramar las actividades");
@@ -485,15 +492,15 @@
 						}
 					});
 		} else {
-			if(motivo==""){
+			if (motivo == "") {
 				document.getElementById('errorMotivo').style.display = 'inline';
 				document.getElementById('motivo').style.border = "1px solid red";
-			}else{
+			} else {
 				document.getElementById('errorMotivo').style.display = 'none';
 				document.getElementById('motivo').style.border = "";
 				toastr.error("Error debe ingresar nueva fecha estimada");
 			}
-			
+
 		}
 
 	}

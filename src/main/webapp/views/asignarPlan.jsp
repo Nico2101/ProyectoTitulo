@@ -461,7 +461,7 @@
 		}
 
 		if (sectorSeleccionado > 0 && predioSeleccionado > 0
-				&& temporadaSeleccionada > 0 && planSeleccionado > 0) {
+				&& temporadaSeleccionada > 0 && planSeleccionado > 0 && arregloIds.length > 0 && arregloFechas.length > 0) {
 
 			//Enviar arreglo
 			$
