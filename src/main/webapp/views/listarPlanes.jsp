@@ -37,7 +37,7 @@
 				<div class="col-xs-12">
 					<div class="box box-primary">
 						<div class="box-header">
-							<h3 class="box-title">Lista de Planes de Ejecución</h3>
+							<h3 class="box-title">Lista de Planes</h3>
 
 						</div>
 						<!-- /.box-header -->
