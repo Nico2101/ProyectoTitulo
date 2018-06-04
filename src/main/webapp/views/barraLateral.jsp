@@ -10,20 +10,18 @@
 
 
 
-
 	<li class="treeview"><a href="#"> <i class="fa fa-list-alt"></i>
-			<span><c:out value="Plan de Ejecución"></c:out></span> <i
+			<span><c:out value="Plan Genérico"></c:out></span> <i
 			class="fa fa-angle-left pull-right"></i>
 
 	</a>
 		<ul class="treeview-menu">
 
-
 			<li><a href="agregarPlan"> <i class="fa fa-circle-o"></i> <span><c:out
 							value="Agregar Plan"></c:out></span>
 
 			</a></li>
-			
+
 			<li><a href="asignarPlan"> <i class="fa fa-circle-o"></i> <span><c:out
 							value="Asignar Plan"></c:out></span>
 
@@ -34,30 +32,31 @@
 
 			</a></li>
 
-
 		</ul></li>
 
-	<li><a href="registrarActividadRealizada"> <i class="fa fa-edit"></i> <span><c:out
-					value="Registrar Actividad"></c:out></span>
 
-	</a></li>
-	
-	
-	<li class="treeview"><a href="#"> <i class="fa fa-calendar-check-o"></i>
-			<span><c:out value="Actividades"></c:out></span> <i
+	<li class="treeview"><a href="#"> <i class="fa fa-list-alt"></i>
+			<span><c:out value="Plan de Ejecución"></c:out></span> <i
 			class="fa fa-angle-left pull-right"></i>
 
 	</a>
 		<ul class="treeview-menu">
-			<li><a href="reprogramarActividades"> <i class="fa fa-circle-o"></i>
-					<span><c:out value="Reprogramar actividades"></c:out></span>
+
+			<li><a href="registrarActividadRealizada"> <i
+					class="fa fa-circle-o"></i> <span><c:out
+							value="Registrar Actividad"></c:out></span>
+
+			</a></li>
+
+
+			<li><a href="reprogramarActividades"> <i
+					class="fa fa-circle-o"></i> <span><c:out
+							value="Reprogramar actividades"></c:out></span>
 
 			</a></li>
 
 
 		</ul></li>
-
-
 
 	<li class="treeview"><a href="#"> <i class="fa fa-info-circle"></i>
 			<span><c:out value="Insumos"></c:out></span> <i
@@ -87,8 +86,8 @@
 
 			</a></li>
 
-			<li><a href="ListarPredios"> <i class="fa fa-circle-o"></i> <span><c:out
-							value="Listar Predios"></c:out></span>
+			<li><a href="ListarPredios"> <i class="fa fa-circle-o"></i>
+					<span><c:out value="Listar Predios"></c:out></span>
 
 			</a></li>
 		</ul></li>
@@ -109,9 +108,8 @@
 		</ul></li>
 
 
-<li class="treeview"><a href="#"> <i class="fa fa-user"></i>
-			<span><c:out value="Empleados"></c:out></span> <i
-			class="fa fa-angle-left pull-right"></i>
+	<li class="treeview"><a href="#"> <i class="fa fa-user"></i> <span><c:out
+					value="Empleados"></c:out></span> <i class="fa fa-angle-left pull-right"></i>
 
 	</a>
 		<ul class="treeview-menu">

@@ -37,7 +37,7 @@
 				<div class="col-xs-12">
 					<div class="box box-primary">
 						<div class="box-header">
-							<h3 class="box-title">Asignar plan de ejecución a predio</h3>
+							<h3 class="box-title">Asignar Plan a Predio</h3>
 
 							<label class="pull-right" style="font-weight: normal; color: red">*
 								Campos obligatorios</label>
