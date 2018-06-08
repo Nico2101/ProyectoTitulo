@@ -143,8 +143,8 @@
 								</div>
 								<br>
 
-								<button type="button" class="btn btn-primary pull-right"
-									onclick="guardarDatos();">
+								<button id="botonGuardar" type="button"
+									class="btn btn-primary pull-right" onclick="guardarDatos();">
 									<i class="fa fa-save"> Guardar</i>
 								</button>
 
@@ -476,6 +476,8 @@
 			}
 		}
 
+		var contActividadesRealizadas = 0;
+
 		//obtener el id del predio
 		var idPredio = $('#predio').val();
 		if (idPredio > 0) {
@@ -576,6 +578,8 @@
 											cell6.innerHTML = '<a href="#" title="Ver Insumos Utilizados" onclick="verInsumosUtilizados('
 													+ data[i].idActividadRealizada
 													+ ');"><i class="fa fa-eye fa-lg" style="color: blue"></i></a>';
+
+											contActividadesRealizadas++;
 										}
 
 										if (data[i].actividad.nombre == "Cosecha"
@@ -585,7 +589,8 @@
 											} else {
 												cell5.innerHTML = currency(
 														data[i].cantidadCosechada,
-														1) + " Kg.";
+														1)
+														+ " Kg.";
 											}
 
 										} else {
@@ -621,6 +626,10 @@
 								document.getElementById('divPlanAsignado').style.display = 'inline';
 								document
 										.getElementById('divTablaRegistrarActividadRealizada').style.display = 'inline';
+
+								if (contActividadesRealizadas == data.length) {
+									document.getElementById('botonGuardar').style.display = 'none';
+								}
 							}
 						},
 						error : function(jqXHR, errorThrown) {
@@ -1203,9 +1212,11 @@
 				//Recorrer nuevamente el arreglo para preguntar si agregó insumos utilizados
 				//Recorrer ambos arreglos
 				var cont1 = 0, cont2 = 0;
-
+				console.log(arregloDatos);
 				if (arregloDatos.length > 0) {
+					var aux = 0;
 					for (var i = 0; i < arregloDatos.length / 2; i++) {
+						console.log("id " + arregloDatos[aux]);
 						//Buscar si la actividad tiene insumos agregados
 						$
 								.ajax({
@@ -1214,9 +1225,10 @@
 									dataType : 'json',
 									async : false,
 									data : {
-										idActividadRealizada : parseInt(arregloDatos[i])
+										idActividadRealizada : parseInt(arregloDatos[aux])
 									},
 									success : function(data) {
+										console.log(data);
 										if (data == false) {
 											//Obtener nombre actividad
 											$
@@ -1226,7 +1238,7 @@
 														dataType : 'json',
 														async : false,
 														data : {
-															idActividadRealizada : parseInt(arregloDatos[i])
+															idActividadRealizada : parseInt(arregloDatos[aux])
 														},
 														success : function(data) {
 															console.log(data);
@@ -1250,11 +1262,12 @@
 										alert("Error al buscar datos actividad_insumo");
 									}
 								});
-						i += 2;
+						aux += 2;
 					}
 				}
 
 				if (arregloDatosCosecha.length > 0) {
+					var aux2 = 0;
 					for (var i = 0; i < arregloDatosCosecha.length / 3; i++) {
 						//Buscar si la actividad tiene insumos agregados
 						$
@@ -1264,7 +1277,7 @@
 									dataType : 'json',
 									async : false,
 									data : {
-										idActividadRealizada : parseInt(arregloDatosCosecha[i])
+										idActividadRealizada : parseInt(arregloDatosCosecha[aux2])
 									},
 									success : function(data) {
 										if (data == false) {
@@ -1276,7 +1289,7 @@
 														dataType : 'json',
 														async : false,
 														data : {
-															idActividadRealizada : parseInt(arregloDatosCosecha[i])
+															idActividadRealizada : parseInt(arregloDatosCosecha[aux2])
 														},
 														success : function(data) {
 															console.log(data);
@@ -1300,7 +1313,7 @@
 										alert("Error al buscar datos actividad_insumo");
 									}
 								});
-						i += 3;
+						aux2 += 3;
 					}
 				}
 

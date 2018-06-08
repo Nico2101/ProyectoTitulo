@@ -1,5 +1,7 @@
 package com.app.proyectotitulo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +17,17 @@ public class ReprogramacionServiceImplementation implements ReprogramacionServic
 	public void setReprogramacionRepository(ReprogramacionRepository reprogramacionRepository) {
 		reprogramacionRepo = reprogramacionRepository;
 	}
-	
-	
+
 	@Override
 	public Reprogramacion save(Reprogramacion r) {
 		// TODO Auto-generated method stub
 		return reprogramacionRepo.saveAndFlush(r);
+	}
+
+	@Override
+	public List<Reprogramacion> getListaReprogramacionActividad(int idActividadRealizada) {
+		// TODO Auto-generated method stub
+		return reprogramacionRepo
+				.findByActividadRealizadaIdActividadRealizadaOrderByFechaEstimadaAnteriorAsc(idActividadRealizada);
 	}
 }

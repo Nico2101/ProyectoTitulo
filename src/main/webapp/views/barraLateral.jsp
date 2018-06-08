@@ -54,6 +54,12 @@
 							value="Reprogramar actividades"></c:out></span>
 
 			</a></li>
+			
+			<li><a href="compararPlan"> <i
+					class="fa fa-circle-o"></i> <span><c:out
+							value="Comparar Plan de Ejecución"></c:out></span>
+
+			</a></li>
 
 
 		</ul></li>

@@ -72,4 +72,10 @@ public class PredioServiceImplementation implements PredioService {
 		predioRepo.save(p);
 	}
 
+	@Override
+	public List<Predio> listaPrediosConPlanesAsigandosParaComparacion(int idSector) {
+		// TODO Auto-generated method stub
+		return predioRepo.listaPrediosConPlanesAsigandosParaComparacion(idSector);
+	}
+
 }
