@@ -80,7 +80,7 @@
 
 									<div class="col-md-3 col-sm-6 col-xs-12">
 										<label>* Temporada</label><select class="form-control"
-											id="temporadaSeleccionada">
+											id="temporadaSeleccionada" onchange="mostrarPlanes();">
 											<option value="-1">Seleccione temporada</option>
 											<c:forEach items="${listaTemporadasActivas}"
 												var="listaTemporadasActivas">
@@ -93,7 +93,8 @@
 											seleccionar una temporada</span>
 									</div>
 
-									<div class="col-md-3 col-sm-4 col-xs-12">
+									<div class="col-md-3 col-sm-4 col-xs-12" id="divPlanes"
+										style="display: none">
 										<label>* Plan</label><select class="form-control"
 											id="planSeleccionado" onchange="actividadesDeUnPlan()">
 											<option value="-1">Seleccione un plan</option>
@@ -227,8 +228,7 @@
 							if (!$.isEmptyObject(data)) {
 								document.getElementById('sectorSeleccionado').style.border = "";
 								document.getElementById('sinPredio').style.display = 'none';
-								
-								
+
 								//Vaciar select
 								$("#predioSeleccionado").empty();
 								$("#predioSeleccionado")
@@ -246,8 +246,8 @@
 								document.getElementById('sinPredio').style.display = 'inline';
 								$("#predioSeleccionado").empty();
 								$("#predioSeleccionado")
-								.append(
-										'<option value="-1">Seleccione un predio</option>');
+										.append(
+												'<option value="-1">Seleccione un predio</option>');
 							}
 
 						},
@@ -256,13 +256,30 @@
 						}
 					});
 
-		} 
+		}
 		document.getElementById('sinPredio').style.display = 'none';
+
+	}
+	
+	function mostrarPlanes() {
+		var idTemporada = $("#temporadaSeleccionada").val();
+
+		console.log(idTemporada);
+
+		if (idTemporada > 0) {
+			document.getElementById('divPlanes').style.display = 'inline';
+
+		}else{
+			document.getElementById('divPlanes').style.display = 'none';
+		}
 
 	}
 
 	function actividadesDeUnPlan() {
 		var idPlan = $("#planSeleccionado").val();
+		var idTemporada = $("#temporadaSeleccionada").val();
+		var fechaInicio;
+		var fechaFinal;
 
 		//Vaciar tabla
 		var oTableIngre = document.getElementById('tablaActividades');
@@ -281,96 +298,133 @@
 		console.log(idPlan);
 
 		if (idPlan > 0) {
+
 			$
 					.ajax({
 						type : 'POST',
-						url : "obtenerListaActididadesPlan",
+						url : "obtenerFechasTemporada",
 						dataType : 'json',
 						data : {
-							idPlan : idPlan
+							idTemporada : idTemporada
 						},
 						success : function(data) {
 							console.log(data);
 							if (!$.isEmptyObject(data)) {
-								//Cargar los datos a la tabla
-								for (var i = 0; i < data.length; i++) {
-									//N° Filas
-									var filas = document
-											.getElementById("tablaActividades").rows.length;
-									console.log("filas: " + filas);
+								fechaInicio = data.fechaInicio;
+								fechaTermino = data.fechaTermino;
 
-									if (filas >= 1) {
-										//Agregar el nombre de la actividad a la tabla
+								console.log(fechaInicio);
 
-										//numero
-										var num = 0;
-										var oTable = document
-												.getElementById('tablaActividades');
+								$
+										.ajax({
+											type : 'POST',
+											url : "obtenerListaActididadesPlan",
+											dataType : 'json',
+											data : {
+												idPlan : idPlan
+											},
+											success : function(data) {
+												console.log(data);
+												if (!$.isEmptyObject(data)) {
+													//Cargar los datos a la tabla
+													for (var i = 0; i < data.length; i++) {
+														//N° Filas
+														var filas = document
+																.getElementById("tablaActividades").rows.length;
+														console.log("filas: "
+																+ filas);
 
-										var rowLength = oTable.rows.length;
-										var oCells = oTable.rows
-												.item(rowLength - 1).cells;
-										var n = oCells[0].textContent;
+														if (filas >= 1) {
+															//Agregar el nombre de la actividad a la tabla
 
-										if (n == "N°") {
-											num = 1;
-										} else {
-											num = parseInt(n) + 1;
-										}
+															//numero
+															var num = 0;
+															var oTable = document
+																	.getElementById('tablaActividades');
 
-										// Find a <table> element with id="myTable":
-										var table = document
-												.getElementById("tablaActividades");
+															var rowLength = oTable.rows.length;
+															var oCells = oTable.rows
+																	.item(rowLength - 1).cells;
+															var n = oCells[0].textContent;
 
-										// Create an empty <tr> element and add it to the 1st position of the table:
-										var row = table.insertRow(filas);
+															if (n == "N°") {
+																num = 1;
+															} else {
+																num = parseInt(n) + 1;
+															}
 
-										var cell1 = row.insertCell(0);
-										var cell2 = row.insertCell(1);
-										var cell3 = row.insertCell(2);
-										var cell4 = row.insertCell(3);
-										cell1.innerHTML = num;
-										cell2.innerHTML = data[i].nombre;
-										var min = new Date();
-										console.log(min);
-										fechaMin = moment(min, 'YYYY/MM/DD');
-										fechaMin = fechaMin
-												.format('YYYY-MM-DD');
+															// Find a <table> element with id="myTable":
+															var table = document
+																	.getElementById("tablaActividades");
 
-										console.log(fechaMin);
+															// Create an empty <tr> element and add it to the 1st position of the table:
+															var row = table
+																	.insertRow(filas);
 
-										cell3.innerHTML = '<input type="date" id="fechaEstimada"  style="width:200px;height:30px;text-align: center" min="'+fechaMin+'" class="form-control select2 select2-hidden-accessible"/>';
+															var cell1 = row
+																	.insertCell(0);
+															var cell2 = row
+																	.insertCell(1);
+															var cell3 = row
+																	.insertCell(2);
+															var cell4 = row
+																	.insertCell(3);
+															cell1.innerHTML = num;
+															cell2.innerHTML = data[i].nombre;
+															var min = new Date();
+															console.log(min);
+															fechaMin = moment(
+																	min,
+																	'YYYY/MM/DD');
+															fechaMin = fechaMin
+																	.format('YYYY-MM-DD');
 
-										cell4.innerHTML = data[i].idActividad;
+															console.log(fechaMin);
+															if(fechaInicio>fechaMin){ 
 
-									}
+															cell3.innerHTML = '<input type="date" id="fechaEstimada"  style="width:200px;height:30px;text-align: center" min="'+fechaInicio+'" max="'+fechaTermino+'" class="form-control select2 select2-hidden-accessible"/>';
+															}else{
+																cell3.innerHTML = '<input type="date" id="fechaEstimada"  style="width:200px;height:30px;text-align: center" min="'+fechaMin+'" max="'+fechaTermino+'" class="form-control select2 select2-hidden-accessible"/>';
+															}
+															cell4.innerHTML = data[i].idActividad;
 
-								}
+														}
 
-								//Ocultar la columna id actividad
-								var tbl = document
-										.getElementById("tablaActividades");
-								for (var i = 0; i < tbl.rows.length; i++) {
+													}
 
-									for (var j = 0; j < tbl.rows[i].cells.length; j++) {
+													//Ocultar la columna id actividad
+													var tbl = document
+															.getElementById("tablaActividades");
+													for (var i = 0; i < tbl.rows.length; i++) {
 
-										tbl.rows[i].cells[j].style.display = "";
+														for (var j = 0; j < tbl.rows[i].cells.length; j++) {
 
-										if (j == 3)
+															tbl.rows[i].cells[j].style.display = "";
 
-											tbl.rows[i].cells[j].style.display = "none";
+															if (j == 3)
 
-									}
+																tbl.rows[i].cells[j].style.display = "none";
 
-								}
-								document.getElementById('divTablaActividades').style.display = 'inline';
+														}
 
+													}
+													document
+															.getElementById('divTablaActividades').style.display = 'inline';
+
+												}
+											},
+											error : function(jqXHR, errorThrown) {
+												alert("Error al obtener las actividades");
+											}
+										});
 							}
+
 						},
 						error : function(jqXHR, errorThrown) {
 							alert("Error al obtener las actividades");
 						}
 					});
+
 		} else {
 			document.getElementById('divTablaActividades').style.display = 'none';
 		}
@@ -461,7 +515,8 @@
 		}
 
 		if (sectorSeleccionado > 0 && predioSeleccionado > 0
-				&& temporadaSeleccionada > 0 && planSeleccionado > 0 && arregloIds.length > 0 && arregloFechas.length > 0) {
+				&& temporadaSeleccionada > 0 && planSeleccionado > 0
+				&& arregloIds.length > 0 && arregloFechas.length > 0) {
 
 			//Enviar arreglo
 			$
@@ -483,8 +538,8 @@
 								$('#sectorSeleccionado').val(-1);
 								$("#predioSeleccionado").empty();
 								$("#predioSeleccionado")
-								.append(
-										'<option value="-1">Seleccione un predio</option>');
+										.append(
+												'<option value="-1">Seleccione un predio</option>');
 								$('#temporadaSeleccionada').val(-1);
 								$('#planSeleccionado').val(-1);
 								//$('#predioSeleccionado').val("");

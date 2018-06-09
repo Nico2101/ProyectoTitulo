@@ -135,6 +135,20 @@ public class ActividadRealizadaController {
 
 		return listaActividades;
 	}
+	
+	
+	@RequestMapping(value = "obtenerFechasTemporada")
+	public @ResponseBody Temporada obtenerFechasTemporada(@RequestParam int idTemporada) {
+
+		// Buscar temporada
+		Temporada t = temporadaService.buscarTemporada(idTemporada);
+		if (t != null) {
+			return t;
+		} else {
+			return new Temporada();
+		}
+
+	}
 
 	@RequestMapping(value = "agregarPlanAPredio")
 	public @ResponseBody boolean agregarPlanAPredio(@RequestParam int idPredio, @RequestParam int idTemporada,
@@ -410,5 +424,7 @@ public class ActividadRealizadaController {
 		return false;
 
 	}
+	
+
 
 }

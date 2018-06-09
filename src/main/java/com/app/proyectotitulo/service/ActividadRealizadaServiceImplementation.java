@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.proyectotitulo.domain.Actividad_Realizada;
+import com.app.proyectotitulo.domain.Predio;
 import com.app.proyectotitulo.repository.ActividadRealizadaRepository;
 
 @Service
@@ -48,5 +49,8 @@ public class ActividadRealizadaServiceImplementation implements ActividadRealiza
 		// TODO Auto-generated method stub
 		return actividadRealizadaRepo.save(a);
 	}
+	
+	
+
 
 }

@@ -195,4 +195,38 @@ public class PredioController {
 		return new LinkedList<Predio>();
 
 	}
+
+	@RequestMapping(value = "MostrarEstadoPredios")
+	public ModelAndView mostrarEstadoPredios(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
+
+		sesion = request.getSession(true);
+		Empleado e = (Empleado) sesion.getAttribute("empleado");
+
+		if (e != null) {
+
+			List<Sector> listaSectores = sectorService.listarSectores(false);
+			vista.addObject("listaSectores", listaSectores);
+			vista.setViewName("mostrarEstadoPredios");
+
+		} else {
+			vista.setViewName("login");
+			vista.addObject("empleado", new Empleado());
+			vista.addObject("sesionExpirada", "Su sesión ha expirado");
+
+		}
+
+		return vista;
+
+	}
+	
+	@RequestMapping(value = "obtenerEstadoDeLosPredios")
+	public @ResponseBody List<Predio> obtenerEstadoDeLosPredios(@RequestParam int idSector) {
+
+		List<Predio> lista = predioService.obtenerEstadoPredios(idSector);
+
+		return lista;
+	}
+	
+	
+
 }

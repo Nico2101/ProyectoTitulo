@@ -71,5 +71,12 @@ public class PredioServiceImplementation implements PredioService {
 		// TODO Auto-generated method stub
 		predioRepo.save(p);
 	}
+	
+	@Override
+	public List<Predio> obtenerEstadoPredios(int idSector) {
+		// TODO Auto-generated method stub
+		return predioRepo.obtenerEstadoPredios(idSector);
+	}
+	
 
 }

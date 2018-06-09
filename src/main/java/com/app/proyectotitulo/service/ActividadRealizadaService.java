@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import com.app.proyectotitulo.domain.Actividad_Realizada;
+import com.app.proyectotitulo.domain.Predio;
 
 public interface ActividadRealizadaService {
 	
@@ -21,5 +22,6 @@ public interface ActividadRealizadaService {
 	
 	// Editar actividad realizada
 	Actividad_Realizada editarActividad_Realizada(Actividad_Realizada a);
+
 
 }

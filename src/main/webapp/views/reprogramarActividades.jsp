@@ -335,10 +335,13 @@
 										fechaMin = moment(min, 'YYYY/MM/DD');
 										fechaMin = fechaMin
 												.format('YYYY-MM-DD');
+										
+										var fechaTermino= data[i].temporada.fechaTermino;
+										console.log(fechaTermino);
 
 										console.log(fechaMin);
 										if (data[i].fechaEjecucionReal == null) {
-											cell4.innerHTML = '<input type="date" name="fecha" id="NuevaFechaEstimada"  min="'+fechaMin+'"  class="form-control select2 select2-hidden-accessible"/>';
+											cell4.innerHTML = '<input type="date" name="fecha" id="NuevaFechaEstimada"  min="'+fechaMin+'" max="'+fechaTermino+'" class="form-control select2 select2-hidden-accessible"/>';
 										} else {
 											fecha = moment(
 													data[i].fechaEjecucionReal,

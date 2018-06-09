@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.app.proyectotitulo.domain.Actividad_Realizada;
 
+
 @Repository
 public interface ActividadRealizadaRepository extends JpaRepository<Actividad_Realizada, Integer> {
 
@@ -16,7 +17,6 @@ public interface ActividadRealizadaRepository extends JpaRepository<Actividad_Re
 	List<Actividad_Realizada> listaActividadesAsiganadasAlPredio(@Param("id_predio") int idPredio);
 
 	Actividad_Realizada findByIdActividadRealizada(int idActividadRealizada);
-	
 	
 	
 
