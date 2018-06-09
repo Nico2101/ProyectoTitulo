@@ -84,7 +84,7 @@
 					<div class="col-xs-12">
 						<div class="box box-primary">
 							<div class="box-header">
-								<h3 class="box-title">Lista de predios y sus estados</h3>
+								<h3 class="box-title">Lista de predios</h3>
 
 							</div>
 							<!-- /.box-header -->
@@ -167,7 +167,9 @@
 								document
 										.getElementById('divTablaEstadoPredios').style.display = 'inline';
 								document.getElementById('sinPredio').style.display = 'none';
+								document.getElementById('sector').style.border = "";
 								document.getElementById('errorSector').style.display = 'none';
+								document.getElementById('sector').style.border = "";
 								//vaciar datatable
 								var oTable = $('#tablaEstadoPredios')
 										.dataTable();
@@ -191,7 +193,7 @@
 												success : function(dato) {
 													
 													var estado = "Sin estado";
-													var planEjecucion = " Sin plan asigando";
+													var planEjecucion = " Sin plan asignado";
 													if (!$.isEmptyObject(dato)) {
 
 														$('#tablaEstadoPredios')
@@ -233,7 +235,9 @@
 								document
 										.getElementById('divTablaEstadoPredios').style.display = 'none';
 								document.getElementById('errorSector').style.display = 'none';
+								document.getElementById('sector').style.border = "";
 								document.getElementById('sinPredio').style.display = 'inline';
+								document.getElementById('sector').style.border = "1px solid red";
 							}
 
 						},
@@ -245,7 +249,9 @@
 		} else {
 			document.getElementById('divTablaEstadoPredios').style.display = 'none';
 			document.getElementById('errorSector').style.display = 'inline';
+			document.getElementById('sector').style.border = "1px solid red";
 			document.getElementById('sinPredio').style.display = 'none';
+			
 		}
 	}
 </script>

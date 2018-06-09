@@ -98,7 +98,7 @@
 			</a></li>
 			
 			<li><a href="MostrarEstadoPredios"> <i class="fa fa-circle-o"></i>
-					<span><c:out value="Mostar estado de los predios"></c:out></span>
+					<span><c:out value="Ver estado de los predios"></c:out></span>
 
 			</a></li>
 			<li><a href="ListarCostosTotalesPorPredio"> <i class="fa fa-circle-o"></i>
