@@ -18,8 +18,10 @@ import com.app.proyectotitulo.domain.Actividad;
 import com.app.proyectotitulo.domain.Empleado;
 import com.app.proyectotitulo.domain.Insumo;
 import com.app.proyectotitulo.domain.Plan_Ejecucion;
+import com.app.proyectotitulo.domain.Sector;
 import com.app.proyectotitulo.service.ActividadService;
 import com.app.proyectotitulo.service.PlanEjecucionService;
+import com.app.proyectotitulo.service.SectorService;
 
 @Controller
 public class PlanEjecucionController {
@@ -29,6 +31,9 @@ public class PlanEjecucionController {
 
 	@Autowired
 	private ActividadService actividadService;
+
+	@Autowired
+	private SectorService sectorService;
 
 	@RequestMapping(value = "agregarPlan")
 	public ModelAndView agregarPlan(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
@@ -194,7 +199,28 @@ public class PlanEjecucionController {
 		return false;
 
 	}
-	
-	
+
+	@RequestMapping(value = "compararPlan")
+	public ModelAndView compararPlan(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
+
+		sesion = request.getSession(true);
+		Empleado e = (Empleado) sesion.getAttribute("empleado");
+
+		if (e != null) {
+
+			// Get Sectores
+			List<Sector> listaSectores = sectorService.listarSectores(false);
+			vista.addObject("listaSectores", listaSectores);
+
+			vista.setViewName("compararPlan");
+
+		} else {
+			vista.setViewName("login");
+			vista.addObject("empleado", new Empleado());
+			vista.addObject("sesionExpirada", "Su sesión ha expirado");
+
+		}
+		return vista;
+	}
 
 }

@@ -19,9 +19,10 @@
 	<!-- Header -->
 	<section id="header">
 		<header>
-			<span class="image avatar"><img src="images/perfil.jpg" alt="" /></span>
+			<!--  <span class="image avatar"><img src="images/perfil.jpg" alt="" /></span>-->
 			<h1 id="logo">
-				<a href="#"><i class="glyphicon glyphicon-grain"></i>Fundo Santa Emilia</a>
+				<a href="#"><i class="glyphicon glyphicon-grain"></i>Fundo Santa
+					Emilia</a>
 			</h1>
 
 		</header>
@@ -47,7 +48,7 @@
 				<div class="container">
 
 					<p align="justify">El Fundo Santa Emilia, está ubicado en la
-						calle Las Rosas s/n, San Carlos. Abarca alrededor de 1.500
+						calle Las Rosas s/n, San Carlos. Comprende alrededor de 1.500
 						hectáreas, en las cuales se desarrollan actividades agrícolas de
 						producción de trigo, remolacha, achicoria y arvejas bajo altos
 						estándares de calidad para cumplir con los requisitos de sus
@@ -107,15 +108,7 @@
 
 		</div>
 
-		<!-- Footer -->
-		<section id="footer">
-			<div class="container">
-				<ul class="copyright">
-					<li>&copy; Untitled. All rights reserved.</li>
-					<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-				</ul>
-			</div>
-		</section>
+
 
 	</div>
 

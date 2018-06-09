@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -40,7 +41,7 @@ public class ReprogramacionController {
 	private ReprogramacionService reprogramacionService;
 
 	@Autowired
-	private ActividadRealizadaService actividad_realizadaService;
+	private ActividadRealizadaService actividadRealizadaService;
 
 	@RequestMapping(value = "reprogramarActividades")
 	public ModelAndView reprogramarActividades(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
@@ -81,12 +82,12 @@ public class ReprogramacionController {
 				DateTimeFormatter forma = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 				LocalDate date = LocalDate.parse(fechasEstimadas[j], forma);
 				Date fechaEstimada = java.sql.Date.valueOf(date);
-                
+
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
 				LocalDate reprogramada = LocalDate.parse(fechasRealesReprogramadas[j], formatter);
 				Date fechaReprogramacion = java.sql.Date.valueOf(reprogramada);
 
-				Actividad_Realizada actividadRealizada = actividad_realizadaService
+				Actividad_Realizada actividadRealizada = actividadRealizadaService
 						.buscarActividad(Integer.parseInt(Ids[j]));
 
 				r.setMotivo(motivo);
@@ -96,19 +97,61 @@ public class ReprogramacionController {
 
 				// Guardar reprogramación
 				reprogramacionService.save(r);
-				
+
 				Actividad_Realizada a = new Actividad_Realizada();
-				a= actividad_realizadaService.buscarActividad(Integer.parseInt(Ids[j]));
+				a = actividadRealizadaService.buscarActividad(Integer.parseInt(Ids[j]));
 				a.setFechaEstimada(fechaReprogramacion);
-				
-				//se actualiza la fecha editada en actividad realizada
-				actividad_realizadaService.editarActividad_Realizada(a);
+
+				// se actualiza la fecha editada en actividad realizada
+				actividadRealizadaService.editarActividad_Realizada(a);
 
 			}
-            return true;
+			return true;
 		}
 
 		return false;
+	}
+
+	@RequestMapping(value = "obtnerReprogramacionesActividad")
+	public @ResponseBody boolean obtenerActividadesDelPlanAsignadoAlPredioVerificandoReprogramacion(
+			@RequestParam int idActividadRealizada) {
+
+		if (idActividadRealizada > 0) {
+			// Buscar Actividad Realizada
+			Actividad_Realizada ar = actividadRealizadaService.buscarActividad(idActividadRealizada);
+			if (ar != null) {
+
+				// verificar si la actividad tiene reprogramaciones
+				List<Reprogramacion> reprogramacionesActividad = reprogramacionService
+						.getListaReprogramacionActividad(ar.getIdActividadRealizada());
+
+				if (!reprogramacionesActividad.isEmpty()) {
+					return true;
+				}
+			}
+
+		}
+		return false;
+	}
+
+	@RequestMapping(value = "obtenerDatosReprogramacionesActividad")
+	public @ResponseBody List<Reprogramacion> obtenerDatosReprogramacionesActividad(
+			@RequestParam int idActividadRealizada) {
+
+		if (idActividadRealizada > 0) {
+			// Buscar Actividad Realizada
+			Actividad_Realizada ar = actividadRealizadaService.buscarActividad(idActividadRealizada);
+			if (ar != null) {
+
+				// verificar si la actividad tiene reprogramaciones
+				List<Reprogramacion> reprogramacionesActividad = reprogramacionService
+						.getListaReprogramacionActividad(ar.getIdActividadRealizada());
+
+				return reprogramacionesActividad;
+			}
+
+		}
+		return new LinkedList<Reprogramacion>();
 	}
 
 }

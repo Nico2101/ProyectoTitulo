@@ -25,12 +25,14 @@ import com.app.proyectotitulo.domain.Actividad_Realizada;
 import com.app.proyectotitulo.domain.Empleado;
 import com.app.proyectotitulo.domain.Plan_Ejecucion;
 import com.app.proyectotitulo.domain.Predio;
+import com.app.proyectotitulo.domain.Reprogramacion;
 import com.app.proyectotitulo.domain.Sector;
 import com.app.proyectotitulo.domain.Temporada;
 import com.app.proyectotitulo.service.ActividadRealizadaService;
 import com.app.proyectotitulo.service.ActividadService;
 import com.app.proyectotitulo.service.PlanEjecucionService;
 import com.app.proyectotitulo.service.PredioService;
+import com.app.proyectotitulo.service.ReprogramacionService;
 import com.app.proyectotitulo.service.SectorService;
 import com.app.proyectotitulo.service.TemporadaService;
 import com.app.proyectotitulo.domain.Actividad_Insumo;
@@ -71,6 +73,9 @@ public class ActividadRealizadaController {
 
 	@Autowired
 	private ActividadInsumoService actividadInsumoService;
+
+	@Autowired
+	private ReprogramacionService reprogramacionService;
 
 	@RequestMapping(value = "asignarPlan")
 	public ModelAndView asignarPlan(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
@@ -426,5 +431,37 @@ public class ActividadRealizadaController {
 	}
 	
 
+
+	@RequestMapping(value = "obtenerActividadesDelPlanAsignadoAlPredioVerificandoReprogramacion")
+	public @ResponseBody List<Actividad_Realizada> obtenerActividadesDelPlanAsignadoAlPredioVerificandoReprogramacion(
+			@RequestParam int idPredio) {
+
+		if (idPredio > 0) {
+			// Buscar Predio
+			Predio p = predioService.findByIdPredio(idPredio);
+			if (p != null) {
+				// Obtener las actividades
+				List<Actividad_Realizada> listaActividades = actividadRealizadaService
+						.listaActividadesAsignadasAPredio(idPredio);
+
+				// recorrer lista y verificar si tiene reprogramación
+				for (int i = 0; i < listaActividades.size(); i++) {
+					// verificar si la actividad tiene reprogramaciones
+					List<Reprogramacion> reprogramacionesActividad = reprogramacionService
+							.getListaReprogramacionActividad(listaActividades.get(i).getIdActividadRealizada());
+
+					if (!reprogramacionesActividad.isEmpty()) {
+						listaActividades.get(i)
+								.setFechaEstimada(reprogramacionesActividad.get(0).getFechaEstimadaAnterior());
+					}
+				}
+
+				return listaActividades;
+			}
+		}
+
+		return new LinkedList<Actividad_Realizada>();
+
+	}
 
 }

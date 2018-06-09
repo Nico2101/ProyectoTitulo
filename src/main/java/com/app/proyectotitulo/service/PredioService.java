@@ -30,4 +30,6 @@ public interface PredioService {
 	
 	List<Predio> obtenerEstadoPredios(int idSector);
 
+	List<Predio> listaPrediosConPlanesAsigandosParaComparacion(int idSector);
+
 }

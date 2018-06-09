@@ -18,7 +18,7 @@
 	src="assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <!-- Morris.js charts -->
 <script src="assets/bower_components/raphael/raphael.min.js"></script>
-<script src="assets/bower_components/morris.js/morris.min.js"></script>
+
 <!-- Sparkline -->
 <script
 	src="assets/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
@@ -47,7 +47,7 @@
 <!-- AdminLTE App -->
 <script src="assets/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="assets/dist/js/pages/dashboard.js"></script>
+
 <!-- AdminLTE for demo purposes -->
 <script src="assets/dist/js/demo.js"></script>
 <!-- fullCalendar -->

@@ -39,8 +39,7 @@
        folder instead of downloading all of them to reduce the load. -->
 <link rel="stylesheet" href="assets/dist/css/skins/_all-skins.min.css">
 <!-- Morris chart -->
-<link rel="stylesheet"
-	href="assets/bower_components/morris.js/morris.css">
+
 <!-- jvectormap -->
 <link rel="stylesheet"
 	href="assets/bower_components/jvectormap/jquery-jvectormap.css">
