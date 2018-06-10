@@ -147,12 +147,12 @@
 		<ul class="treeview-menu">
 
 
-			<li><a href="#"> <i class="fa fa-circle-o"></i> <span><c:out
+			<li><a href="rendimientoSector"> <i class="fa fa-circle-o"></i> <span><c:out
 							value="Rendimiento por Sector"></c:out></span>
 
 			</a></li>
 
-			<li><a href="#"> <i class="fa fa-circle-o"></i> <span><c:out
+			<li><a href="rendimientoProducto"> <i class="fa fa-circle-o"></i> <span><c:out
 							value="Rendimiento por producto"></c:out></span>
 
 			</a></li>

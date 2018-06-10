@@ -140,8 +140,7 @@ public class ActividadRealizadaController {
 
 		return listaActividades;
 	}
-	
-	
+
 	@RequestMapping(value = "obtenerFechasTemporada")
 	public @ResponseBody Temporada obtenerFechasTemporada(@RequestParam int idTemporada) {
 
@@ -395,15 +394,16 @@ public class ActividadRealizadaController {
 
 	@RequestMapping(value = "guardarDatosActividadRealizada")
 	public @ResponseBody boolean guardarDatosActividadRealizada(@RequestParam(value = "datos[]") String[] datos) {
-
+		System.out.println(datos.length);
 		if (datos.length > 0) {
+			int aux = 0;
 			for (int i = 0; i < datos.length / 2; i++) {
 				// Buscar Actividad
-				Actividad_Realizada ar = actividadRealizadaService.buscarActividad(Integer.parseInt(datos[i]));
+				Actividad_Realizada ar = actividadRealizadaService.buscarActividad(Integer.parseInt(datos[aux]));
 				if (ar != null) {
 					// DateFormat dt=new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH);
-					LocalDate date = LocalDate.parse(datos[i + 1], formatter);
+					LocalDate date = LocalDate.parse(datos[aux + 1], formatter);
 
 					Date dateInicio = java.sql.Date.valueOf(date);
 
@@ -421,7 +421,7 @@ public class ActividadRealizadaController {
 
 				}
 
-				i += 2;
+				aux += 2;
 			}
 			return true;
 		}
@@ -429,8 +429,6 @@ public class ActividadRealizadaController {
 		return false;
 
 	}
-	
-
 
 	@RequestMapping(value = "obtenerActividadesDelPlanAsignadoAlPredioVerificandoReprogramacion")
 	public @ResponseBody List<Actividad_Realizada> obtenerActividadesDelPlanAsignadoAlPredioVerificandoReprogramacion(
