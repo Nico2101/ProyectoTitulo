@@ -26,10 +26,9 @@ public interface PredioService {
 
 	// Predios que tienen planes asignados
 	List<Predio> getListaPrediosConPlanesAsignados(int idSector);
-	
-	
+
 	List<Predio> obtenerEstadoPredios(int idSector);
 
-	List<Predio> listaPrediosConPlanesAsigandosParaComparacion(int idSector);
+	List<Predio> listaPrediosConPlanesAsigandosParaComparacion(int idTemporada, int idSector);
 
 }

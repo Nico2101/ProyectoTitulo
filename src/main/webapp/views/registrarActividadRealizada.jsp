@@ -1171,7 +1171,7 @@
 				var idFecha = "fechaEjecucion" + oCells[0].innerHTML;
 				var fecha = $('#' + idFecha).val();
 				if (typeof fecha != 'undefined' && fecha != "") {
-					console.log(fecha); //Imprimir Fecha Ejecucion Real
+					console.log("fecha Ejecucion: "+fecha); //Imprimir Fecha Ejecucion Real
 					cont++;
 
 					//Agregar los datos en un arreglo
@@ -1202,6 +1202,9 @@
 
 			}
 		}
+		
+		console.log(arregloDatos);
+		console.log(arregloDatosCosecha);
 
 		if (cont == 0) {
 			toastr

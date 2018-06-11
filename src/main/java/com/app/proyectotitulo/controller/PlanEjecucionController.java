@@ -19,9 +19,11 @@ import com.app.proyectotitulo.domain.Empleado;
 import com.app.proyectotitulo.domain.Insumo;
 import com.app.proyectotitulo.domain.Plan_Ejecucion;
 import com.app.proyectotitulo.domain.Sector;
+import com.app.proyectotitulo.domain.Temporada;
 import com.app.proyectotitulo.service.ActividadService;
 import com.app.proyectotitulo.service.PlanEjecucionService;
 import com.app.proyectotitulo.service.SectorService;
+import com.app.proyectotitulo.service.TemporadaService;
 
 @Controller
 public class PlanEjecucionController {
@@ -34,6 +36,9 @@ public class PlanEjecucionController {
 
 	@Autowired
 	private SectorService sectorService;
+
+	@Autowired
+	private TemporadaService temporadaService;
 
 	@RequestMapping(value = "agregarPlan")
 	public ModelAndView agregarPlan(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
@@ -211,6 +216,10 @@ public class PlanEjecucionController {
 			// Get Sectores
 			List<Sector> listaSectores = sectorService.listarSectores(false);
 			vista.addObject("listaSectores", listaSectores);
+
+			// Get Temporadas
+			List<Temporada> listaTemporadas = temporadaService.listaTemporadas(false);
+			vista.addObject("listaTemporadas", listaTemporadas);
 
 			vista.setViewName("compararPlan");
 

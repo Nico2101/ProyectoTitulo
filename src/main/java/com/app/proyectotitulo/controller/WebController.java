@@ -22,4 +22,11 @@ public class WebController {
 		return vista;
 	}
 
+	@RequestMapping(value = "index")
+	public ModelAndView inicio(ModelAndView vista) {
+
+		vista.setViewName("inicio");
+		return vista;
+	}
+
 }

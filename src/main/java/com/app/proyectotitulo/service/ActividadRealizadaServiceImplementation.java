@@ -18,8 +18,7 @@ public class ActividadRealizadaServiceImplementation implements ActividadRealiza
 	public void setActividadRealizadaRepository(ActividadRealizadaRepository actividadRealizadaRepository) {
 		actividadRealizadaRepo = actividadRealizadaRepository;
 	}
-	
-	
+
 	@Override
 	public Actividad_Realizada saveAndFlush(Actividad_Realizada ar) {
 		// TODO Auto-generated method stub
@@ -43,14 +42,17 @@ public class ActividadRealizadaServiceImplementation implements ActividadRealiza
 		// TODO Auto-generated method stub
 		actividadRealizadaRepo.save(ar);
 	}
-	
+
 	@Override
 	public Actividad_Realizada editarActividad_Realizada(Actividad_Realizada a) {
 		// TODO Auto-generated method stub
 		return actividadRealizadaRepo.save(a);
 	}
-	
-	
 
+	@Override
+	public List<Actividad_Realizada> listaActividadesAsignadasAPredioEnTemporada(int idTemporada, int idPredio) {
+		// TODO Auto-generated method stub
+		return actividadRealizadaRepo.actividadesAsignadasAPredioEnTemporada(idTemporada, idPredio);
+	}
 
 }

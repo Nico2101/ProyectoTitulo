@@ -238,15 +238,17 @@ public class PredioController {
 	}
 
 	@RequestMapping(value = "obtenerPrediosDelSectorConPlanAsignaParaComparacion")
-	public @ResponseBody List<Predio> obtenerPrediosDelSectorConPlanAsignaParaComparacion(@RequestParam int idSector) {
+	public @ResponseBody List<Predio> obtenerPrediosDelSectorConPlanAsignaParaComparacion(@RequestParam int idSector,
+			@RequestParam int idTemporada) {
 
-		if (idSector > 0) {
+		if (idSector > 0 && idTemporada > 0) {
 			// Buscar Sector
 			Sector s = sectorService.findByIdSector(idSector);
 
 			if (s != null) {
 				// Obtener los predios con plan asignado del sector
-				List<Predio> listaPredio = predioService.listaPrediosConPlanesAsigandosParaComparacion(idSector);
+				List<Predio> listaPredio = predioService.listaPrediosConPlanesAsigandosParaComparacion(idTemporada,
+						idSector);
 				return listaPredio;
 			}
 		}
