@@ -15,11 +15,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.app.proyectotitulo.domain.Actividad_Insumo;
 import com.app.proyectotitulo.domain.Empleado;
 import com.app.proyectotitulo.domain.Predio;
 import com.app.proyectotitulo.domain.Sector;
+import com.app.proyectotitulo.domain.Temporada;
+import com.app.proyectotitulo.service.ActividadInsumoService;
 import com.app.proyectotitulo.service.PredioService;
 import com.app.proyectotitulo.service.SectorService;
+import com.app.proyectotitulo.service.TemporadaService;
 
 @Controller
 public class PredioController {
@@ -29,6 +33,12 @@ public class PredioController {
 
 	@Autowired
 	private SectorService sectorService;
+	
+	@Autowired
+	private TemporadaService temporadaService;
+	
+	@Autowired
+	private ActividadInsumoService actividadInsumoService;
 
 	@RequestMapping(value = "ListarPredios")
 	public ModelAndView listarPredios(ModelAndView vista, @Valid @ModelAttribute("predio") Predio predio,
@@ -243,6 +253,38 @@ public class PredioController {
 
 		return new LinkedList<Predio>();
 
+	}
+	
+	
+	@RequestMapping(value = "ListarCostosTotalesPorPredio")
+	public ModelAndView listarCostosTotalesPorPredio(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
+
+		sesion = request.getSession(true);
+		Empleado e = (Empleado) sesion.getAttribute("empleado");
+
+		if (e != null) {
+
+			List<Temporada> listaTemporadas = temporadaService.listaTemporadas(false);
+			vista.addObject("listaTemporadas", listaTemporadas);
+			vista.setViewName("costosTotalesPredio");
+
+		} else {
+			vista.setViewName("login");
+			vista.addObject("empleado", new Empleado());
+			vista.addObject("sesionExpirada", "Su sesión ha expirado");
+
+		}
+
+		return vista;
+
+	}
+	
+	@RequestMapping(value = "costosPorPredio")
+	public @ResponseBody List<Actividad_Insumo> costosPorPredio(@RequestParam int idPredio) {
+
+		List<Actividad_Insumo> lista = actividadInsumoService.obtenerCostosTotales(idPredio);
+
+		return lista;
 	}
 
 }

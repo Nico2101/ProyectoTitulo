@@ -41,5 +41,11 @@ public class ActividadInsumoServiceImplementation implements ActividadInsumoServ
 		// TODO Auto-generated method stub
 		return actividadInsumoRepo.findByIdActividadInsumo(idActividadInsumo);
 	}
+	
+	@Override
+	public List<Actividad_Insumo> obtenerCostosTotales(int idPredio) {
+		// TODO Auto-generated method stub
+		return actividadInsumoRepo.obtenerCostos(idPredio);
+	}
 
 }

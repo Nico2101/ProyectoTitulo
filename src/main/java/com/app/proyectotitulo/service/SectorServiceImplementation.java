@@ -53,4 +53,6 @@ public class SectorServiceImplementation implements SectorService {
 		// TODO Auto-generated method stub
 		return sectorRepo.TotalSuperSector( id_sector);
 	}
+	
+
 }

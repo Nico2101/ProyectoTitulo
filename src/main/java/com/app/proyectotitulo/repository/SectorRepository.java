@@ -17,7 +17,5 @@ public interface SectorRepository extends JpaRepository<Sector, Integer> {
 	@Query(value="select superficie from Sector where id_sector=?", nativeQuery=true)
 	Integer  TotalSuperSector(int id_sector);
 	
-	
-	
 
 }

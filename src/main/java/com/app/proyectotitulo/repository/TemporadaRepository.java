@@ -22,7 +22,7 @@ public interface TemporadaRepository extends JpaRepository<Temporada, Integer> {
 	@Query(value = "SELECT *  FROM Temporada WHERE estado ='1' AND temporada_Eliminada ='0'", nativeQuery = true)
 	List<Temporada>  totalTemporadasActivas();
 	
-	
+
 	
 
 }

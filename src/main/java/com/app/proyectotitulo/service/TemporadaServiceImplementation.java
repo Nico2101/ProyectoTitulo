@@ -48,5 +48,7 @@ public class TemporadaServiceImplementation implements TemporadaService {
 		// TODO Auto-generated method stub
 		return temporadaRepo.totalTemporadasActivas();
 	}
+	
+	
 
 }
