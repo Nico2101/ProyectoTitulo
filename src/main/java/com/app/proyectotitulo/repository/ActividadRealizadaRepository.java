@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.app.proyectotitulo.domain.Actividad_Realizada;
 
-
 @Repository
 public interface ActividadRealizadaRepository extends JpaRepository<Actividad_Realizada, Integer> {
 
@@ -17,7 +16,9 @@ public interface ActividadRealizadaRepository extends JpaRepository<Actividad_Re
 	List<Actividad_Realizada> listaActividadesAsiganadasAlPredio(@Param("id_predio") int idPredio);
 
 	Actividad_Realizada findByIdActividadRealizada(int idActividadRealizada);
-	
-	
+
+	@Query(value = "select * from Actividad_Realizada ar join Temporada t on ar.id_temporada=t.id_temporada where t.id_temporada=:id_temporada and t.temporada_eliminada=0 and ar.id_predio=:id_predio", nativeQuery = true)
+	List<Actividad_Realizada> actividadesAsignadasAPredioEnTemporada(@Param("id_temporada") int idTemporada,
+			@Param("id_predio") int idPredio);
 
 }

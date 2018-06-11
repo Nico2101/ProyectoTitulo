@@ -5,6 +5,11 @@
 <html>
 <head>
 <%@ include file="cabecera.jsp"%>
+<style>
+.error {
+	color: #FF0000;
+}
+</style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
@@ -43,6 +48,23 @@
 								<div class="form-group">
 
 									<div class="col-md-3 col-sm-6 col-xs-12">
+										<label>* Temporada</label> <select id="temporada"
+											class="form-control select2 select2-hidden-accessible"
+											onchange="buscarPrediosSector();">
+
+											<option value="-1">Seleccione una temporada</option>
+											<c:forEach var="listaTemporadas" items="${listaTemporadas}">
+
+												<option value="${listaTemporadas.idTemporada}">${listaTemporadas.nombre}</option>
+
+											</c:forEach>
+
+
+										</select> <span id="errorTemporada" class="error" style="display: none">Seleccione
+											una temporada</span>
+									</div>
+
+									<div class="col-md-3 col-sm-6 col-xs-12">
 										<label>* Sector</label> <select id="sector"
 											class="form-control select2 select2-hidden-accessible"
 											onchange="buscarPrediosSector();">
@@ -58,7 +80,7 @@
 										</select> <span id="errorSector" class="error" style="display: none">Seleccione
 											un sector</span> <span id="sinPredio" class="error"
 											style="display: none">Sector no tiene predios con
-											planes asignados o todos sus predios están cosechados</span>
+											planes asignados en la temporada</span>
 									</div>
 
 									<div class="col-md-3 col-sm-6 col-xs-12" id="divPredio"
@@ -70,6 +92,8 @@
 										</select> <span id="errorPredio" class="error" style="display: none">Seleccione
 											un predio</span>
 									</div>
+
+
 
 									<div class="col-md-3" id="divPlanAsignado"
 										style="display: none">
@@ -223,13 +247,42 @@
 
 <script>
 	function buscarPrediosSector() {
-
+		var idTemporada = $('#temporada').val();
 		var idSector = $('#sector').val();
 		console.log(idSector);
+
+		if (idTemporada > 0) {
+			document.getElementById('errorTemporada').style.display = 'none';
+			document.getElementById('temporada').style.border = "";
+			document.getElementById('divPlanAsignado').style.display = 'none';
+			document.getElementById('divTablaActividades').style.display = 'none';
+			document.getElementById('divPredio').style.display = 'none';
+		} else {
+			document.getElementById('errorTemporada').style.display = 'inline';
+			document.getElementById('temporada').style.border = "1px solid red";
+		}
 
 		if (idSector > 0) {
 			document.getElementById('errorSector').style.display = 'none';
 			document.getElementById('sector').style.border = "";
+		} else {
+			if (idSector == -1) {
+				document.getElementById('errorSector').style.display = 'inline';
+				document.getElementById('sector').style.border = "1px solid red";
+				document.getElementById('sinPredio').style.display = 'none';
+			} else {
+				document.getElementById('sinPredio').style.display = 'inline';
+				document.getElementById('sector').style.border = "1px solid red";
+				document.getElementById('errorSector').style.display = 'none';
+			}
+			document.getElementById('divPlanAsignado').style.display = 'none';
+			document.getElementById('divTablaActividades').style.display = 'none';
+			document.getElementById('divPredio').style.display = 'none';
+
+		}
+
+		if (idSector > 0 && idTemporada > 0) {
+
 			document.getElementById('divTablaActividades').style.display = 'none';
 			document.getElementById('divPlanAsignado').style.display = 'none';
 			//Obtener los predios
@@ -239,11 +292,13 @@
 						url : "obtenerPrediosDelSectorConPlanAsignaParaComparacion",
 						dataType : 'json',
 						data : {
-							idSector : idSector
+							idSector : idSector,
+							idTemporada : idTemporada
 						},
 						success : function(data) {
 
 							if (!$.isEmptyObject(data)) {
+								document.getElementById('errorSector').style.display = 'none';
 								document.getElementById('sector').style.border = "";
 								document.getElementById('sinPredio').style.display = 'none';
 								//Contruir el proximo select predio
@@ -263,11 +318,12 @@
 								document.getElementById('divPredio').style.display = 'inline';
 
 							} else {
-								document.getElementById('divPredio').style.display = 'none';
+								
 								document.getElementById('sector').style.border = "1px solid red";
 								document.getElementById('sinPredio').style.display = 'inline';
 								document.getElementById('divPlanAsignado').style.display = 'none';
 								document.getElementById('divTablaActividades').style.display = 'none';
+								document.getElementById('divPredio').style.display = 'none';
 							}
 						},
 						error : function(jqXHR, errorThrown) {
@@ -275,13 +331,6 @@
 						}
 					});
 
-		} else {
-			document.getElementById('errorSector').style.display = 'inline';
-			document.getElementById('divPredio').style.display = 'none';
-			document.getElementById('sector').style.border = "1px solid red";
-			document.getElementById('divPlanAsignado').style.display = 'none';
-			document.getElementById('sinPredio').style.display = 'none';
-			//document.getElementById('divTablaRegistrarActividadRealizada').style.display = 'none';
 		}
 
 	}
@@ -307,14 +356,16 @@
 
 		//obtener el id del predio
 		var idPredio = $('#predio').val();
-		if (idPredio > 0) {
+		var idTemporada = $('#temporada').val();
+		if (idPredio > 0 && idTemporada > 0) {
 			$
 					.ajax({
 						type : 'POST',
 						url : "obtenerActividadesDelPlanAsignadoAlPredioVerificandoReprogramacion",
 						dataType : 'json',
 						data : {
-							idPredio : idPredio
+							idPredio : idPredio,
+							idTemporada : idTemporada
 						},
 						success : function(data) {
 							console.log(data);

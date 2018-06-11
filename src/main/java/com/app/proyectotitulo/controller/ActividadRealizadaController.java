@@ -432,15 +432,15 @@ public class ActividadRealizadaController {
 
 	@RequestMapping(value = "obtenerActividadesDelPlanAsignadoAlPredioVerificandoReprogramacion")
 	public @ResponseBody List<Actividad_Realizada> obtenerActividadesDelPlanAsignadoAlPredioVerificandoReprogramacion(
-			@RequestParam int idPredio) {
+			@RequestParam int idPredio, @RequestParam int idTemporada) {
 
-		if (idPredio > 0) {
+		if (idPredio > 0 && idTemporada > 0) {
 			// Buscar Predio
 			Predio p = predioService.findByIdPredio(idPredio);
 			if (p != null) {
 				// Obtener las actividades
 				List<Actividad_Realizada> listaActividades = actividadRealizadaService
-						.listaActividadesAsignadasAPredio(idPredio);
+						.listaActividadesAsignadasAPredioEnTemporada(idTemporada, idPredio);
 
 				// recorrer lista y verificar si tiene reprogramación
 				for (int i = 0; i < listaActividades.size(); i++) {
