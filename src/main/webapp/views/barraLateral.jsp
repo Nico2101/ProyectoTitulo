@@ -54,9 +54,8 @@
 							value="Reprogramar actividades"></c:out></span>
 
 			</a></li>
-			
-			<li><a href="compararPlan"> <i
-					class="fa fa-circle-o"></i> <span><c:out
+
+			<li><a href="compararPlan"> <i class="fa fa-circle-o"></i> <span><c:out
 							value="Comparar Plan de Ejecución"></c:out></span>
 
 			</a></li>
@@ -96,13 +95,15 @@
 					<span><c:out value="Listar Predios"></c:out></span>
 
 			</a></li>
-			
-			<li><a href="MostrarEstadoPredios"> <i class="fa fa-circle-o"></i>
-					<span><c:out value="Ver estado de los predios"></c:out></span>
+
+			<li><a href="MostrarEstadoPredios"> <i
+					class="fa fa-circle-o"></i> <span><c:out
+							value="Ver estado de los predios"></c:out></span>
 
 			</a></li>
-			<li><a href="ListarCostosTotalesPorPredio"> <i class="fa fa-circle-o"></i>
-					<span><c:out value="Listar costos por predio"></c:out></span>
+			<li><a href="ListarCostosTotalesPorPredio"> <i
+					class="fa fa-circle-o"></i> <span><c:out
+							value="Listar costos por predio"></c:out></span>
 
 			</a></li>
 		</ul></li>
@@ -147,13 +148,9 @@
 		<ul class="treeview-menu">
 
 
-			<li><a href="rendimientoSector"> <i class="fa fa-circle-o"></i> <span><c:out
-							value="Rendimiento por Sector"></c:out></span>
 
-			</a></li>
-
-			<li><a href="rendimientoProducto"> <i class="fa fa-circle-o"></i> <span><c:out
-							value="Rendimiento por producto"></c:out></span>
+			<li><a href="rendimientoProducto"> <i class="fa fa-circle-o"></i>
+					<span><c:out value="Rendimiento por producto"></c:out></span>
 
 			</a></li>
 		</ul></li>

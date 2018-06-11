@@ -110,17 +110,9 @@
 								var datos = Array();
 								var arregloColores = Array();
 								for (var j = 0; j < data[i].datos.length; j++) {
-									var fechaI = moment(
-											data[i].datos[j].fechaInicio,
-											'YYYY/MM/DD');
-									fechaI = fechaI.format('DD-MM-YYYY');
 
-									var fechaT = moment(
-											data[i].datos[j].fechaTermino,
-											'YYYY/MM/DD');
-									fechaT = fechaT.format('DD-MM-YYYY');
-									ejeX.push(data[i].datos[j].nombreTemporada
-											+ " / " + fechaI + " - " + fechaT);
+									ejeX.push(data[i].datos[j].nombreTemporada);
+
 									datos
 											.push(data[i].datos[j].cantidadCosechada);
 
