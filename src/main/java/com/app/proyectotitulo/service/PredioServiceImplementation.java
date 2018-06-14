@@ -18,9 +18,9 @@ public class PredioServiceImplementation implements PredioService {
 	}
 
 	@Override
-	public List<Predio> listarTodosLosPredios(boolean predioEliminado) {
+	public List<Predio> listarTodosLosPredios(boolean predioEliminado, boolean sectorEliminado) {
 		// TODO Auto-generated method stub
-		return predioRepo.findByPredioEliminadoOrderByNombreAsc(predioEliminado);
+		return predioRepo.findByPredioEliminadoAndSectorSectorEliminadoOrderByNombreAsc(predioEliminado, sectorEliminado);
 	}
 
 	@Override

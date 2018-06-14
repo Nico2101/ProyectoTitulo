@@ -60,7 +60,7 @@
 
 										</select> <span id="errorSector" class="error" style="display: none">Debe
 											seleccionar un sector</span> <span id="sinPredio" class="error"
-											style="display: none">Sector no tiene predios</span>
+											style="display: none">Sector no tiene predios disponibles</span>
 									</div>
 
 
@@ -169,10 +169,16 @@
 								</div>
 								<br>
 
+								<div id="loader" class="pull-right" style="display: none">
+									<img id="imagen" src="images/loaderWhite.gif" height="30" width="30"/>
+								</div>
+
 								<button type="button" class="btn btn-primary pull-right"
 									onclick="guardarDatos();">
 									<i class="fa fa-save"> Guardar</i>
 								</button>
+								
+								
 
 							</div>
 							<!-- /.box-body -->
@@ -260,7 +266,7 @@
 		document.getElementById('sinPredio').style.display = 'none';
 
 	}
-	
+
 	function mostrarPlanes() {
 		var idTemporada = $("#temporadaSeleccionada").val();
 
@@ -269,7 +275,7 @@
 		if (idTemporada > 0) {
 			document.getElementById('divPlanes').style.display = 'inline';
 
-		}else{
+		} else {
 			document.getElementById('divPlanes').style.display = 'none';
 		}
 
@@ -379,11 +385,12 @@
 															fechaMin = fechaMin
 																	.format('YYYY-MM-DD');
 
-															console.log(fechaMin);
-															if(fechaInicio>fechaMin){ 
+															console
+																	.log(fechaMin);
+															if (fechaInicio > fechaMin) {
 
-															cell3.innerHTML = '<input type="date" id="fechaEstimada"  style="width:200px;height:30px;text-align: center" min="'+fechaInicio+'" max="'+fechaTermino+'" class="form-control select2 select2-hidden-accessible"/>';
-															}else{
+																cell3.innerHTML = '<input type="date" id="fechaEstimada"  style="width:200px;height:30px;text-align: center" min="'+fechaInicio+'" max="'+fechaTermino+'" class="form-control select2 select2-hidden-accessible"/>';
+															} else {
 																cell3.innerHTML = '<input type="date" id="fechaEstimada"  style="width:200px;height:30px;text-align: center" min="'+fechaMin+'" max="'+fechaTermino+'" class="form-control select2 select2-hidden-accessible"/>';
 															}
 															cell4.innerHTML = data[i].idActividad;
@@ -518,6 +525,8 @@
 				&& temporadaSeleccionada > 0 && planSeleccionado > 0
 				&& arregloIds.length > 0 && arregloFechas.length > 0) {
 
+			document.getElementById('loader').style.display = 'inline';
+
 			//Enviar arreglo
 			$
 					.ajax({
@@ -543,6 +552,7 @@
 								$('#temporadaSeleccionada').val(-1);
 								$('#planSeleccionado').val(-1);
 								//$('#predioSeleccionado').val("");
+								document.getElementById('loader').style.display = 'none';
 
 							} else {
 								toastr

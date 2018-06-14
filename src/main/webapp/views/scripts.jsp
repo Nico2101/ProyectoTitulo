@@ -63,3 +63,5 @@
 	<script src="assets/sweetalert/sweetalert.min.js"></script>
 
 	<script src="assets/Chart.js"></script>
+	
+		<script src="assets/dataTables.rowReorder.js"></script>

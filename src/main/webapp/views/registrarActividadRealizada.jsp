@@ -297,6 +297,59 @@
 			</div>
 
 
+
+			<!-- Modal Ver Insumos Utilizados -->
+			<div class="modal fade" id="modalVerInsumosDespuesDeGuardar"
+				tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog  modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<h4 class="modal-title">Insumos utilizados en la Actividad</h4>
+
+						</div>
+						<div class="modal-body">
+
+
+							<div class="row">
+
+								<div class="box-body">
+
+									<table id="listaInsumosDespuesDeGuardar"
+										class="table table-striped table-bordered table-hover">
+
+										<thead>
+											<tr>
+												<th width="25px">N°</th>
+												<th>Nombre Insumo</th>
+												<th>Tipo</th>
+												<th>Unidad de Medida</th>
+												<th>Marca</th>
+												<th>Cantidad</th>
+												<th>Costo</th>
+
+
+
+											</tr>
+										</thead>
+									</table>
+
+
+								</div>
+
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger pull-left"
+									data-dismiss="modal">Cerrar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
 			<!-- Modal Editar insumo utilizado -->
 			<div class="modal fade" id="modalEditarInsumo" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -582,8 +635,7 @@
 											contActividadesRealizadas++;
 										}
 
-										if (data[i].actividad.nombre == "Cosecha"
-												|| data[i].actividad.nombre == "cosecha") {
+										if (data[i].actividad.actividadCosecha == true) {
 											if (data[i].fechaEjecucionReal == null) {
 												cell5.innerHTML = '<input type="number" id="cantidadCosechada" class="form-control select2 select2-hidden-accessible">';
 											} else {
@@ -693,6 +745,7 @@
 	}
 
 	function getUMInsumo() {
+
 		//Obtener id del insumo seleccionado
 		var idInsumo = $('#insumo').val();
 
@@ -842,37 +895,75 @@
 							//vaciar datatable
 							var oTable = $('#listaInsumos').dataTable();
 							oTable.fnClearTable();
+
+							//vaciar datatable
+							oTable = $('#listaInsumosDespuesDeGuardar')
+									.dataTable();
+							oTable.fnClearTable();
 							if (!$.isEmptyObject(data)) {
 
 								//Llenar data table
 								for (var i = 0; i < data.length; i++) {
-									$('#listaInsumos')
-											.dataTable()
-											.fnAddData(
 
-													[
-															i + 1,
-															data[i].insumo.nombre,
-															data[i].insumo.tipo,
-															data[i].insumo.unidadMedida,
-															data[i].insumo.marca,
-															data[i].cantidad,
-															"$  "
-																	+ currency(
-																			data[i].costo,
-																			1),
-															'<a href="#" onclick="editarInsumoUtilizado('
-																	+ data[i].idActividadInsumo
-																	+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarInsumoUtilizado('
-																	+ data[i].idActividadInsumo
-																	+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+									if (data[i].actividadRealizada.fechaEjecucionReal != null) {
 
-											);
+										$('#listaInsumosDespuesDeGuardar')
+												.dataTable()
+												.fnAddData(
+
+														[
+																i + 1,
+																data[i].insumo.nombre,
+																data[i].insumo.tipo,
+																data[i].insumo.unidadMedida,
+																data[i].insumo.marca,
+																data[i].cantidad,
+
+																"$  "
+																		+ currency(
+																				data[i].costo,
+																				1) ]
+
+												);
+										//Mostrar modal
+										$('#modalVerInsumosDespuesDeGuardar')
+												.modal('show');
+									} else {
+										$('#listaInsumos')
+												.dataTable()
+												.fnAddData(
+
+														[
+																i + 1,
+																data[i].insumo.nombre,
+																data[i].insumo.tipo,
+																data[i].insumo.unidadMedida,
+																data[i].insumo.marca,
+																data[i].cantidad,
+																"$  "
+																		+ currency(
+																				data[i].costo,
+																				1),
+																'<a href="#" onclick="editarInsumoUtilizado('
+																		+ data[i].idActividadInsumo
+																		+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarInsumoUtilizado('
+																		+ data[i].idActividadInsumo
+																		+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+
+												);
+
+										//Mostrar modal
+										$('#modalVerInsumos').modal('show');
+
+									}
+
 								}
 
+							} else {
+								//Mostrar modal
+								$('#modalVerInsumos').modal('show');
 							}
-							//Mostrar modal
-							$('#modalVerInsumos').modal('show');
+
 						},
 						error : function(jqXHR, errorThrown) {
 							alert("Error al obtener los productos");
@@ -937,29 +1028,53 @@
 
 																//Llenar data table
 																for (var i = 0; i < data.length; i++) {
-																	$(
-																			'#listaInsumos')
-																			.dataTable()
-																			.fnAddData(
+																	if (data[i].actividadRealizada.fechaEjecucionReal != null) {
 
-																					[
-																							i + 1,
-																							data[i].insumo.nombre,
-																							data[i].insumo.tipo,
-																							data[i].insumo.unidadMedida,
-																							data[i].insumo.marca,
-																							data[i].cantidad,
-																							"$  "
-																									+ currency(
-																											data[i].costo,
-																											1),
-																							'<a href="#" onclick="editarInsumoUtilizado('
-																									+ data[i].idActividadInsumo
-																									+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarInsumoUtilizado('
-																									+ data[i].idActividadInsumo
-																									+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+																		$(
+																				'#listaInsumosDespuesDeGuardar')
+																				.dataTable()
+																				.fnAddData(
 
-																			);
+																						[
+																								i + 1,
+																								data[i].insumo.nombre,
+																								data[i].insumo.tipo,
+																								data[i].insumo.unidadMedida,
+																								data[i].insumo.marca,
+																								data[i].cantidad,
+
+																								"$  "
+																										+ currency(
+																												data[i].costo,
+																												1) ]
+
+																				);
+
+																	} else {
+																		$(
+																				'#listaInsumos')
+																				.dataTable()
+																				.fnAddData(
+
+																						[
+																								i + 1,
+																								data[i].insumo.nombre,
+																								data[i].insumo.tipo,
+																								data[i].insumo.unidadMedida,
+																								data[i].insumo.marca,
+																								data[i].cantidad,
+																								"$  "
+																										+ currency(
+																												data[i].costo,
+																												1),
+																								'<a href="#" onclick="editarInsumoUtilizado('
+																										+ data[i].idActividadInsumo
+																										+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarInsumoUtilizado('
+																										+ data[i].idActividadInsumo
+																										+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+
+																				);
+																	}
 																}
 
 															}
@@ -1099,28 +1214,52 @@
 
 													//Llenar data table
 													for (var i = 0; i < data.length; i++) {
-														$('#listaInsumos')
-																.dataTable()
-																.fnAddData(
+														if (data[i].actividadRealizada.fechaEjecucionReal != null) {
 
-																		[
-																				i + 1,
-																				data[i].insumo.nombre,
-																				data[i].insumo.tipo,
-																				data[i].insumo.unidadMedida,
-																				data[i].insumo.marca,
-																				data[i].cantidad,
-																				"$  "
-																						+ currency(
-																								data[i].costo,
-																								1),
-																				'<a href="#" onclick="editarInsumoUtilizado('
-																						+ data[i].idActividadInsumo
-																						+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarInsumoUtilizado('
-																						+ data[i].idActividadInsumo
-																						+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+															$(
+																	'#listaInsumosDespuesDeGuardar')
+																	.dataTable()
+																	.fnAddData(
 
-																);
+																			[
+																					i + 1,
+																					data[i].insumo.nombre,
+																					data[i].insumo.tipo,
+																					data[i].insumo.unidadMedida,
+																					data[i].insumo.marca,
+
+																					data[i].cantidad,
+																					"$  "
+																							+ currency(
+																									data[i].costo,
+																									1) ]
+
+																	);
+														} else {
+															$('#listaInsumos')
+																	.dataTable()
+																	.fnAddData(
+
+																			[
+																					i + 1,
+																					data[i].insumo.nombre,
+																					data[i].insumo.tipo,
+																					data[i].insumo.unidadMedida,
+																					data[i].insumo.marca,
+																					data[i].cantidad,
+																					"$  "
+																							+ currency(
+																									data[i].costo,
+																									1),
+																					'<a href="#" onclick="editarInsumoUtilizado('
+																							+ data[i].idActividadInsumo
+																							+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarInsumoUtilizado('
+																							+ data[i].idActividadInsumo
+																							+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+
+																	);
+														}
+
 													}
 
 												}
@@ -1142,6 +1281,7 @@
 							alert("Error al obtener los productos");
 						}
 					});
+
 		}
 	}
 
@@ -1171,7 +1311,7 @@
 				var idFecha = "fechaEjecucion" + oCells[0].innerHTML;
 				var fecha = $('#' + idFecha).val();
 				if (typeof fecha != 'undefined' && fecha != "") {
-					console.log("fecha Ejecucion: "+fecha); //Imprimir Fecha Ejecucion Real
+					console.log("fecha Ejecucion: " + fecha); //Imprimir Fecha Ejecucion Real
 					cont++;
 
 					//Agregar los datos en un arreglo
@@ -1202,7 +1342,7 @@
 
 			}
 		}
-		
+
 		console.log(arregloDatos);
 		console.log(arregloDatosCosecha);
 
@@ -1430,6 +1570,37 @@
 
 <script>
 	$('#listaInsumos').DataTable({
+		'dom' : 'Bfrtip',
+		'paging' : true,
+		'lengthChange' : true,
+		'searching' : false,
+		'ordering' : false,
+		'info' : true,
+		'autoWidth' : true,
+		'responsive' : true,
+		"language" : {
+			"sProcessing" : "Procesando...",
+			"sLengthMenu" : "Mostrar _MENU_ registros",
+			"sZeroRecords" : "No se encontraron resultados",
+			"sEmptyTable" : "Ningún dato disponible en esta tabla",
+			"sInfo" : "",
+			"sInfoEmpty" : "",
+			"sInfoFiltered" : "(filtrado de un total de _MAX_ registros)",
+			"sInfoPostFix" : "",
+			"sSearch" : "Buscar:",
+			"sUrl" : "",
+			"sInfoThousands" : ",",
+			"sLoadingRecords" : "Cargando...",
+			"oPaginate" : {
+				"sFirst" : "Primero",
+				"sLast" : "Último",
+				"sNext" : "Siguiente",
+				"sPrevious" : "Anterior"
+			}
+		}
+	})
+
+	$('#listaInsumosDespuesDeGuardar').DataTable({
 		'dom' : 'Bfrtip',
 		'paging' : true,
 		'lengthChange' : true,

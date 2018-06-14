@@ -21,16 +21,18 @@
 							value="Agregar Plan"></c:out></span>
 
 			</a></li>
+			
+			<li><a href="listarPlanes"> <i class="fa fa-circle-o"></i> <span><c:out
+							value="Ver Planes"></c:out></span>
+
+			</a></li>
 
 			<li><a href="asignarPlan"> <i class="fa fa-circle-o"></i> <span><c:out
 							value="Asignar Plan"></c:out></span>
 
 			</a></li>
 
-			<li><a href="listarPlanes"> <i class="fa fa-circle-o"></i> <span><c:out
-							value="Ver Planes"></c:out></span>
-
-			</a></li>
+			
 
 		</ul></li>
 
@@ -56,7 +58,7 @@
 			</a></li>
 
 			<li><a href="compararPlan"> <i class="fa fa-circle-o"></i> <span><c:out
-							value="Comparar Plan de Ejecución"></c:out></span>
+							value="Seguimiento Planes"></c:out></span>
 
 			</a></li>
 			

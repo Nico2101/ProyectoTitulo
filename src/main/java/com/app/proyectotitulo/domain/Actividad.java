@@ -25,7 +25,12 @@ public class Actividad implements Serializable {
 	@Column(name = "actividad_eliminada")
 	private boolean actividadEliminada;
 
+	@Column(name = "actividad_cosecha")
+	private boolean actividadCosecha;
+
 	private String nombre;
+
+	private int orden;
 
 	// bi-directional many-to-one association to Plan_Ejecucion
 	@ManyToOne
@@ -39,6 +44,22 @@ public class Actividad implements Serializable {
 	private List<Actividad_Realizada> actividadRealizadas;
 
 	public Actividad() {
+	}
+
+	public int getOrden() {
+		return orden;
+	}
+
+	public void setOrden(int orden) {
+		this.orden = orden;
+	}
+
+	public boolean isActividadCosecha() {
+		return actividadCosecha;
+	}
+
+	public void setActividadCosecha(boolean actividadCosecha) {
+		this.actividadCosecha = actividadCosecha;
 	}
 
 	public int getIdActividad() {

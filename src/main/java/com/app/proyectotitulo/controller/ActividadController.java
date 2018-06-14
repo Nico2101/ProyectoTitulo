@@ -35,13 +35,40 @@ public class ActividadController {
 
 	@RequestMapping(value = "actualizarActividad")
 	public @ResponseBody boolean actualizarActividad(@RequestParam int idActividad,
-			@RequestParam String nombreActividad) {
-
+			@RequestParam String nombreActividad, @RequestParam int check) {
+		System.out.println(check);
 		// Buscar actividad
 		Actividad a = actividadService.findByIdActividad(idActividad);
 		if (a != null) {
 			a.setNombre(nombreActividad);
+
+			if (check == 1) {
+				a.setActividadCosecha(true);
+			} else {
+				a.setActividadCosecha(false);
+			}
 			actividadService.save(a);
+			return true;
+		}
+		return false;
+
+	}
+
+	@RequestMapping(value = "actualizarPosicionActividad")
+	public @ResponseBody boolean actualizarPosicionActividad(@RequestParam("arreglo[]") int arreglo[]) {
+		System.out.println(arreglo.length);
+		if (arreglo.length > 0) {
+			// Buscar actividad
+			int aux = 0;
+			for (int i = 0; i < arreglo.length / 2; i++) {
+
+				Actividad a = actividadService.findByIdActividad(arreglo[aux]);
+				a.setOrden(arreglo[aux + 1]);
+
+				actividadService.save(a);
+				aux += 2;
+			}
+
 			return true;
 		}
 		return false;
@@ -63,7 +90,8 @@ public class ActividadController {
 	}
 
 	@RequestMapping(value = "agregarActividad")
-	public @ResponseBody boolean agregarActividad(@RequestParam int idPlan, @RequestParam String nombreActividad) {
+	public @ResponseBody boolean agregarActividad(@RequestParam int idPlan, @RequestParam String nombreActividad,
+			@RequestParam int check, @RequestParam int orden) {
 
 		// Agregar actividad
 
@@ -74,6 +102,12 @@ public class ActividadController {
 			Actividad a = new Actividad();
 			a.setNombre(nombreActividad);
 			a.setPlanEjecucion(p);
+			a.setOrden(orden);
+			if (check == 1) {
+				a.setActividadCosecha(true);
+			} else {
+				a.setActividadCosecha(false);
+			}
 
 			// Guardar
 			actividadService.save(a);

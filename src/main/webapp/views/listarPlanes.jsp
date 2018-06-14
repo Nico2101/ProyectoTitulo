@@ -122,20 +122,22 @@
 						</div>
 						<div class="modal-body">
 
-
+							<p>Nota: Para actualizar el orden de las actividades debe
+								seleccionar el número y arrastrarlo a la posición que desee</p>
 							<div class="row">
 
 								<div class="box-body">
 
 									<table id="listaActividadesPlan"
-										class="table table-striped table-bordered table-hover">
+										class="table table-striped table-bordered table-hover"
+										width="100%">
 
 										<thead>
 											<tr>
 												<th width="25px">N°</th>
 												<th>Nombre Actividad</th>
 												<th width="150px"></th>
-
+												<th width="10px"></th>
 
 											</tr>
 										</thead>
@@ -238,6 +240,13 @@
 
 								<br> <br> <br> <label
 									class="col-sm-4 control-label"></label>
+								<div class="col-sm-8">
+									<input type="checkbox" class="" id="checkCosechaEditar">
+									Seleccione sólo si la actividad corresponde a cosecha
+								</div>
+
+								<br> <br> <br> <label
+									class="col-sm-4 control-label"></label>
 								<div class="col-sm-6">
 									<label class="pull-right"
 										style="font-weight: normal; color: red">* Campos
@@ -276,13 +285,20 @@
 
 									<div id="form-editar" class="form-group">
 
-										<label class="col-sm-4 control-label">* Nombre
-											Actividad</label>
+										<label class="col-sm-4 control-label"
+											id="tituloActividadAgregar">* Nombre Actividad</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="nombreActividad">
 											<span id="errorNombreActividad" class="error"
 												style="display: none">Ingrese el nombre de la
 												actividad</span>
+										</div>
+
+										<br> <br> <br> <label
+											class="col-sm-4 control-label"></label>
+										<div class="col-sm-8">
+											<input type="checkbox" class="" id="checkCosecha">
+											Seleccione sólo si la actividad corresponde a cosecha
 										</div>
 
 										<br> <br> <br> <label
@@ -431,7 +447,7 @@ function verPlan(idPlan){
 					for(var i=0;i<data.length;i++){
 						$('#listaActividadesPlan').dataTable().fnAddData(
 
-								[i + 1, data[i].nombre,  '<a href="#" onclick="editarActividad('+data[i].idActividad+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarActividad('+data[i].idActividad+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+								[i + 1, data[i].nombre,  '<a href="#" onclick="editarActividad('+data[i].idActividad+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarActividad('+data[i].idActividad+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>',data[i].idActividad ]
 
 						);
 					}
@@ -603,6 +619,10 @@ function editarActividad(idActividad){
 				if(!$.isEmptyObject(data)){
 					$('#nombreActividadEditar').val(data.nombre);
 					
+					if(data.actividadCosecha==true){
+						$('#checkCosechaEditar').prop('checked',true);
+					}
+					
 					document.getElementById('errorNombreActividadEditar').style.display = 'none';
 					document.getElementById('nombreActividadEditar').style.border = "";
 					//mostrar modal
@@ -633,6 +653,12 @@ function actualizarActividadPlan(){
 		document.getElementById('nombreActividadEditar').style.border = "";
 	}
 	
+	var check=0;
+	if($('#checkCosechaEditar').prop('checked')){
+		check=1;
+	}
+	console.log(check);
+	
 	if(nombreActividad !="" && idActividad>0){
 		$.ajax({
 			type : 'POST',
@@ -640,7 +666,8 @@ function actualizarActividadPlan(){
 			dataType : 'json',
 			data:{
 				idActividad: idActividad,
-				nombreActividad: nombreActividad
+				nombreActividad: nombreActividad,
+				check:check
 			},
 			success : function(data) {
 				console.log(data);
@@ -671,7 +698,7 @@ function actualizarActividadPlan(){
 									for(var i=0;i<data.length;i++){
 										$('#listaActividadesPlan').dataTable().fnAddData(
 
-												[i + 1, data[i].nombre,  '<a href="#" onclick="editarActividad('+data[i].idActividad+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarActividad('+data[i].idActividad+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+												[i + 1, data[i].nombre,  '<a href="#" onclick="editarActividad('+data[i].idActividad+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarActividad('+data[i].idActividad+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>',data[i].idActividad ]
 
 										);
 									}
@@ -752,7 +779,7 @@ function eliminarActividad (idActividad){
 											for(var i=0;i<data.length;i++){
 												$('#listaActividadesPlan').dataTable().fnAddData(
 
-														[i + 1, data[i].nombre,  '<a href="#" onclick="editarActividad('+data[i].idActividad+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarActividad('+data[i].idActividad+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+														[i + 1, data[i].nombre,  '<a href="#" onclick="editarActividad('+data[i].idActividad+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarActividad('+data[i].idActividad+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>',data[i].idActividad ]
 
 												);
 											}
@@ -789,6 +816,16 @@ function modalAgregarActividad() {
 	document.getElementById('errorNombreActividad').style.display = 'none';
 	document.getElementById('nombreActividad').style.border = "";
 	//$('#nombreActividad').focus();
+	var table = $('#listaActividadesPlan').DataTable();
+	
+	var count=table.rows().count()+1;
+	
+	$('#tituloActividadAgregar').text("Nombre Actividad "+count);
+	
+	if($('#checkCosecha').prop('checked')){
+		$('#checkCosecha').prop('checked',false);
+	}
+	
 }
 
 function agregarActividad(){
@@ -803,6 +840,15 @@ function agregarActividad(){
 	}
 	var idPlan=localStorage.getItem("idPlan");
 	
+	var check=0;
+	if($('#checkCosecha').prop('checked')){
+		check=1;
+	}
+	
+	//Obtener el orden que le corresponde a la actividad
+	var table = $('#listaActividadesPlan').DataTable();
+	var orden=table.rows().count()+1;
+	
 	if(nombreActividad!="" && idPlan>0){
 		$.ajax({
 			type : 'POST',
@@ -810,7 +856,9 @@ function agregarActividad(){
 			dataType : 'json',
 			data:{
 				idPlan: idPlan,
-				nombreActividad: nombreActividad
+				nombreActividad: nombreActividad,
+				check:check,
+				orden:orden
 			},
 			success : function(data) {
 				console.log(data);
@@ -843,7 +891,7 @@ function agregarActividad(){
 									for(var i=0;i<data.length;i++){
 										$('#listaActividadesPlan').dataTable().fnAddData(
 
-												[i + 1, data[i].nombre,  '<a href="#" onclick="editarActividad('+data[i].idActividad+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarActividad('+data[i].idActividad+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+												[i + 1, data[i].nombre,  '<a href="#" onclick="editarActividad('+data[i].idActividad+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarActividad('+data[i].idActividad+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>',data[i].idActividad ]
 
 										);
 									}
@@ -873,40 +921,102 @@ function agregarActividad(){
 </script>
 
 <script>
-	$('#listaPlanes').DataTable({
-		'dom' : 'Bfrtip',
-		'paging' : true,
-		'lengthChange' : true,
-		'searching' : false,
-		'ordering' : false,
-		'info' : true,
-		'autoWidth' : true,
-		'responsive' : true,
-		"language" : {
-			"sProcessing" : "Procesando...",
-			"sLengthMenu" : "Mostrar _MENU_ registros",
-			"sZeroRecords" : "No se encontraron resultados",
-			"sEmptyTable" : "Ningún dato disponible en esta tabla",
-			"sInfo" : "",
-			"sInfoEmpty" : "No hay datos para mostrar",
-			"sInfoFiltered" : "(filtrado de un total de _MAX_ registros)",
-			"sInfoPostFix" : "",
-			"sSearch" : "Buscar:",
-			"sUrl" : "",
-			"sInfoThousands" : ",",
-			"sLoadingRecords" : "Cargando...",
-			"oPaginate" : {
-				"sFirst" : "Primero",
-				"sLast" : "Último",
-				"sNext" : "Siguiente",
-				"sPrevious" : "Anterior"
-			}
+var table = $('#listaActividadesPlan').DataTable( {
+    rowReorder: true,
+    'searching' : false,
+    'lengthChange' : false,
+    'responsive':true,
+    'fnCreatedRow': function (nRow, aData, iDataIndex) {
+    	console.log(nRow);
+    	console.log(aData);
+    	console.log(iDataIndex);
+        //$(nRow).attr('id', 'my' + iDataIndex); // or whatever you choose to set as the id
+    },
+    "columnDefs": [
+        {
+            "targets": [ 3 ],
+            "visible": false,
+            "searchable": false
+        }
+    ],
+    "language" : {
+		"sProcessing" : "Procesando...",
+		"sLengthMenu" : "Mostrar _MENU_ registros",
+		"sZeroRecords" : "No se encontraron resultados",
+		"sEmptyTable" : "Ningún dato disponible en esta tabla",
+		"sInfo" : "",
+		"sInfoEmpty" : "No hay datos para mostrar",
+		"sInfoFiltered" : "(filtrado de un total de _MAX_ registros)",
+		"sInfoPostFix" : "",
+		"sSearch" : "Buscar:",
+		"sUrl" : "",
+		"sInfoThousands" : ",",
+		"sLoadingRecords" : "Cargando...",
+		"oPaginate" : {
+			"sFirst" : "Primero",
+			"sLast" : "Último",
+			"sNext" : "Siguiente",
+			"sPrevious" : "Anterior"
 		}
-	})
+	}
+} );
+ 
+table.on( 'row-reorder', function ( e, diff, edit ) {
+    for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
+        $(diff[i].node).addClass("reordered");
+       
+    }
+    
+    //Actualizar bd
+    //Obtener todos los valores de un data table
+    var table = $('#listaActividadesPlan').DataTable();
+    
+    var data = table.rows().data();
+   
+  	var arreglo=Array();
+    for(var i=0; i<data.length; i++){
+    	for(var j=0;j<diff.length;j++){
+    		if(data[i][0]==diff[j].oldData){
+        		var posicion=diff[j].newData;
+        		var idActividad=data[i][3];
+        		
+        		arreglo.push(idActividad);
+        		arreglo.push(posicion);
+        		
+        		
+        	}
+    	}
+    	   	
+    }
+    
+    if(arreglo.length>0){
+    	console.log(arreglo);
+    	$.ajax({
+    		type : 'POST',
+    		url : "actualizarPosicionActividad",
+    		dataType : 'json',
+    		async:false,
+    		data:{arreglo:arreglo},
+    		success : function(data) {
+    			if(data==true){
+    				toastr.success("Posiciones actualizadas correctamente");
+    			}else{
+    				toastr.error("Se ha producido un error al actualizar las posiciones");
+    			}
+    			
+    		},
+    		error : function(jqXHR, errorThrown) {
+    			alert("Error al actualizar la posición");
+    		}
+    	});
+    }
+    
+} );
+	
 </script>
 
 <script>
-	$('#listaActividadesPlan').DataTable({
+	$('#listaPlanes').DataTable({
 		'dom' : 'Bfrtip',
 		'paging' : true,
 		'lengthChange' : true,

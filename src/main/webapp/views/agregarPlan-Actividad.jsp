@@ -114,7 +114,7 @@
 												<th>N°</th>
 												<th>Nombre Actividad</th>
 												<th>Acción</th>
-
+												<th>Check</th>
 											</tr>
 										</thead>
 
@@ -154,20 +154,28 @@
 						</div>
 						<div class="modal-body">
 
-
+							<p>Debe ingresar las actividades en orden de ejecución</p>
 							<div class="row">
 
 								<div class="box-body">
 
 									<div id="form-editar" class="form-group">
 
-										<label class="col-sm-4 control-label">* Nombre
-											Actividad</label>
+
+										<label class="col-sm-4 control-label" id="actividadIngresar">*
+											Nombre Actividad 1</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="nombreActividad">
 											<span id="errorNombreActividad" class="error"
 												style="display: none">Ingrese el nombre de la
 												actividad</span>
+										</div>
+
+										<br> <br> <br> <label
+											class="col-sm-4 control-label"></label>
+										<div class="col-sm-8">
+											<input type="checkbox" class="" id="checkCosecha">
+											Seleccione sólo si la actividad corresponde a cosecha
 										</div>
 
 										<br> <br> <br> <label
@@ -205,7 +213,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 
-							<h4 class="modal-title" id="myModalLabel">Agregar Actividad</h4>
+							<h4 class="modal-title" id="myModalLabel">Editar Actividad</h4>
 						</div>
 						<div class="modal-body">
 
@@ -224,6 +232,13 @@
 												id="errorNombreActividadEditar" class="error"
 												style="display: none">Ingrese el nombre de la
 												actividad</span>
+										</div>
+
+										<br> <br> <br> <label
+											class="col-sm-4 control-label"></label>
+										<div class="col-sm-8">
+											<input type="checkbox" class="" id="checkCosechaEditar">
+											Seleccione sólo si la actividad corresponde a cosecha
 										</div>
 
 										<br> <br> <br> <label
@@ -271,11 +286,30 @@
 </body>
 
 <script>
+	//Ocultar la columna check
+	var tbl = document.getElementById("tablaActividades");
+	for (var i = 0; i < tbl.rows.length; i++) {
+
+		for (var j = 0; j < tbl.rows[i].cells.length; j++) {
+
+			tbl.rows[i].cells[j].style.display = "";
+
+			if (j == 3)
+
+				tbl.rows[i].cells[j].style.display = "none";
+
+		}
+
+	}
+
 	function modalAgregarActividad() {
 		$('#nombreActividad').val("");
 		$('#modalAgregarActividad').modal('show');
 		document.getElementById('errorNombreActividad').style.display = 'none';
 		document.getElementById('nombreActividad').style.border = "";
+		if ($('#checkCosecha').prop('checked')) {
+			$('#checkCosecha').prop('checked', false);
+		}
 		//$('#nombreActividad').focus();
 	}
 
@@ -324,6 +358,7 @@
 				var cell1 = row.insertCell(0);
 				var cell2 = row.insertCell(1);
 				var cell3 = row.insertCell(2);
+				var cell4 = row.insertCell(3);
 
 				// Add some text to the new cells:
 				cell1.innerHTML = num;
@@ -333,9 +368,16 @@
 						+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarActividad('
 						+ num
 						+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>';
+				if ($('#checkCosecha').prop('checked')) {
+					cell4.innerHTML = 1;
+				} else {
+					cell4.innerHTML = 0;
+				}
 
 				$('#nombreActividad').val("");
 				$('#nombreActividad').focus();
+				var suma = num + 1;
+				$('#actividadIngresar').text("Nombre Actividad " + suma);
 
 			}
 		}
@@ -365,10 +407,16 @@
 				var oCells = oTable.rows.item(i).cells;//devuelve un objeto con la fila completa
 				if (numFila == oCells[0].textContent) {
 					oCells[1].innerHTML = nombreActividad;
+
+					if ($('#checkCosechaEditar').prop('checked')) {
+						oCells[3].innerHTML = 1;
+					} else {
+						oCells[3].innerHTML = 0;
+					}
 				}
 			}
 		}
-		
+
 		$('#modalEditarActividad').modal('hide');
 	}
 
@@ -390,6 +438,11 @@
 					var num = numFila;
 
 					var nombre = oCells[1].textContent;
+					var check = oCells[3].textContent;
+
+					if (check == 1) {
+						$('#checkCosechaEditar').prop('checked', true);
+					}
 
 					$('#nombreActividadEditar').val(nombre);
 					document.getElementById('errorNombreActividadEditar').style.display = 'none';
@@ -525,6 +578,8 @@
 			for (var i = 1; i < rowLength; i++) {
 				var oCells = oTable.rows.item(i).cells;//devuelve un objeto con la fila completa
 				arregloActividades.push(oCells[1].innerText);
+				//Enviar 1 si es cosecha 0 si no
+				arregloActividades.push(oCells[3].innerText);
 			}
 
 			console.log(arregloActividades);

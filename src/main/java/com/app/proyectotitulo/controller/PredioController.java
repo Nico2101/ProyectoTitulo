@@ -49,7 +49,7 @@ public class PredioController {
 
 		if (e != null) {
 
-			List<Predio> listaPredios = predioService.listarTodosLosPredios(false);
+			List<Predio> listaPredios = predioService.listarTodosLosPredios(false, false);
 			List<Sector> sectores = sectorService.listarSectores(false);
 			vista.addObject("listaPredios", listaPredios);
 			vista.addObject("sectores", sectores);
@@ -105,7 +105,7 @@ public class PredioController {
 	@RequestMapping(value = "obtenerListaPredios")
 	public @ResponseBody List<Predio> obtenerListaPredios() {
 
-		List<Predio> lista = predioService.listarTodosLosPredios(false);
+		List<Predio> lista = predioService.listarTodosLosPredios(false,false);
 
 		return lista;
 	}
@@ -128,7 +128,7 @@ public class PredioController {
 	@RequestMapping(value = "eliminarPrediosDeUnSector")
 	public @ResponseBody boolean eliminarPrediosDeUnSector(@RequestParam int idSector) {
 
-		List<Predio> lista1 = predioService.listarTodosLosPredios(false);
+		List<Predio> lista1 = predioService.listarTodosLosPredios(false,false);
 		Sector s = sectorService.findByIdSector(idSector);
 
 		if (s != null) {

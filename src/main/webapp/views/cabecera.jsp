@@ -73,3 +73,4 @@
 <script src="assets\login\assets\js\bootbox.js"></script>
 
 <script src="assets/Chart.js"></script>
+<link rel="stylesheet" href="assets/rowReorder.dataTables.css">
