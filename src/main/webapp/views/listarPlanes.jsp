@@ -122,18 +122,20 @@
 						</div>
 						<div class="modal-body">
 
-
+							<p>Nota: Para actualizar el orden de las actividades debe
+								seleccionar el número y arrastrarlo a la posición que desee</p>
 							<div class="row">
 
 								<div class="box-body">
 
 									<table id="listaActividadesPlan"
-										class="table table-striped table-bordered table-hover" width="100%">
+										class="table table-striped table-bordered table-hover"
+										width="100%">
 
 										<thead>
 											<tr>
 												<th width="25px">N°</th>
-												<th >Nombre Actividad</th>
+												<th>Nombre Actividad</th>
 												<th width="150px"></th>
 												<th width="10px"></th>
 
@@ -996,7 +998,12 @@ table.on( 'row-reorder', function ( e, diff, edit ) {
     		async:false,
     		data:{arreglo:arreglo},
     		success : function(data) {
-    			toastr.success("Posiciones actualizadas correctamente");
+    			if(data==true){
+    				toastr.success("Posiciones actualizadas correctamente");
+    			}else{
+    				toastr.error("Se ha producido un error al actualizar las posiciones");
+    			}
+    			
     		},
     		error : function(jqXHR, errorThrown) {
     			alert("Error al actualizar la posición");
