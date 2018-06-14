@@ -78,14 +78,26 @@ public class PlanEjecucionController {
 
 			if (plan != null) {
 				// Agregar actividades
-				for (int i = 0; i < actividades.length; i++) {
+				int aux = 0;
+				for (int i = 0; i < actividades.length / 2; i++) {
 					Actividad a = new Actividad();
-					a.setNombre(actividades[i]);
+					a.setNombre(actividades[aux]);
 					a.setActividadEliminada(false);
 					a.setPlanEjecucion(plan);
 
+					int isCosecha = 0;
+					isCosecha = Integer.parseInt(actividades[aux + 1]);
+					if (isCosecha == 1) {
+						a.setActividadCosecha(true);
+					} else {
+						a.setActividadCosecha(false);
+					}
+
+					a.setOrden(i + 1);
+
 					// Guardar
 					actividadService.save(a);
+					aux += 2;
 				}
 
 				return true;

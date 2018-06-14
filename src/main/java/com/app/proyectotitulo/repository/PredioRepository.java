@@ -12,8 +12,9 @@ import com.app.proyectotitulo.domain.Temporada;
 @Repository
 public interface PredioRepository extends JpaRepository<Predio, Integer> {
 
-	List<Predio> findByPredioEliminadoOrderByNombreAsc(boolean predioEliminado);// FindAll predio que no están
-																				// eliminados
+	List<Predio> findByPredioEliminadoAndSectorSectorEliminadoOrderByNombreAsc(boolean predioEliminado,
+			boolean sectorEliminado);// FindAll predio que no están
+	// eliminados
 
 	Predio findByIdPredio(int idPredio);
 

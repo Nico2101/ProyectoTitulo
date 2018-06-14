@@ -10,7 +10,7 @@ import com.app.proyectotitulo.domain.Actividad;
 @Repository
 public interface ActividadRepository extends JpaRepository<Actividad, Integer> {
 
-	List<Actividad> findByPlanEjecucionIdPlanEjecucionAndActividadEliminada(int idPlan, boolean actividadEliminada);
+	List<Actividad> findByPlanEjecucionIdPlanEjecucionAndActividadEliminadaOrderByOrdenAsc(int idPlan, boolean actividadEliminada);
 
 	Actividad findByIdActividad(int idActividad);
 

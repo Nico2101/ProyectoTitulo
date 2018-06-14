@@ -5,7 +5,7 @@ import com.app.proyectotitulo.domain.Predio;
 
 public interface PredioService {
 
-	List<Predio> listarTodosLosPredios(boolean predioEliminado);
+	List<Predio> listarTodosLosPredios(boolean predioEliminado, boolean sectorEliminado);
 
 	// agregar predio
 	Predio saveAndFlush(Predio p);

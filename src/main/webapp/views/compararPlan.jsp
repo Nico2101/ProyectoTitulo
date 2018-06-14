@@ -36,7 +36,7 @@
 				<div class="col-xs-12">
 					<div class="box box-primary">
 						<div class="box-header">
-							<h3 class="box-title">Comparar Plan de Ejecución</h3>
+							<h3 class="box-title">Seguimiento Planes</h3>
 
 							<label class="pull-right" style="font-weight: normal; color: red">*
 								Campos obligatorios</label>
@@ -92,8 +92,9 @@
 										</select> <span id="errorPredio" class="error" style="display: none">Seleccione
 											un predio</span>
 									</div>
-
-
+									<div class="col-md-3" id="loader" style="display: none">
+										<img id="imagen" src="images/loaderWhite.gif" />
+									</div>
 
 									<div class="col-md-3" id="divPlanAsignado"
 										style="display: none">
@@ -260,6 +261,9 @@
 		} else {
 			document.getElementById('errorTemporada').style.display = 'inline';
 			document.getElementById('temporada').style.border = "1px solid red";
+			document.getElementById('divPlanAsignado').style.display = 'none';
+			document.getElementById('divTablaActividades').style.display = 'none';
+			document.getElementById('divPredio').style.display = 'none';
 		}
 
 		if (idSector > 0) {
@@ -318,7 +322,7 @@
 								document.getElementById('divPredio').style.display = 'inline';
 
 							} else {
-								
+
 								document.getElementById('sector').style.border = "1px solid red";
 								document.getElementById('sinPredio').style.display = 'inline';
 								document.getElementById('divPlanAsignado').style.display = 'none';
@@ -358,6 +362,9 @@
 		var idPredio = $('#predio').val();
 		var idTemporada = $('#temporada').val();
 		if (idPredio > 0 && idTemporada > 0) {
+			document.getElementById('loader').style.display = 'inline';
+			document.getElementById('errorPredio').style.display = 'none';
+			document.getElementById('predio').style.border = "";
 			$
 					.ajax({
 						type : 'POST',
@@ -488,6 +495,7 @@
 								}
 								document.getElementById('divPlanAsignado').style.display = 'inline';
 								document.getElementById('divTablaActividades').style.display = 'inline';
+								document.getElementById('loader').style.display = 'none';
 							}
 						},
 						error : function(jqXHR, errorThrown) {
@@ -497,6 +505,9 @@
 		} else {
 			document.getElementById('divPlanAsignado').style.display = 'none';
 			document.getElementById('divTablaActividades').style.display = 'none';
+			document.getElementById('loader').style.display = 'none';
+			document.getElementById('errorPredio').style.display = 'inline';
+			document.getElementById('predio').style.border = "1px solid red";
 		}
 	}
 
