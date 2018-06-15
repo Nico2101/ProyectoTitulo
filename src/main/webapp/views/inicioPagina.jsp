@@ -18,6 +18,7 @@
 
 	<!-- Header -->
 	<section id="header">
+	<br><br>
 		<header>
 			<!--  <span class="image avatar"><img src="images/perfil.jpg" alt="" /></span>-->
 			<h1 id="logo">
@@ -26,6 +27,7 @@
 			</h1>
 
 		</header>
+		<br><br><br><br>
 		<nav id="nav">
 			<ul>
 				<li><a href="#one" class="active">Sobre la Empresa</a></li>

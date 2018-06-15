@@ -33,7 +33,7 @@
 					<h3 id="titulo" style="display: none">Informe Productos</h3>
 					<div id="botonGenerarReporte" style="display: none">
 
-						<a id="#">
+						<a id="#" href="generarReporteProductos">
 							<button class="btn btn-primary pull-right" type="button">Generar
 								Informe</button>
 						</a>

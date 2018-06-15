@@ -202,7 +202,7 @@
 										<br> <br> <label class="col-sm-4 control-label">*
 											Cantidad</label>
 										<div class="col-sm-6">
-											<input type="text" class="form-control" id="cantidadInsumo">
+											<input type="text" class="form-control" id="cantidadInsumo" onkeypress="return filterFloat(event,this);">
 											<span id="errorCantidadInsumo" class="error"
 												style="display: none">Ingrese la cantidad de insumo
 												utilizado</span> <span id="errorCantidadCero" class="error"
@@ -213,7 +213,7 @@
 										<br> <br> <label class="col-sm-4 control-label">*
 											Costo</label>
 										<div class="col-sm-6">
-											<input type="text" class="form-control" id="costoInsumo">
+											<input type="text" class="form-control" id="costoInsumo" onkeypress="return filterFloat(event,this);">
 											<span id="errorCostoInsumo" class="error"
 												style="display: none">Ingrese el costo del insumo
 												utilizado</span> <span id="errorCostoCero" class="error"
@@ -637,7 +637,7 @@
 
 										if (data[i].actividad.actividadCosecha == true) {
 											if (data[i].fechaEjecucionReal == null) {
-												cell5.innerHTML = '<input type="number" id="cantidadCosechada" class="form-control select2 select2-hidden-accessible">';
+												cell5.innerHTML = '<input type="number" id="cantidadCosechada" onkeypress="return filterFloat(event,this);" class="form-control select2 select2-hidden-accessible">';
 											} else {
 												cell5.innerHTML = currency(
 														data[i].cantidadCosechada,
@@ -1565,6 +1565,42 @@
 			start -= 3;
 		}
 		return (parts.length == 3 ? '-' : '') + result;
+	}
+
+	function filterFloat(evt, input) {
+
+		var key = window.Event ? evt.which : evt.keyCode;
+		var chark = String.fromCharCode(key);
+		var tempValue = input.value + chark;
+		if (key >= 48 && key <= 57) {
+			if (filter(tempValue) === false) {
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			if (key == 8 || key == 13 || key == 0) {
+				return true;
+			} else if (key == 46) {
+				if (filter(tempValue) === false) {
+					return false;
+				} else {
+					return true;
+				}
+			} else {
+				return false;
+			}
+		}
+	}
+
+	function filter(__val__) {
+		var preg = /^\d*$/;
+		if (preg.test(__val__) === true) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 </script>
 
