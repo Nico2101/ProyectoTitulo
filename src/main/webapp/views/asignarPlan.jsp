@@ -60,7 +60,8 @@
 
 										</select> <span id="errorSector" class="error" style="display: none">Debe
 											seleccionar un sector</span> <span id="sinPredio" class="error"
-											style="display: none">Sector no tiene predios disponibles</span>
+											style="display: none">Sector no tiene predios
+											disponibles</span>
 									</div>
 
 
@@ -170,15 +171,16 @@
 								<br>
 
 								<div id="loader" class="pull-right" style="display: none">
-									<img id="imagen" src="images/loaderWhite.gif" height="30" width="30"/>
+									<img id="imagen" src="images/loaderWhite.gif" height="30"
+										width="30" />
 								</div>
 
 								<button type="button" class="btn btn-primary pull-right"
 									onclick="guardarDatos();">
 									<i class="fa fa-save"> Guardar</i>
 								</button>
-								
-								
+
+
 
 							</div>
 							<!-- /.box-body -->
@@ -562,6 +564,7 @@
 						error : function(jqXHR, errorThrown) {
 							toastr
 									.error("Error al guardar los datos, verifique los datos ingresados");
+							document.getElementById('loader').style.display = 'none';
 						}
 					});
 		}

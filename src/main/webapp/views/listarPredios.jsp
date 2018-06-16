@@ -178,6 +178,7 @@
 											</label>
 											<div class="col-sm-6">
 												<input type="number" class="form-control"
+													onkeypress="return filterFloat(event,this);"
 													id="superficiePredio"> <span id="errorSuperficie"
 													class="error" style="display: none">Ingrese la
 													superficie del predio</span> <span id="errorSubTotal"
@@ -289,6 +290,7 @@
 										</label>
 										<div class="col-sm-6">
 											<input type="number" class="form-control"
+												onkeypress="return filterFloat(event,this);"
 												id="superficieEditar"> <span
 												id="errorSuperficieEditar" class="error"
 												style="display: none">Ingrese la superficie del
@@ -301,8 +303,7 @@
 												style="display: none">La superficie no puede ser cero</span>
 										</div>
 
-										<br> <br> <label
-											class="col-sm-4 control-label"></label>
+										<br> <br> <label class="col-sm-4 control-label"></label>
 										<div class="col-sm-6">
 											<label class="pull-right"
 												style="font-weight: normal; color: red">* Campos
@@ -1068,6 +1069,43 @@
 		}
 		
 	
+	}
+	
+	
+	function filterFloat(evt, input) {
+
+		var key = window.Event ? evt.which : evt.keyCode;
+		var chark = String.fromCharCode(key);
+		var tempValue = input.value + chark;
+		if (key >= 48 && key <= 57) {
+			if (filter(tempValue) === false) {
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			if (key == 8 || key == 13 || key == 0) {
+				return true;
+			} else if (key == 46) {
+				if (filter(tempValue) === false) {
+					return false;
+				} else {
+					return true;
+				}
+			} else {
+				return false;
+			}
+		}
+	}
+
+	function filter(__val__) {
+		var preg = /^\d*$/;
+		if (preg.test(__val__) === true) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 </script>
 

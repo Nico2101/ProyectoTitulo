@@ -17,9 +17,17 @@ public class ReporteProductoDAO {
 
 	private static final String DB_NAME = "npfuente";
 	private static final String PORT = "3306";
+	private static final String URL = "jdbc:mysql://localhost:" + PORT + "/" + DB_NAME;
+	private static final String USER = "root";
+	private static final String PASSWORD = "";
+	
+	/*
+	private static final String DB_NAME = "npfuente";
+	private static final String PORT = "3306";
 	private static final String URL = "jdbc:mysql://146.83.196.166:" + PORT + "/" + DB_NAME;
 	private static final String USER = "npfuente";
 	private static final String PASSWORD = "mbe26nco1CIx";
+	*/
 
 	public LinkedList<PlanTO> planes() {
 		LinkedList<PlanTO> planes = new LinkedList<>();
