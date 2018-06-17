@@ -93,7 +93,9 @@
 											un predio</span>
 									</div>
 									<div class="col-md-3" id="loader" style="display: none">
-										<img id="imagen" src="images/loaderWhite.gif" />
+										<br>
+										<img id="imagen" src="images/loaderWhite.gif" height="30"
+											width="30" />
 									</div>
 
 									<div class="col-md-3" id="divPlanAsignado"

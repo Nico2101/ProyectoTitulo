@@ -217,7 +217,7 @@ public class PlanEjecucionController {
 
 	}
 
-	@RequestMapping(value = "compararPlan")
+	@RequestMapping(value = "seguimientoPlan")
 	public ModelAndView compararPlan(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
 
 		sesion = request.getSession(true);

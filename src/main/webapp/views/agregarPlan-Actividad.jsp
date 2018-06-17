@@ -378,6 +378,22 @@
 				$('#nombreActividad').focus();
 				var suma = num + 1;
 				$('#actividadIngresar').text("Nombre Actividad " + suma);
+				
+				//Ocultar la columna check
+				var tbl = document.getElementById("tablaActividades");
+				for (var i = 0; i < tbl.rows.length; i++) {
+
+					for (var j = 0; j < tbl.rows[i].cells.length; j++) {
+
+						tbl.rows[i].cells[j].style.display = "";
+
+						if (j == 3)
+
+							tbl.rows[i].cells[j].style.display = "none";
+
+					}
+
+				}
 
 			}
 		}

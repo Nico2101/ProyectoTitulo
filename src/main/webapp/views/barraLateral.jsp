@@ -21,7 +21,7 @@
 							value="Agregar Plan"></c:out></span>
 
 			</a></li>
-			
+
 			<li><a href="listarPlanes"> <i class="fa fa-circle-o"></i> <span><c:out
 							value="Ver Planes"></c:out></span>
 
@@ -32,7 +32,7 @@
 
 			</a></li>
 
-			
+
 
 		</ul></li>
 
@@ -57,8 +57,14 @@
 
 			</a></li>
 
-			<li><a href="compararPlan"> <i class="fa fa-circle-o"></i> <span><c:out
-							value="Seguimiento Planes"></c:out></span>
+			<li><a href="seguimientoPlan"> <i class="fa fa-circle-o"></i>
+					<span><c:out value="Seguimiento Planes"></c:out></span>
+
+			</a></li>
+
+			<li><a href="resumenReprogramaciones"> <i
+					class="fa fa-circle-o"></i> <span><c:out
+							value="Resumen Reprogramaciones"></c:out></span>
 
 			</a></li>
 			

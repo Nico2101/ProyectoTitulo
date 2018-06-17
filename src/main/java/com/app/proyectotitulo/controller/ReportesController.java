@@ -1,9 +1,17 @@
 package com.app.proyectotitulo.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +28,24 @@ import com.app.proyectotitulo.TO.ReporteProductoTO;
 import com.app.proyectotitulo.domain.Empleado;
 import com.app.proyectotitulo.domain.Plan_Ejecucion;
 import com.app.proyectotitulo.service.PlanEjecucionService;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.TabSettings;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPCellEvent;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 @Controller
 public class ReportesController {
@@ -75,6 +101,356 @@ public class ReportesController {
 		}
 
 		return datos;
+
+	}
+
+	@RequestMapping(value = "generarReporteProductos")
+	public void generarReporteProductos(HttpServletResponse response) throws Exception {
+		// Obtener todos los datos
+
+		// Obtener planes
+		ReporteProductoDAO reporteProductoDAO = new ReporteProductoDAO();
+		LinkedList<PlanTO> listaPlanes = reporteProductoDAO.planes();
+
+		LinkedList<ReporteProductoTO> lista = new LinkedList<>();
+		LinkedList<DatosCosechaTO> datos = new LinkedList<>();
+		DatosCosechaTO result = null;
+		if (!listaPlanes.isEmpty()) {
+			for (int i = 0; i < listaPlanes.size(); i++) {
+				result = new DatosCosechaTO();
+				lista = reporteProductoDAO.getDatosCosechaProducto(listaPlanes.get(i).getId());
+				if (!lista.isEmpty()) {
+					result.setNombrePlan(listaPlanes.get(i).getNombre());
+					result.setDatos(lista);
+					datos.add(result);
+				} else {
+					result.setNombrePlan(listaPlanes.get(i).getNombre());
+					result.setDatos(new LinkedList<>());
+					datos.add(result);
+				}
+			}
+
+		}
+
+		if (!datos.isEmpty()) {
+			// Generar Reporte
+			// Escribir PDF
+
+			String FILE_NAME = "ReporteProductos.pdf";
+
+			// Declaramos un documento como un objecto Document.
+			Document documento = new Document(PageSize.LETTER);
+
+			// writer es declarado como el método utilizado para escribir en el archivo.
+			PdfWriter pdfWriter = null;
+
+			try {
+				// Obtenemos la instancia del archivo a utilizar.
+				pdfWriter = PdfWriter.getInstance(documento, new FileOutputStream(new File(FILE_NAME)));
+			} catch (FileNotFoundException | DocumentException ex) {
+				ex.getMessage();
+			}
+
+			// Abrimos el documento a editar.
+			documento.open();
+
+			// Creamos un párrafo nuevo llamado "saltoLines" para espaciar los elementos.
+			Paragraph saltoLinea = new Paragraph();
+			saltoLinea.add("\n");
+
+			// Declaramos un texto como Paragraph. Le podemos dar formato alineado, tamaño,
+			// color, etc.
+			Paragraph titulo = new Paragraph();
+
+			Image imagen = Image.getInstance("logo.png");
+			imagen.scaleToFit(200, 400);
+			imagen.setAlignment(Element.ALIGN_RIGHT);
+
+			titulo.setFont(new Font(FontFamily.TIMES_ROMAN, 20, Font.BOLD));
+			titulo.setAlignment(Element.ALIGN_CENTER);
+			titulo.add("Reporte Rendimiento Productos");
+
+			// Datos Productos
+
+			// Recorrer arreglo
+
+			System.out.println(datos.size());
+
+			// Agregamos el texto al documento.
+			documento.add(imagen);
+			documento.add(saltoLinea);
+
+			documento.add(titulo);
+			documento.add(saltoLinea);
+
+			for (int i = 0; i < datos.size(); i++) {
+
+				PdfPCell cell3;
+				PdfPCellEvent roundRectangle3 = new RoundRectangle();
+				// outer table
+				PdfPTable outertable3 = new PdfPTable(1);
+				// inner table 1
+				PdfPTable innertable3 = new PdfPTable(5);
+				innertable3.setWidths(new int[] { 3, 20, 10, 10, 10 });
+
+				Paragraph titulo4 = new Paragraph();
+
+				PdfPCell cell4;
+				PdfPCellEvent roundRectangle4 = new RoundRectangle();
+				// outer table
+				PdfPTable outertable4 = new PdfPTable(1);
+				// inner table 1
+				PdfPTable innertable4 = new PdfPTable(5);
+				innertable4.setWidths(new int[] { 3, 20, 10, 10, 10 });
+
+				Paragraph titulo2 = new Paragraph();
+				titulo2.setFont(new Font(FontFamily.TIMES_ROMAN, 14, Font.BOLD));
+				titulo2.setTabSettings(new TabSettings(56f));
+				titulo2.add(Chunk.TABBING);
+				titulo2.add(datos.get(i).getNombrePlan());
+
+				documento.add(saltoLinea);
+				documento.add(titulo2);
+
+				/////////////////////////////////////////
+				//////////////////////////////////////// Datos del plan
+
+				//
+				//
+				//
+				//
+				// Agregar los datos
+				//
+				//
+				//
+
+				if (datos.get(i).getDatos().size() > 0) {
+					// Titulos tabla
+					// first row
+					// column 1
+					cell3 = new PdfPCell(new Phrase("N°"));
+					cell3.setBorderColorBottom(BaseColor.BLACK);
+					cell3.setBorder(Rectangle.NO_BORDER);
+					innertable3.addCell(cell3);
+					// column 2
+					cell3 = new PdfPCell(new Phrase("Temporada"));
+					cell3.setBorderColorBottom(BaseColor.BLACK);
+					cell3.setBorder(Rectangle.NO_BORDER);
+					innertable3.addCell(cell3);
+
+					// column 3
+					cell3 = new PdfPCell(new Phrase("Fecha Inicio"));
+					cell3.setBorderColorBottom(BaseColor.BLACK);
+					cell3.setBorder(Rectangle.NO_BORDER);
+					innertable3.addCell(cell3);
+
+					// column 4
+					cell3 = new PdfPCell(new Phrase("Fecha Término"));
+					cell3.setBorderColorBottom(BaseColor.BLACK);
+					cell3.setBorder(Rectangle.NO_BORDER);
+					innertable3.addCell(cell3);
+
+					// column 5
+					cell3 = new PdfPCell(new Phrase("Cantidad Cosechada"));
+					cell3.setBorderColorBottom(BaseColor.BLACK);
+					cell3.setBorder(Rectangle.NO_BORDER);
+					innertable3.addCell(cell3);
+
+					// spacing
+					cell3 = new PdfPCell();
+					cell3.setColspan(5);
+					cell3.setFixedHeight(3);
+					cell3.setBorder(Rectangle.NO_BORDER);
+					innertable3.addCell(cell3);
+
+					// first nested table
+					cell3 = new PdfPCell(innertable3);
+					cell3.setCellEvent(roundRectangle3);
+					cell3.setBorder(Rectangle.NO_BORDER);
+					cell3.setPadding(8);
+					outertable3.addCell(cell3);
+
+					// Comenzar a colocar los datos
+
+					int total = 0;
+
+					/*
+					 * for (int i = 0; i < detalle.size(); i++) { total +=
+					 * detalle.get(i).getCantidadRecibida(); // first row // column 1 cell4 = new
+					 * PdfPCell(new Phrase(i + 1 + "")); cell4.setBorder(Rectangle.NO_BORDER);
+					 * innertable4.addCell(cell4); // column 2 cell4 = new PdfPCell(new
+					 * Phrase(detalle.get(i).getCatalogoProducto().getCodigo()));
+					 * cell4.setBorder(Rectangle.NO_BORDER); innertable4.addCell(cell4);
+					 * 
+					 * // column 3 cell4 = new PdfPCell(new
+					 * Phrase(detalle.get(i).getCatalogoProducto().getNombre()));
+					 * cell4.setBorder(Rectangle.NO_BORDER); innertable4.addCell(cell4);
+					 * 
+					 * // column 4 cell4 = new PdfPCell(new
+					 * Phrase(detalle.get(i).getCatalogoProducto().getCategoriaSubcategoria()
+					 * .getCategoria().getNombre())); cell4.setBorder(Rectangle.NO_BORDER);
+					 * innertable4.addCell(cell4);
+					 * 
+					 * // column 5 cell4 = new PdfPCell(new
+					 * Phrase(detalle.get(i).getCantidadRecibida() + ""));
+					 * cell4.setBorder(Rectangle.NO_BORDER); innertable4.addCell(cell4);
+					 * 
+					 * // spacing cell4 = new PdfPCell(); cell4.setColspan(5);
+					 * cell4.setFixedHeight(3); cell4.setBorder(Rectangle.NO_BORDER);
+					 * innertable4.addCell(cell4);
+					 * 
+					 * }
+					 */
+
+					// first row
+					/*
+					 * // column 1 cell4 = new PdfPCell(new Phrase());
+					 * cell4.setBorder(Rectangle.NO_BORDER); innertable4.addCell(cell4); // column 2
+					 * cell4 = new PdfPCell(new Phrase()); cell4.setBorder(Rectangle.NO_BORDER);
+					 * innertable4.addCell(cell4);
+					 * 
+					 */
+
+					DecimalFormat formatea = new DecimalFormat("###,###.##");
+
+					// Recorrer datos de temporadas
+					for (int j = 0; j < datos.get(i).getDatos().size(); j++) {
+						// column 1
+						cell4 = new PdfPCell(new Phrase((j + 1) + ""));
+						cell4.setBorder(Rectangle.NO_BORDER);
+						innertable4.addCell(cell4);
+
+						// column 2
+						cell4 = new PdfPCell(new Phrase(datos.get(i).getDatos().get(j).getNombreTemporada()));
+						cell4.setBorder(Rectangle.NO_BORDER);
+						innertable4.addCell(cell4);
+
+						// column 3
+						cell4 = new PdfPCell(new Phrase(new SimpleDateFormat("dd-MM-yyyy")
+								.format(datos.get(i).getDatos().get(j).getFechaInicio())));
+						cell4.setBorder(Rectangle.NO_BORDER);
+						innertable4.addCell(cell4);
+
+						// column 4
+						cell4 = new PdfPCell(new Phrase(new SimpleDateFormat("dd-MM-yyyy")
+								.format(datos.get(i).getDatos().get(j).getFechaTermino())));
+						cell4.setBorder(Rectangle.NO_BORDER);
+						innertable4.addCell(cell4);
+
+						// column 5
+						cell4 = new PdfPCell(new Phrase(
+								formatea.format(datos.get(i).getDatos().get(j).getCantidadCosechada()) + " Kg."));
+						cell4.setBorder(Rectangle.NO_BORDER);
+						innertable4.addCell(cell4);
+
+						// spacing
+						cell4 = new PdfPCell();
+						cell4.setColspan(5);
+						cell4.setFixedHeight(3);
+						cell4.setBorder(Rectangle.NO_BORDER);
+						innertable4.addCell(cell4);
+						total += datos.get(i).getDatos().get(j).getCantidadCosechada();
+					}
+
+					// column 1
+					cell4 = new PdfPCell(new Phrase());
+					cell4.setBorder(Rectangle.NO_BORDER);
+					innertable4.addCell(cell4);
+
+					// column 2
+					cell4 = new PdfPCell(new Phrase());
+					cell4.setBorder(Rectangle.NO_BORDER);
+					innertable4.addCell(cell4);
+
+					// column 3
+					cell4 = new PdfPCell(new Phrase());
+					cell4.setBorder(Rectangle.NO_BORDER);
+					innertable4.addCell(cell4);
+
+					// column 4
+					cell4 = new PdfPCell(new Phrase("Total Histórico"));
+					cell4.setBorder(Rectangle.NO_BORDER);
+					innertable4.addCell(cell4);
+
+					// column 5
+					cell4 = new PdfPCell(new Phrase(formatea.format(total) + " Kg."));
+					cell4.setBorder(Rectangle.NO_BORDER);
+					innertable4.addCell(cell4);
+
+					// spacing
+					cell4 = new PdfPCell();
+					cell4.setColspan(5);
+					cell4.setFixedHeight(3);
+					cell4.setBorder(Rectangle.NO_BORDER);
+					innertable4.addCell(cell4);
+
+					// first nested table
+					cell4 = new PdfPCell(innertable4);
+					cell4.setCellEvent(roundRectangle4);
+					cell4.setBorder(Rectangle.NO_BORDER);
+					cell4.setPadding(8);
+					outertable4.addCell(cell4);
+				} else {
+					Paragraph titulo5 = new Paragraph();
+					titulo5.setFont(new Font(FontFamily.TIMES_ROMAN, 12));
+					titulo5.setTabSettings(new TabSettings(56f));
+					titulo5.add(Chunk.TABBING);
+					titulo5.add("Plan no ha sido ejecutado en ninguna temporada");
+					documento.add(saltoLinea);
+					documento.add(titulo5);
+
+				}
+
+				try {
+
+					documento.add(titulo4);
+					documento.add(saltoLinea);
+
+					documento.add(outertable3);
+					documento.add(outertable4);
+
+				} catch (DocumentException ex) {
+					ex.getMessage();
+				}
+
+			}
+
+			// Cerramos el documento.
+			documento.close();
+			// Cerramos el writer.
+			pdfWriter.close();
+
+			//// Descargar PDF////
+
+			FileInputStream fis = new FileInputStream(FILE_NAME);
+
+			int read = 0;
+			String contentType = "application/pdf";
+			response.setContentType(contentType);
+			response.setHeader("Content-Disposition", "attachment;filename=\"" + FILE_NAME + "\"");
+
+			ServletOutputStream out = response.getOutputStream();
+
+			byte[] bytes = new byte[1000];
+
+			while ((read = fis.read(bytes)) != -1) {
+				out.write(bytes, 0, read);
+			}
+
+			out.flush();
+			out.close();
+
+		}
+
+	}
+
+	class RoundRectangle implements PdfPCellEvent {
+		public void cellLayout(PdfPCell cell, Rectangle rect, PdfContentByte[] canvas) {
+			PdfContentByte cb = canvas[PdfPTable.LINECANVAS];
+			cb.roundRectangle(rect.getLeft() + 1.5f, rect.getBottom() + 1.5f, rect.getWidth() - 3, rect.getHeight() - 3,
+					4);
+			cb.stroke();
+		}
 
 	}
 }

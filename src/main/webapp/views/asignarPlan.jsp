@@ -569,6 +569,7 @@
 						error : function(jqXHR, errorThrown) {
 							toastr
 									.error("Error al guardar los datos, verifique los datos ingresados");
+							document.getElementById('loader').style.display = 'none';
 						}
 					});
 		}else{
