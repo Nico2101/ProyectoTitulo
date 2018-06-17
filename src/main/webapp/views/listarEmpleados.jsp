@@ -151,7 +151,10 @@
 											<span id="errorRutEmpleado" class="error"
 												style="display: none">Ingrese el rut del empleado</span> <span
 												id="errorRutEmpleadoInvalido" class="error"
-												style="display: none">El rut ingresado es inválido</span>
+												style="display: none">El rut ingresado es inválido</span> <span
+												id="errorRutEmpleadoYaExiste" class="error"
+												style="display: none">El rut ingresado ya exite</span>
+
 
 										</div>
 
@@ -162,9 +165,9 @@
 												id="fechaNacimientoEmpleado"> <span
 												id="errorFechaNacimientoEmpleado" class="error"
 												style="display: none">Ingrese fecha de nacimiento del
-												empleado</span> <span id="errorFechaNacimientoSup"
-												class="error" style="display: none">Ingrese una fecha
-												de nacimiento inferior </span>
+												empleado</span> <span id="errorFechaNacimientoSup" class="error"
+												style="display: none">Ingrese una fecha de nacimiento
+												inferior </span>
 										</div>
 
 										<br> <br> <label class="col-sm-4 control-label">*
@@ -389,11 +392,11 @@
 		document.getElementById('errorRutEmpleadoInvalido').style.display = 'none';
 		document.getElementById('rutEmpleado').style.border = "";
 
-		document.getElementById('errorFechaNacimientoSuperior').style.display = 'none';
+		document.getElementById('errorFechaNacimientoSup').style.display = 'none';
 		document.getElementById('fechaNacimientoEmpleado').style.border = "";
-		
-		
-		
+
+		document.getElementById('errorRutEmpleadoYaExiste').style.display = 'none';
+		document.getElementById('rutEmpleado').style.border = "";
 
 	}
 
@@ -506,94 +509,143 @@
 					type : 'POST',
 					url : "validarRut",
 					dataType : 'json',
+					async : false,
 					data : {
 						rut : rutEmpleado
 					},
 					success : function(data) {
 						if (data == true) {
 							swal.close();
-							document
-							.getElementById('errorRutEmpleadoInvalido').style.display = 'none';
-					document.getElementById('rutEmpleado').style.border = "";
+							document.getElementById('errorRutEmpleadoInvalido').style.display = 'none';
+							document.getElementById('rutEmpleado').style.border = "";
 
-							if (nombreEmpleado != "" && apellidosEmpleado != ""
-									&& rutEmpleado != ""
-									&& fechaNacimientoEmpleado != ""
-									&& fechaNacimiento < hoy
-									&& direccionEmpleado != ""
-									&& telefonoEmpleado != ""
-									&& cargoEmpleado != "Seleccione cargo") {
+							$
+									.ajax({
+										type : 'POST',
+										url : "verificarRutRepetido",
+										dataType : 'json',
+										async : false,
+										data : {
+											rut : rutEmpleado
+										},
+										success : function(data) {
+											if (data == true) {
+												swal.close();
+												document
+														.getElementById('errorRutEmpleadoYaExiste').style.display = 'none';
+												document
+														.getElementById('rutEmpleado').style.border = "";
 
-								$
-										.ajax({
-											type : 'POST',
-											url : "agregarEmpleado",
-											dataType : 'json',
-											data : {
-												rut : rutEmpleado,
-												nombre : nombreEmpleado,
-												apellidos : apellidosEmpleado,
-												fechaNacimiento : fechaNacimientoEmpleado,
-												direccion : direccionEmpleado,
-												telefono : telefonoEmpleado,
-												cargo : cargoEmpleado,
-												clave : claveEmpleado
-											},
-											success : function(data) {
-												console.log(data);
+												if (nombreEmpleado != ""
+														&& apellidosEmpleado != ""
+														&& rutEmpleado != ""
+														&& fechaNacimientoEmpleado != ""
+														&& fechaNacimiento < hoy
+														&& direccionEmpleado != ""
+														&& telefonoEmpleado != ""
+														&& cargoEmpleado != "Seleccione cargo") {
 
-												if (data.rut != "") {
-													$('#modalAgregarEmpleado')
-															.modal('hide');
+													$
+															.ajax({
+																type : 'POST',
+																url : "agregarEmpleado",
+																dataType : 'json',
+																async : false,
+																data : {
+																	rut : rutEmpleado,
+																	nombre : nombreEmpleado,
+																	apellidos : apellidosEmpleado,
+																	fechaNacimiento : fechaNacimientoEmpleado,
+																	direccion : direccionEmpleado,
+																	telefono : telefonoEmpleado,
+																	cargo : cargoEmpleado,
+																	clave : claveEmpleado
+																},
+																success : function(
+																		data) {
+																	console
+																			.log(data);
 
-													var tabla = $(
-															'#listaEmpleados')
-															.dataTable();
-													var num = tabla
-															.fnSettings()
-															.fnRecordsTotal();
+																	if (data.rut != "") {
+																		$(
+																				'#modalAgregarEmpleado')
+																				.modal(
+																						'hide');
 
-													$('#listaEmpleados')
-															.dataTable()
-															.fnAddData(
+																		var tabla = $(
+																				'#listaEmpleados')
+																				.dataTable();
+																		var num = tabla
+																				.fnSettings()
+																				.fnRecordsTotal();
 
-																	[
-																			num + 1,
-																			data.nombre,
-																			data.apellidos,
-																			data.rut,
-																			data.direccion,
-																			data.telefono,
-																			data.cargo,
-																			'<a href="#" onclick="editarEmpleado(\''
-																					+ data.rut
-																					+ '\');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarEmpleado(\''
-																					+ data.rut
-																					+ '\');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+																		$(
+																				'#listaEmpleados')
+																				.dataTable()
+																				.fnAddData(
 
-															);
+																						[
+																								num + 1,
+																								data.nombre,
+																								data.apellidos,
+																								data.rut,
+																								data.direccion,
+																								data.telefono,
+																								data.cargo,
+																								'<a href="#" onclick="editarEmpleado(\''
+																										+ data.rut
+																										+ '\');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarEmpleado(\''
+																										+ data.rut
+																										+ '\');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
 
-													$("#listaEmpleados")
-															.DataTable().page(
-																	'last')
-															.draw('page');
+																				);
 
-													toastr
-															.success("Empleado agregado correctamente");
-												} else {
-													toastr
-															.error("Error al agregar el empleado");
+																		$(
+																				"#listaEmpleados")
+																				.DataTable()
+																				.page(
+																						'last')
+																				.draw(
+																						'page');
+
+																		toastr
+																				.success("Empleado agregado correctamente");
+																	} else {
+																		toastr
+																				.error("Error al agregar el empleado");
+																	}
+
+																},
+																error : function(
+																		jqXHR,
+																		errorThrown) {
+																	toastr
+																			.error("Error al agregar el empleado");
+																}
+															});
+
 												}
 
-											},
-											error : function(jqXHR, errorThrown) {
-												toastr
-														.error("Error al agregar el empleado");
+											} else {
+												document
+														.getElementById('errorRutEmpleadoYaExiste').style.display = 'inline';
+												document
+														.getElementById('rutEmpleado').style.border = "1px solid red";
+												document
+														.getElementById('errorRutEmpleadoInvalido').style.display = 'none';
+
 											}
-										});
-							}
+
+										},
+										error : function(jqXHR, errorThrown) {
+											toastr
+													.error("Error al agregar el empleado1111");
+										}
+									});
 
 						} else {
+							document.getElementById('errorRutEmpleadoYaExiste').style.display = 'none';
+							document.getElementById('rutEmpleado').style.border = "";
 
 							if (rutEmpleado == "") {
 								document
@@ -603,11 +655,11 @@
 								document.getElementById('rutEmpleado').style.border = "1px solid red";
 
 							} else {
-								if (rutEmpleado !=""){
-								document
-										.getElementById('errorRutEmpleadoInvalido').style.display = 'inline';
-								document.getElementById('rutEmpleado').style.border = "1px solid red";
-							}
+								if (rutEmpleado != "") {
+									document
+											.getElementById('errorRutEmpleadoInvalido').style.display = 'inline';
+									document.getElementById('rutEmpleado').style.border = "1px solid red";
+								}
 
 							}
 						}
@@ -619,7 +671,6 @@
 				});
 
 	}
-
 	function editarEmpleado(rut) {
 		console.log(rut);
 

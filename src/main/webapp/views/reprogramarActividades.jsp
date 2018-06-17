@@ -137,9 +137,8 @@
 										<label>Motivo de reprogramación de actividades:</label>
 										<p>
 											<textarea name="motivo" id="motivo" cols="102" rows="3"></textarea>
-											<br>
-											<span id="errorMotivo" class="error" style="display: none">Debe
-												ingresar un motivo</span>
+											<br> <span id="errorMotivo" class="error"
+												style="display: none">Debe ingresar un motivo</span>
 										</p>
 
 									</div>
@@ -250,6 +249,7 @@
 	function mostrarActividades() {
 		//Vaciar tabla
 		var oTableIngre = document.getElementById('tablaActividades');
+		var motivo = $('#motivo').val("");
 
 		//gets rows of table
 		var rowLengthoTableIngre = oTableIngre.rows.length;
@@ -327,27 +327,28 @@
 
 										cell3.innerHTML = fecha;
 
-										fecha = moment(fecha, 'DD/MM/YYYY');
+										/*fecha = moment(fecha, 'DD/MM/YYYY');
 										var min = new Date(fecha);
 										var dias = 1;
 										min.setDate(min.getDate() + 1);
 										console.log(min);
 										fechaMin = moment(min, 'YYYY/MM/DD');
 										fechaMin = fechaMin
-												.format('YYYY-MM-DD');
-										
-										var fechaTermino= data[i].temporada.fechaTermino;
+												.format('YYYY-MM-DD');  */
+										var fechaInicio = data[i].temporada.fechaInicio;
+										var fechaTermino = data[i].temporada.fechaTermino;
+										console.log(fechaInicio);
 										console.log(fechaTermino);
 
-										console.log(fechaMin);
 										if (data[i].fechaEjecucionReal == null) {
-											cell4.innerHTML = '<input type="date" name="fecha" id="NuevaFechaEstimada"  min="'+fechaMin+'" max="'+fechaTermino+'" class="form-control select2 select2-hidden-accessible"/>';
+											cell4.innerHTML = '<input type="date" name="fecha" id="NuevaFechaEstimada"  min="'+fechaInicio+'" max="'+fechaTermino+'" class="form-control select2 select2-hidden-accessible"/>';
 										} else {
 											fecha = moment(
 													data[i].fechaEjecucionReal,
 													'YYYY/MM/DD');
 											fecha = fecha.format('DD-MM-YYYY');
-											cell4.innerHTML = "Actividad realizada el "+ fecha;
+											cell4.innerHTML = "Actividad realizada el "
+													+ fecha;
 										}
 										cell5.innerHTML = data[i].idActividadRealizada;
 
@@ -397,6 +398,7 @@
 		//Recorrer Tabla y Guardar los datos en un arreglo
 		//Obteniene el motivo de la reprogramacion
 		var motivo = $('#motivo').val();
+
 		//obtener los dato de la tabla
 		var oTable = document.getElementById('tablaActividades');
 		//gets rows of table
@@ -413,12 +415,11 @@
 		var filas = $("#tablaActividades").find("tr"); //devulve las filas del body de tu tabla segun el ejemplo que brindaste
 		var fechas = "";
 		for (i = 1; i < filas.length; i++) { //Recorre las filas 1 a 1
-				var celdas = $(filas[i]).find("td"); //devolverá las celdas de una fila
-				fechas = $($(celdas[3]).children("input")[0]).val();
-				arregloFechasReprogramadas.push(fechas);
-			
+			var celdas = $(filas[i]).find("td"); //devolverá las celdas de una fila
+			fechas = $($(celdas[3]).children("input")[0]).val();
+			arregloFechasReprogramadas.push(fechas);
+
 		}
-		
 
 		if (rowLength > 1) {
 			//loops through rows    
@@ -438,7 +439,8 @@
 		var arregloFechasEstiamdasReprogramadas = Array();
 
 		for (i = 0; i < arregloFechasReprogramadas.length; i++) {
-			if (typeof arregloFechasReprogramadas[i] !='undefined' && arregloFechasReprogramadas[i] != "") {
+			if (typeof arregloFechasReprogramadas[i] != 'undefined'
+					&& arregloFechasReprogramadas[i] != "") {
 				arregloFechasEstiamdasReprogramadas
 						.push(arregloFechasEstimadas[i]);//almacena las fechas estimadas que se reprogramaron
 				arregloFechasRealesReprogramadas
@@ -456,7 +458,7 @@
 
 		if (arregloFechasEstiamdasReprogramadas.length > 0
 				&& arregloFechasRealesReprogramadas.length > 0
-				&& arregloIds.length > 0 && motivo != "") {
+				&& arregloIdsReprogramados.length > 0 && motivo != "") {
 			//Enviar arreglo
 			$
 					.ajax({
@@ -501,7 +503,7 @@
 			} else {
 				document.getElementById('errorMotivo').style.display = 'none';
 				document.getElementById('motivo').style.border = "";
-				toastr.error("Error debe ingresar nueva fecha estimada");
+				toastr.warning("Debe ingresar una nueva fecha estimada");
 			}
 
 		}

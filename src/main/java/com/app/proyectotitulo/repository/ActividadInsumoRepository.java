@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.app.proyectotitulo.domain.Actividad_Insumo;
-import com.app.proyectotitulo.domain.Predio;
 
 @Repository
 public interface ActividadInsumoRepository extends JpaRepository<Actividad_Insumo, Integer> {
@@ -16,7 +15,9 @@ public interface ActividadInsumoRepository extends JpaRepository<Actividad_Insum
 
 	Actividad_Insumo findByIdActividadInsumo(int idActividadInsumo);
 	
-	@Query(value = "select ai.costo, ai.id_insumo from Actividad_Insumo ai  join Actividad_Realizada ar on ai.id_actividad_realizada=ar.id_actividad_realizada where ar.id_predio=?", nativeQuery = true)
-	List<Actividad_Insumo> obtenerCostos(int idPredio);
+	@Query(value = "select sum(ai.costo) as costos from Actividad_Insumo ai join Actividad_Realizada ar on ai.id_actividad_realizada=ar.id_actividad_realizada where ar.id_predio=? and ar.id_temporada=?", nativeQuery = true)
+	Integer obtenerCostos(int idPredio, int idTemporada);
+
+	
 
 }

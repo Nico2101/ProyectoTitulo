@@ -60,7 +60,8 @@
 
 										</select> <span id="errorSector" class="error" style="display: none">Debe
 											seleccionar un sector</span> <span id="sinPredio" class="error"
-											style="display: none">Sector no tiene predios disponibles</span>
+											style="display: none">Sector no tiene predios
+											disponibles</span>
 									</div>
 
 
@@ -140,6 +141,10 @@
 										<strong>Actividades del plan</strong>
 									</center>
 								</h4>
+								<FONT FACE="raro, courier" SIZE=2 COLOR="black">*Las
+									fechas estimadas ingresadas deben estar dentro de la duración
+									de la temporada</FONT> <br> <br>
+
 								<div class="row">
 									<div class="col-sm-2" style="text-align: center;"></div>
 
@@ -170,15 +175,16 @@
 								<br>
 
 								<div id="loader" class="pull-right" style="display: none">
-									<img id="imagen" src="images/loaderWhite.gif" height="30" width="30"/>
+									<img id="imagen" src="images/loaderWhite.gif" height="30"
+										width="30" />
 								</div>
 
 								<button type="button" class="btn btn-primary pull-right"
 									onclick="guardarDatos();">
 									<i class="fa fa-save"> Guardar</i>
 								</button>
-								
-								
+
+
 
 							</div>
 							<!-- /.box-body -->
@@ -472,8 +478,9 @@
 		for (i = 1; i < filas.length; i++) { //Recorre las filas 1 a 1
 			var celdas = $(filas[i]).find("td"); //devolverá las celdas de una fila
 			fechas = $($(celdas[2]).children("input")[0]).val();
+			if(fechas!=""){
 			arregloFechas.push(fechas);
-
+			}
 		}
 
 		console.log(arregloFechas);
@@ -523,7 +530,7 @@
 
 		if (sectorSeleccionado > 0 && predioSeleccionado > 0
 				&& temporadaSeleccionada > 0 && planSeleccionado > 0
-				&& arregloIds.length > 0 && arregloFechas.length > 0) {
+				&& arregloIds.length > 0 && arregloFechas.length==arregloIds.length) {
 
 			document.getElementById('loader').style.display = 'inline';
 
@@ -564,8 +571,9 @@
 									.error("Error al guardar los datos, verifique los datos ingresados");
 						}
 					});
+		}else{
+		toastr.error("Error, verificar datos ingresados");
 		}
-
 	}
 </script>
 

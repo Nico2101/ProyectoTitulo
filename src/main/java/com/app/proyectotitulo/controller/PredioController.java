@@ -15,6 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.app.proyectotitulo.DAO.DetallesCostosDAO;
+import com.app.proyectotitulo.DAO.ReporteProductoDAO;
+import com.app.proyectotitulo.TO.ActividadInsumoTO;
+import com.app.proyectotitulo.TO.DatosCosechaTO;
+import com.app.proyectotitulo.TO.PlanTO;
 import com.app.proyectotitulo.domain.Actividad_Insumo;
 import com.app.proyectotitulo.domain.Empleado;
 import com.app.proyectotitulo.domain.Predio;
@@ -33,10 +38,10 @@ public class PredioController {
 
 	@Autowired
 	private SectorService sectorService;
-	
+
 	@Autowired
 	private TemporadaService temporadaService;
-	
+
 	@Autowired
 	private ActividadInsumoService actividadInsumoService;
 
@@ -105,7 +110,7 @@ public class PredioController {
 	@RequestMapping(value = "obtenerListaPredios")
 	public @ResponseBody List<Predio> obtenerListaPredios() {
 
-		List<Predio> lista = predioService.listarTodosLosPredios(false,false);
+		List<Predio> lista = predioService.listarTodosLosPredios(false, false);
 
 		return lista;
 	}
@@ -128,7 +133,7 @@ public class PredioController {
 	@RequestMapping(value = "eliminarPrediosDeUnSector")
 	public @ResponseBody boolean eliminarPrediosDeUnSector(@RequestParam int idSector) {
 
-		List<Predio> lista1 = predioService.listarTodosLosPredios(false,false);
+		List<Predio> lista1 = predioService.listarTodosLosPredios(false, false);
 		Sector s = sectorService.findByIdSector(idSector);
 
 		if (s != null) {
@@ -256,10 +261,10 @@ public class PredioController {
 		return new LinkedList<Predio>();
 
 	}
-	
-	
+
 	@RequestMapping(value = "ListarCostosTotalesPorPredio")
-	public ModelAndView listarCostosTotalesPorPredio(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
+	public ModelAndView listarCostosTotalesPorPredio(ModelAndView vista, HttpServletRequest request,
+			HttpSession sesion) {
 
 		sesion = request.getSession(true);
 		Empleado e = (Empleado) sesion.getAttribute("empleado");
@@ -268,6 +273,10 @@ public class PredioController {
 
 			List<Temporada> listaTemporadas = temporadaService.listaTemporadas(false);
 			vista.addObject("listaTemporadas", listaTemporadas);
+
+			// Get Sectores
+			List<Sector> listaSectores = sectorService.listarSectores(false);
+			vista.addObject("listaSectores", listaSectores);
 			vista.setViewName("costosTotalesPredio");
 
 		} else {
@@ -280,13 +289,31 @@ public class PredioController {
 		return vista;
 
 	}
-	
+
 	@RequestMapping(value = "costosPorPredio")
-	public @ResponseBody List<Actividad_Insumo> costosPorPredio(@RequestParam int idPredio) {
+	public @ResponseBody Integer costosPorPredio(@RequestParam int idPredio, @RequestParam int idTemporada) {
 
-		List<Actividad_Insumo> lista = actividadInsumoService.obtenerCostosTotales(idPredio);
+		Integer costos = actividadInsumoService.obtenerCostosTotales(idPredio, idTemporada);
+		if (costos != null) {
 
-		return lista;
+			return costos;
+		} else {
+			return 0;
+		}
+
+	}
+
+	@RequestMapping(value = "obtenerDetalles")
+	public @ResponseBody LinkedList<ActividadInsumoTO> obtenerDetallesDeLosCostos(@RequestParam int idPredio,
+			@RequestParam int idTemporada) {
+
+		// Obtengo los detalles del costo total
+		DetallesCostosDAO detallesCostosDAO = new DetallesCostosDAO();
+		LinkedList<ActividadInsumoTO> listaDetalles = detallesCostosDAO.detallesCostos(idPredio, idTemporada);
+		
+        //System.out.print(listaDetalles);
+		return listaDetalles;
+
 	}
 
 }

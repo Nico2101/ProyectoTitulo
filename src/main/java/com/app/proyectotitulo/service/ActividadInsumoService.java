@@ -14,8 +14,7 @@ public interface ActividadInsumoService {
 	public void delete(Actividad_Insumo ai);
 
 	Actividad_Insumo buscarActividadInsumo(int idActividadInsumo);
-	
-	
-	List<Actividad_Insumo> obtenerCostosTotales(int idPredio);
+
+	Integer obtenerCostosTotales(int idPredio, int idTemporada);
 
 }

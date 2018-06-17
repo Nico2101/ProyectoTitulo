@@ -17,10 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.app.proyectotitulo.domain.Empleado;
 import com.app.proyectotitulo.service.EmpleadoService;
 
-
 @Controller
 public class EmpleadoController {
-	
+
 	@Autowired
 	private EmpleadoService empleadoService;
 
@@ -44,37 +43,39 @@ public class EmpleadoController {
 		}
 		return vista;
 	}
-	
-	
+
 	@RequestMapping(value = "agregarEmpleado")
-	public @ResponseBody Empleado agregarEmpleado(@RequestParam String rut, @RequestParam String nombre, @RequestParam String apellidos,
-			@RequestParam Date fechaNacimiento, @RequestParam String telefono, @RequestParam String direccion, @RequestParam String cargo,
-			@RequestParam String clave) {
-        
-		System.out.println(rut);
-		System.out.println(nombre);
-		System.out.println(apellidos);
-		System.out.println(fechaNacimiento);
-		System.out.println(telefono);
-		System.out.println(direccion);
-		System.out.println(cargo);
-		System.out.println(clave);
+	public @ResponseBody Empleado agregarEmpleado(@RequestParam String rut, @RequestParam String nombre,
+			@RequestParam String apellidos, @RequestParam Date fechaNacimiento, @RequestParam String telefono,
+			@RequestParam String direccion, @RequestParam String cargo, @RequestParam String clave) {
+		
+		System.out.print(nombre);
+		System.out.print(apellidos);
+		System.out.print(rut);
+		System.out.print(fechaNacimiento);
+		System.out.print(telefono);
+		
+	
 		Empleado e = new Empleado();
 		Empleado empleado = new Empleado();
 
-		if (!nombre.equalsIgnoreCase("") && !apellidos.equalsIgnoreCase("") && !rut.equalsIgnoreCase("")&& fechaNacimiento!=null
-				&& !telefono.equalsIgnoreCase("") && !direccion.equalsIgnoreCase("") && !cargo.equalsIgnoreCase("") && !clave.equalsIgnoreCase("")) {
-			e.setRut(rut);
+
+		if (!nombre.equalsIgnoreCase("") && !apellidos.equalsIgnoreCase("") && !rut.equalsIgnoreCase("")
+				&& fechaNacimiento != null && !telefono.equalsIgnoreCase("") && !direccion.equalsIgnoreCase("")
+				&& !cargo.equalsIgnoreCase("") && !clave.equalsIgnoreCase("")) {
+			
 			e.setNombre(nombre);
 			e.setApellidos(apellidos);
+			e.setRut(rut);
 			e.setFechaNac(fechaNacimiento);
 			e.setTelefono(telefono);
 			e.setDireccion(direccion);
-			e.setCargo(cargo);
-			e.setClave(clave);
-
+            e.setCargo(cargo);
+            e.setClave(clave);
+			
 			// Guardar
 			empleado = empleadoService.saveAndFlush(e);
+			System.out.print(empleado);
 			return empleado;
 
 		}
@@ -82,8 +83,7 @@ public class EmpleadoController {
 		return empleado;
 
 	}
-	
-	
+
 	@RequestMapping(value = "obtenerListaEmpleados")
 	public @ResponseBody List<Empleado> obtenerListaEmpleados() {
 
@@ -95,7 +95,7 @@ public class EmpleadoController {
 	@RequestMapping(value = "eliminarEmpleado")
 	public @ResponseBody boolean eliminarEmpleado(@RequestParam String rutEmpleado) {
 
-		Empleado e= empleadoService.findByRut(rutEmpleado);
+		Empleado e = empleadoService.findByRut(rutEmpleado);
 		if (e != null) {
 			e.setEmpleadoEliminado(true);
 
@@ -105,8 +105,7 @@ public class EmpleadoController {
 
 		return false;
 	}
-	
-	
+
 	@RequestMapping(value = "obtenerEmpleadoAEditar")
 	public @ResponseBody Empleado obtenerEmpleadoAEditar(@RequestParam String rut) {
 
@@ -118,11 +117,11 @@ public class EmpleadoController {
 		}
 
 	}
-	
-	
+
 	@RequestMapping(value = "editarEmpleado")
-	public @ResponseBody boolean editar(@RequestParam String rutEditar, @RequestParam String nombreEditar, @RequestParam String apellidosEditar,
-			@RequestParam Date fechaNacimientoEditar, @RequestParam String telefonoEditar, @RequestParam String direccionEditar, @RequestParam String cargoEditar,
+	public @ResponseBody boolean editar(@RequestParam String rutEditar, @RequestParam String nombreEditar,
+			@RequestParam String apellidosEditar, @RequestParam Date fechaNacimientoEditar,
+			@RequestParam String telefonoEditar, @RequestParam String direccionEditar, @RequestParam String cargoEditar,
 			@RequestParam String claveEditar) {
 		System.out.println(rutEditar);
 		System.out.println(nombreEditar);
@@ -135,8 +134,10 @@ public class EmpleadoController {
 
 		Empleado e = new Empleado();
 
-		if (!nombreEditar.equalsIgnoreCase("") && !apellidosEditar.equalsIgnoreCase("") && !rutEditar.equalsIgnoreCase("")&& fechaNacimientoEditar!=null
-				&& !telefonoEditar.equalsIgnoreCase("") && !direccionEditar.equalsIgnoreCase("") && !cargoEditar.equalsIgnoreCase("") && !claveEditar.equalsIgnoreCase("")) {
+		if (!nombreEditar.equalsIgnoreCase("") && !apellidosEditar.equalsIgnoreCase("")
+				&& !rutEditar.equalsIgnoreCase("") && fechaNacimientoEditar != null
+				&& !telefonoEditar.equalsIgnoreCase("") && !direccionEditar.equalsIgnoreCase("")
+				&& !cargoEditar.equalsIgnoreCase("") && !claveEditar.equalsIgnoreCase("")) {
 
 			// Buscar el empleado
 			e = empleadoService.findByRut(rutEditar);
@@ -157,11 +158,10 @@ public class EmpleadoController {
 		return false;
 
 	}
-	
-	@RequestMapping(value = "validarRut")
-	public @ResponseBody boolean  validarRut(@RequestParam String rut) {
 
-		
+	@RequestMapping(value = "validarRut")
+	public @ResponseBody boolean validarRut(@RequestParam String rut) {
+
 		try {
 			rut = rut.toUpperCase();
 			rut = rut.replace(".", "");
@@ -175,8 +175,7 @@ public class EmpleadoController {
 				s = (s + rutAux % 10 * (9 - m++ % 6)) % 11;
 			}
 			if (dv == (char) (s != 0 ? s + 47 : 75)) {
-				
-				
+
 				return true;
 			}
 
@@ -184,10 +183,17 @@ public class EmpleadoController {
 		} catch (Exception e) {
 		}
 		return false;
-		
+
 	}
+
+	@RequestMapping(value = "verificarRutRepetido")
+	public @ResponseBody boolean verificarRutRepedtido(@RequestParam String rut) {
+
+		Empleado e = empleadoService.findByRut(rut);
+		if (e == null) {
+			return true;
+		} 
+		return false;
 	}
 	
-
-
-
+}
