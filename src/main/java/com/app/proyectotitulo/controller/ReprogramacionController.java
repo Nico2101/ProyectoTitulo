@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.app.proyectotitulo.DAO.GraficoResumenReprogramacionDAO;
+import com.app.proyectotitulo.TO.GraficoActividadesTO;
+import com.app.proyectotitulo.TO.GraficoResumenReprogramacionTO;
 import com.app.proyectotitulo.domain.Actividad;
 import com.app.proyectotitulo.domain.Actividad_Realizada;
 import com.app.proyectotitulo.domain.Empleado;
@@ -154,4 +157,35 @@ public class ReprogramacionController {
 		return new LinkedList<Reprogramacion>();
 	}
 
+	@RequestMapping(value = "resumenPlanesMasReprogramados")
+	public @ResponseBody LinkedList<GraficoResumenReprogramacionTO> resumenPlanesMasReprogramados() {
+		GraficoResumenReprogramacionDAO graficoResumenReprogramacionDAO = new GraficoResumenReprogramacionDAO();
+		LinkedList<GraficoResumenReprogramacionTO> datos = graficoResumenReprogramacionDAO.getResumen();
+		return datos;
+	}
+
+	@RequestMapping(value = "getTotalActividadesReprogramadas")
+	public @ResponseBody LinkedList<GraficoActividadesTO> getTotalActividadesReprogramadas() {
+		GraficoResumenReprogramacionDAO graficoResumenReprogramacionDAO = new GraficoResumenReprogramacionDAO();
+		LinkedList<GraficoActividadesTO> datos = graficoResumenReprogramacionDAO.getTotalActividaesReprogramdas();
+		return datos;
+	}
+
+	@RequestMapping(value = "resumenReprogramaciones")
+	public ModelAndView resumenReprogramaciones(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
+
+		sesion = request.getSession(true);
+		Empleado e = (Empleado) sesion.getAttribute("empleado");
+
+		if (e != null) {
+			vista.setViewName("resumenReprogramacion");
+		} else {
+			vista.setViewName("login");
+			vista.addObject("empleado", new Empleado());
+			vista.addObject("sesionExpirada", "Su sesión ha expirado");
+
+		}
+		return vista;
+
+	}
 }

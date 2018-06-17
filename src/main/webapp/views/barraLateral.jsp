@@ -61,6 +61,11 @@
 							value="Seguimiento Planes"></c:out></span>
 
 			</a></li>
+			
+			<li><a href="resumenReprogramaciones"> <i class="fa fa-circle-o"></i> <span><c:out
+							value="Resumen Reprogramaciones"></c:out></span>
+
+			</a></li>
 
 
 		</ul></li>
