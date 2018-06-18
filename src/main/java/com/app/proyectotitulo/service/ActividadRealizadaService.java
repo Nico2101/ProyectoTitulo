@@ -20,4 +20,6 @@ public interface ActividadRealizadaService {
 
 	List<Actividad_Realizada> listaActividadesAsignadasAPredioEnTemporada(int idTemporada, int idPredio);
 
+	List<Actividad_Realizada> actividadesReporteTemporada(int idTemporada);
+
 }

@@ -21,4 +21,6 @@ public interface ActividadRealizadaRepository extends JpaRepository<Actividad_Re
 	List<Actividad_Realizada> actividadesAsignadasAPredioEnTemporada(@Param("id_temporada") int idTemporada,
 			@Param("id_predio") int idPredio);
 
+	@Query(value = "select ar.id_actividad_realizada, ar.fecha_estimada, ar.fecha_ejecucion_real,ar.cantidad_cosechada, ar.id_actividad, ar.id_temporada, ar.id_predio from Actividad_Realizada ar join Actividad a on ar.id_actividad=a.id_actividad join Plan_Ejecucion pe on a.id_plan_ejecucion=pe.id_plan_ejecucion join Temporada t on ar.id_temporada=t.id_temporada join Predio p on ar.id_predio=p.id_predio join Sector s on p.id_sector=s.id_sector where a.actividad_cosecha=1 and t.id_temporada=:id_temporada", nativeQuery = true)
+	List<Actividad_Realizada> actividadesReporteTemporada(@Param("id_temporada") int idTemporada);
 }

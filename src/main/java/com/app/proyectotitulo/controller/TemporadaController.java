@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.app.proyectotitulo.domain.Actividad_Realizada;
 import com.app.proyectotitulo.domain.Empleado;
 import com.app.proyectotitulo.domain.Temporada;
+import com.app.proyectotitulo.service.ActividadRealizadaService;
 import com.app.proyectotitulo.service.TemporadaService;
 
 @Controller
@@ -22,6 +24,9 @@ public class TemporadaController {
 
 	@Autowired
 	private TemporadaService temporadaService;
+
+	@Autowired
+	private ActividadRealizadaService actividadRealizadaService;
 
 	@RequestMapping(value = "ListaTemporadas")
 	public ModelAndView listarTemporadas(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
@@ -114,6 +119,15 @@ public class TemporadaController {
 	public @ResponseBody List<Temporada> obtenerListaTemporadas() {
 
 		List<Temporada> lista = temporadaService.listaTemporadas(false);
+
+		return lista;
+
+	}
+
+	@RequestMapping(value = "verificarDatosReporteTemporadas")
+	public @ResponseBody List<Actividad_Realizada> verificarDatosReporteTemporadas(@RequestParam int idTemporada) {
+
+		List<Actividad_Realizada> lista = actividadRealizadaService.actividadesReporteTemporada(idTemporada);
 
 		return lista;
 

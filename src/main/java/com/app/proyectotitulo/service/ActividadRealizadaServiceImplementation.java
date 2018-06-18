@@ -55,4 +55,10 @@ public class ActividadRealizadaServiceImplementation implements ActividadRealiza
 		return actividadRealizadaRepo.actividadesAsignadasAPredioEnTemporada(idTemporada, idPredio);
 	}
 
+	@Override
+	public List<Actividad_Realizada> actividadesReporteTemporada(int idTemporada) {
+		// TODO Auto-generated method stub
+		return actividadRealizadaRepo.actividadesReporteTemporada(idTemporada);
+	}
+
 }
