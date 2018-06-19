@@ -67,9 +67,10 @@
 							value="Resumen Reprogramaciones"></c:out></span>
 
 			</a></li>
-			
-			<li><a href="ListarCostosTotalesPorPredio"> <i class="fa fa-circle-o"></i>
-					<span><c:out value="Listar costos por predio"></c:out></span>
+
+			<li><a href="ListarCostosTotalesPorPredio"> <i
+					class="fa fa-circle-o"></i> <span><c:out
+							value="Listar costos por predio"></c:out></span>
 
 			</a></li>
 
@@ -115,11 +116,7 @@
 
 			</a></li>
 
-			<li><a href="ListarCostosTotalesPorPredio"> <i
-					class="fa fa-circle-o"></i> <span><c:out
-							value="Listar costos por predio"></c:out></span>
 
-			</a></li>
 
 		</ul></li>
 

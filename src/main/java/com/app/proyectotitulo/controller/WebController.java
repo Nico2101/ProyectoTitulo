@@ -1,13 +1,28 @@
 package com.app.proyectotitulo.controller;
 
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Locale;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.app.proyectotitulo.domain.Actividad_Realizada;
 import com.app.proyectotitulo.domain.Empleado;
+import com.app.proyectotitulo.service.ActividadRealizadaService;
+import com.app.proyectotitulo.service.EmpleadoService;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 public class WebController {
+
+	@Autowired
+	private ActividadRealizadaService actividadRealizadaService;
 
 	@RequestMapping(value = "/")
 	public ModelAndView inicioAPP(ModelAndView vista) {
@@ -24,7 +39,8 @@ public class WebController {
 
 	@RequestMapping(value = "index")
 	public ModelAndView inicio(ModelAndView vista) {
-
+		List<Actividad_Realizada> listaActividades = actividadRealizadaService.totalActividadesRealizadas();
+		vista.addObject("listaActividades", listaActividades);
 		vista.setViewName("inicio");
 		return vista;
 	}

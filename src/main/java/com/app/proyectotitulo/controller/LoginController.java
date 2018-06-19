@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.app.proyectotitulo.domain.Actividad_Realizada;
 import com.app.proyectotitulo.domain.Empleado;
+import com.app.proyectotitulo.service.ActividadRealizadaService;
 import com.app.proyectotitulo.service.EmpleadoService;
 
 @Controller
@@ -21,6 +23,10 @@ public class LoginController {
 
 	@Autowired
 	private EmpleadoService empleadoService;
+	
+	@Autowired
+	private ActividadRealizadaService actividadRealizadaService;
+
 
 	@RequestMapping(value = "inicio")
 	public ModelAndView login(ModelAndView vista, @Valid @ModelAttribute("empleado") Empleado empleado,
@@ -49,7 +55,8 @@ public class LoginController {
 					sesion = request.getSession(true);
 					sesion.setAttribute("empleado", e);
 					vista.addObject("empleado", e);
-
+					List<Actividad_Realizada> listaActividades = actividadRealizadaService.totalActividadesRealizadas();
+					vista.addObject("listaActividades", listaActividades);
 					vista.setViewName("inicio");
 				} else {
 					// el usuario no existe o hay error

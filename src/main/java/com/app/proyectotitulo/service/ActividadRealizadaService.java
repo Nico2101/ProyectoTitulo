@@ -19,5 +19,7 @@ public interface ActividadRealizadaService {
 	Actividad_Realizada editarActividad_Realizada(Actividad_Realizada a);
 
 	List<Actividad_Realizada> listaActividadesAsignadasAPredioEnTemporada(int idTemporada, int idPredio);
+	
+	List<Actividad_Realizada> totalActividadesRealizadas();
 
 }

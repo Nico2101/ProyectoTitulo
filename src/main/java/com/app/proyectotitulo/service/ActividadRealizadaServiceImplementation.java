@@ -54,5 +54,11 @@ public class ActividadRealizadaServiceImplementation implements ActividadRealiza
 		// TODO Auto-generated method stub
 		return actividadRealizadaRepo.actividadesAsignadasAPredioEnTemporada(idTemporada, idPredio);
 	}
+	
+	@Override
+	public List<Actividad_Realizada> totalActividadesRealizadas() {
+		// TODO Auto-generated method stub
+		return actividadRealizadaRepo.listaActividadesRealizadas();
+	}
 
 }
