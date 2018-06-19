@@ -25,8 +25,10 @@ import com.app.proyectotitulo.DAO.ReporteProductoDAO;
 import com.app.proyectotitulo.TO.DatosCosechaTO;
 import com.app.proyectotitulo.TO.PlanTO;
 import com.app.proyectotitulo.TO.ReporteProductoTO;
+import com.app.proyectotitulo.domain.Actividad_Realizada;
 import com.app.proyectotitulo.domain.Empleado;
 import com.app.proyectotitulo.domain.Plan_Ejecucion;
+import com.app.proyectotitulo.service.ActividadRealizadaService;
 import com.app.proyectotitulo.service.PlanEjecucionService;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -52,6 +54,9 @@ public class ReportesController {
 
 	@Autowired
 	private PlanEjecucionService planEjecucionService;
+
+	@Autowired
+	private ActividadRealizadaService actividadRealizadaService;
 
 	@RequestMapping(value = "rendimientoProducto")
 	public ModelAndView rendimientoSector(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
@@ -452,5 +457,244 @@ public class ReportesController {
 			cb.stroke();
 		}
 
+	}
+
+	@RequestMapping(value = "generarReporteTemporada")
+	public void generarReporteTemporada(@RequestParam int idTemporada, HttpServletResponse response) throws Exception {
+		System.out.println(idTemporada);
+		List<Actividad_Realizada> lista = actividadRealizadaService.actividadesReporteTemporada(idTemporada);
+		if (!lista.isEmpty()) {
+			// Generar Reporte
+			// Generar Reporte
+			// Escribir PDF
+
+			String FILE_NAME = "Reporte Temporada.pdf";
+
+			// Declaramos un documento como un objecto Document.
+			Document documento = new Document(PageSize.LETTER);
+
+			// writer es declarado como el método utilizado para escribir en el archivo.
+			PdfWriter pdfWriter = null;
+
+			try {
+				// Obtenemos la instancia del archivo a utilizar.
+				pdfWriter = PdfWriter.getInstance(documento, new FileOutputStream(new File(FILE_NAME)));
+			} catch (FileNotFoundException | DocumentException ex) {
+				ex.getMessage();
+			}
+
+			// Abrimos el documento a editar.
+			documento.open();
+
+			// Creamos un párrafo nuevo llamado "saltoLines" para espaciar los elementos.
+			Paragraph saltoLinea = new Paragraph();
+			saltoLinea.add("\n");
+
+			// Declaramos un texto como Paragraph. Le podemos dar formato alineado, tamaño,
+			// color, etc.
+			Paragraph titulo = new Paragraph();
+
+			Image imagen = Image.getInstance("logo.png");
+			imagen.scaleToFit(200, 400);
+			imagen.setAlignment(Element.ALIGN_RIGHT);
+
+			titulo.setFont(new Font(FontFamily.TIMES_ROMAN, 20, Font.BOLD));
+			titulo.setAlignment(Element.ALIGN_CENTER);
+			titulo.add("Reporte " + lista.get(0).getTemporada().getNombre());
+
+			// Datos Productos
+
+			// Recorrer arreglo
+
+			// Agregamos el texto al documento.
+			documento.add(imagen);
+			documento.add(saltoLinea);
+
+			documento.add(titulo);
+			documento.add(saltoLinea);
+
+			PdfPCell cell3;
+			PdfPCellEvent roundRectangle3 = new RoundRectangle();
+			// outer table
+			PdfPTable outertable3 = new PdfPTable(1);
+			// inner table 1
+			PdfPTable innertable3 = new PdfPTable(5);
+			innertable3.setWidths(new int[] { 3, 15, 15, 10, 10 });
+
+			Paragraph titulo4 = new Paragraph();
+
+			PdfPCell cell4;
+			PdfPCellEvent roundRectangle4 = new RoundRectangle();
+			// outer table
+			PdfPTable outertable4 = new PdfPTable(1);
+			// inner table 1
+			PdfPTable innertable4 = new PdfPTable(5);
+			innertable4.setWidths(new int[] { 3, 15, 15, 10, 10 });
+
+			// Titulos tabla
+			// first row
+			// column 1
+			cell3 = new PdfPCell(new Phrase("N°"));
+			cell3.setBorderColorBottom(BaseColor.BLACK);
+			cell3.setBorder(Rectangle.NO_BORDER);
+			innertable3.addCell(cell3);
+			// column 2
+
+			// column 3
+			cell3 = new PdfPCell(new Phrase("Sector"));
+			cell3.setBorderColorBottom(BaseColor.BLACK);
+			cell3.setBorder(Rectangle.NO_BORDER);
+			innertable3.addCell(cell3);
+
+			// column 4
+			cell3 = new PdfPCell(new Phrase("Predio"));
+			cell3.setBorderColorBottom(BaseColor.BLACK);
+			cell3.setBorder(Rectangle.NO_BORDER);
+			innertable3.addCell(cell3);
+
+			// column 5
+			cell3 = new PdfPCell(new Phrase("Fecha Cosecha"));
+			cell3.setBorderColorBottom(BaseColor.BLACK);
+			cell3.setBorder(Rectangle.NO_BORDER);
+			innertable3.addCell(cell3);
+
+			// column 6
+			cell3 = new PdfPCell(new Phrase("Cantidad Cosechada"));
+			cell3.setBorderColorBottom(BaseColor.BLACK);
+			cell3.setBorder(Rectangle.NO_BORDER);
+			innertable3.addCell(cell3);
+
+			// spacing
+			cell3 = new PdfPCell();
+			cell3.setColspan(5);
+			cell3.setFixedHeight(3);
+			cell3.setBorder(Rectangle.NO_BORDER);
+			innertable3.addCell(cell3);
+
+			// first nested table
+			cell3 = new PdfPCell(innertable3);
+			cell3.setCellEvent(roundRectangle3);
+			cell3.setBorder(Rectangle.NO_BORDER);
+			cell3.setPadding(8);
+			outertable3.addCell(cell3);
+
+			documento.add(outertable3);
+			int total = 0;
+			DecimalFormat formatea = new DecimalFormat("###,###.##");
+			for (int i = 0; i < lista.size(); i++) {
+
+				//
+				//
+				//
+				//
+				// Agregar los datos
+				//
+				//
+				//
+
+				// Comenzar a colocar los datos
+
+				// column 1
+				cell4 = new PdfPCell(new Phrase((i + 1) + ""));
+				cell4.setBorder(Rectangle.NO_BORDER);
+				innertable4.addCell(cell4);
+				// column 2
+				cell4 = new PdfPCell(new Phrase(lista.get(i).getPredio().getSector().getNombre()));
+				cell4.setBorder(Rectangle.NO_BORDER);
+				innertable4.addCell(cell4);
+
+				// column 3
+				cell4 = new PdfPCell(new Phrase(lista.get(i).getPredio().getNombre()));
+				cell4.setBorder(Rectangle.NO_BORDER);
+				innertable4.addCell(cell4);
+
+				// column 4
+				cell4 = new PdfPCell(
+						new Phrase(new SimpleDateFormat("dd-MM-yyyy").format(lista.get(i).getFechaEjecucionReal())));
+				cell4.setBorder(Rectangle.NO_BORDER);
+				innertable4.addCell(cell4);
+
+				// column 5
+				cell4 = new PdfPCell(new Phrase(formatea.format(lista.get(i).getCantidadCosechada()) + " Kg."));
+				cell4.setBorder(Rectangle.NO_BORDER);
+				innertable4.addCell(cell4);
+
+				// spacing
+				cell4 = new PdfPCell();
+				cell4.setColspan(5);
+				cell4.setFixedHeight(3);
+				cell4.setBorder(Rectangle.NO_BORDER);
+				innertable4.addCell(cell4);
+
+				total += lista.get(i).getCantidadCosechada();
+
+			}
+
+			// column 1
+			cell4 = new PdfPCell(new Phrase());
+			cell4.setBorder(Rectangle.NO_BORDER);
+			innertable4.addCell(cell4);
+
+			// column 2
+			cell4 = new PdfPCell(new Phrase());
+			cell4.setBorder(Rectangle.NO_BORDER);
+			innertable4.addCell(cell4);
+
+			// column 3
+			cell4 = new PdfPCell(new Phrase());
+			cell4.setBorder(Rectangle.NO_BORDER);
+			innertable4.addCell(cell4);
+
+			// column 4
+			cell4 = new PdfPCell(new Phrase("Total"));
+			cell4.setBorder(Rectangle.NO_BORDER);
+			innertable4.addCell(cell4);
+
+			// column 5
+			cell4 = new PdfPCell(new Phrase(formatea.format(total) + " Kg."));
+			cell4.setBorder(Rectangle.NO_BORDER);
+			innertable4.addCell(cell4);
+
+			// spacing
+			cell4 = new PdfPCell();
+			cell4.setColspan(5);
+			cell4.setFixedHeight(3);
+			cell4.setBorder(Rectangle.NO_BORDER);
+			innertable4.addCell(cell4);
+
+			// first nested table
+			cell4 = new PdfPCell(innertable4);
+			cell4.setCellEvent(roundRectangle4);
+			cell4.setBorder(Rectangle.NO_BORDER);
+			cell4.setPadding(8);
+			outertable4.addCell(cell4);
+
+			documento.add(outertable4);
+
+			// Cerramos el documento.
+			documento.close();
+			// Cerramos el writer.
+			pdfWriter.close();
+
+			//// Descargar PDF////
+
+			FileInputStream fis = new FileInputStream(FILE_NAME);
+
+			int read = 0;
+			String contentType = "application/pdf";
+			response.setContentType(contentType);
+			response.setHeader("Content-Disposition", "attachment;filename=\"" + FILE_NAME + "\"");
+
+			ServletOutputStream out = response.getOutputStream();
+
+			byte[] bytes = new byte[1000];
+
+			while ((read = fis.read(bytes)) != -1) {
+				out.write(bytes, 0, read);
+			}
+
+			out.flush();
+			out.close();
+		}
 	}
 }

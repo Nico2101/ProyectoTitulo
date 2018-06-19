@@ -5,7 +5,11 @@
 <html>
 <head>
 <%@ include file="cabecera.jsp"%>
-
+<style>
+.error {
+	color: #FF0000;
+}
+</style>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 
@@ -30,13 +34,29 @@
 
 			<div class="row">
 				<div class="col-xs-12">
-					<h3 id="titulo" style="display: none">Informe Productos</h3>
-					<div id="botonGenerarReporte" style="display: none">
+
+					<div class="col-md-3 col-sm-6 col-xs-12">
+						<h3 id="titulo" style="display: none">Informe Productos</h3>
+					</div>
+					<div class="col-md-3 col-sm-6 col-xs-12"></div>
+					<div class="col-md-2 col-sm-6 col-xs-12"></div>
+					<div id="botonGenerarReporte" style="display: none"
+						class="col-md-2 col-sm-6 col-xs-12">
 
 						<a id="#" href="generarReporteProductos">
 							<button class="btn btn-primary pull-right" type="button">Generar
-								Informe</button>
+								Informe Resumen</button>
+
 						</a>
+					</div>
+					<div id="botonGenerarReporteTemporada" style="display: none"
+						class="col-md-2 col-sm-6 col-xs-12">
+
+
+						<button class="btn btn-primary pull-right" type="button"
+							onclick="abrirModalTemporada();">Informe Temporada</button>
+
+
 					</div>
 				</div>
 				<br> <br> <br>
@@ -46,9 +66,61 @@
 
 			</div>
 
-
-
 			</section>
+
+			<!-- Modal Reporte Temporada -->
+			<div class="modal fade" id="modalReporteTemporada" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<h4 class="modal-title" id="myModalLabel">Reporte Temporada</h4>
+
+						</div>
+						<div class="modal-body">
+
+
+							<div id="form-editar" class="form-group">
+
+
+								<label class="col-sm-4 control-label">* Temporada</label>
+								<div class="col-sm-6">
+									<select class="form-control" id="temporada">
+									</select> <span id="errorTemporada" class="error" style="display: none">Debe
+										seleccionar la temporada</span>
+								</div>
+
+								<br> <br> <br>
+
+								<div align="center">
+									<a id="generarReporteTemporada">
+
+										<button class="btn btn-primary" type="button"
+											id="botonGenerarInforme" onclick="generarReporte();">Generar
+											Informe</button>
+									</a>
+								</div>
+								<br> <br> <br> <label
+									class="col-sm-4 control-label"></label>
+								<div class="col-sm-6">
+									<label class="pull-right"
+										style="font-weight: normal; color: red">* Campos
+										obligatorios</label>
+								</div>
+
+							</div>
+
+						</div>
+						<br> <br>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger pull-left"
+								data-dismiss="modal">Cerrar</button>
+
+						</div>
+					</div>
+				</div>
+			</div>
 
 		</div>
 
@@ -200,6 +272,7 @@
 
 					document.getElementById('imagen').style.display = 'none';
 					document.getElementById('botonGenerarReporte').style.display = 'inline';
+					document.getElementById('botonGenerarReporteTemporada').style.display = 'inline';
 					document.getElementById('titulo').style.display = 'inline';
 
 				},
@@ -229,6 +302,80 @@
 			start -= 3;
 		}
 		return (parts.length == 3 ? '-' : '') + result;
+	}
+
+	function abrirModalTemporada() {
+		//obtener las demas temporadas
+		$
+				.ajax({
+					type : 'POST',
+					url : "obtenerListaTemporadas",
+					dataType : 'json',
+					success : function(data) {
+						console.log(data);
+						if (!$.isEmptyObject(data)) {
+							//Cargar el select
+							$("#temporada").empty();
+							$("#temporada")
+									.append(
+											'<option value="-1">Seleccione una temporada</option>');
+							for (var i = 0; i < data.length; i++) {
+								$("#temporada").append(
+										'<option value='+data[i].idTemporada+'>'
+												+ data[i].nombre + '</option>');
+
+							}
+							$('#modalReporteTemporada').modal('show');
+						}
+
+					},
+					error : function(jqXHR, errorThrown) {
+						alert("Error al obtener los productos");
+					}
+				});
+
+	}
+
+	function generarReporte() {
+		//Obtener temporada
+		var aux = false;
+		var idTemporada = $('#temporada').val();
+		if (idTemporada < 0) {
+			document.getElementById('temporada').style.border = "1px solid red";
+			document.getElementById('errorTemporada').style.display = 'inline';
+		} else {
+			document.getElementById('temporada').style.border = "";
+			document.getElementById('errorTemporada').style.display = 'none';
+
+		}
+
+		if (idTemporada > 0) {
+			$
+					.ajax({
+						type : 'POST',
+						url : "verificarDatosReporteTemporadas",
+						dataType : 'json',
+						data : {
+							idTemporada : idTemporada
+						},
+						success : function(data) {
+							if (!$.isEmptyObject(data)) {
+								location.href = "generarReporteTemporada?idTemporada="
+										+ idTemporada;
+
+							} else {
+
+								toastr
+										.error("No hay datos en la temporada seleccionada");
+							}
+
+						},
+						error : function(jqXHR, errorThrown) {
+							alert("Error al verificar la temporada");
+						}
+					});
+		}
+
 	}
 </script>
 
