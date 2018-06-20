@@ -171,7 +171,7 @@ public class ReprogramacionController {
 		return datos;
 	}
 
-	@RequestMapping(value = "resumenReprogramaciones")
+	@RequestMapping(value = "analisisReprogramaciones")
 	public ModelAndView resumenReprogramaciones(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
 
 		sesion = request.getSession(true);

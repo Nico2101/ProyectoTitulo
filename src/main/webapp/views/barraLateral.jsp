@@ -62,9 +62,9 @@
 
 			</a></li>
 
-			<li><a href="resumenReprogramaciones"> <i
+			<li><a href="analisisReprogramaciones"> <i
 					class="fa fa-circle-o"></i> <span><c:out
-							value="Resumen Reprogramaciones"></c:out></span>
+							value="Análisis Reprogramaciones"></c:out></span>
 
 			</a></li>
 

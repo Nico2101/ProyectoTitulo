@@ -29,7 +29,7 @@
 
 			<div class="row">
 				<div class="col-xs-12">
-					<h3>Resumen Reprogramaciones</h3>
+					<h3>Análisis Reprogramaciones</h3>
 					<div id="botonGenerarReporte" style="display: none"></div>
 				</div>
 
@@ -41,7 +41,7 @@
 					<!-- DONUT CHART -->
 					<div class="box box-primary">
 						<div class="box-header with-border">
-							<h3 class="box-title">Planes con más actividades
+							<h3 class="box-title">Planes con actividades
 								reprogramadas</h3>
 
 							<div class="box-tools pull-right">
@@ -66,7 +66,7 @@
 					<!-- DONUT CHART -->
 					<div class="box box-primary">
 						<div class="box-header with-border">
-							<h3 class="box-title">Actividades más reprogramadas</h3>
+							<h3 class="box-title">10 Actividades más reprogramadas</h3>
 
 							<div class="box-tools pull-right">
 								<button type="button" class="btn btn-box-tool"
