@@ -374,8 +374,7 @@ public class ActividadRealizadaController {
 					ar.setFechaEjecucionReal(dateInicio);
 					ar.setCantidadCosechada(Integer.parseInt(datos[i + 2]));
 
-					if (ar.getActividad().getNombre().equalsIgnoreCase("Cosecha")
-							|| ar.getActividad().getNombre().equalsIgnoreCase("cosecha")) {
+					if (ar.getActividad().isActividadCosecha()) {
 						ar.getPredio().setEstado("Cosechado");
 					}
 
@@ -410,11 +409,13 @@ public class ActividadRealizadaController {
 					ar.setFechaEjecucionReal(dateInicio);
 
 					// Consultar por el nombre de la actividad
-					if (ar.getActividad().getNombre().equalsIgnoreCase("Siembra")
-							|| ar.getActividad().getNombre().equalsIgnoreCase("siembra")) {
-						ar.getPredio().setEstado("Sembrado");
-
-					}
+					/*
+					 * if (ar.getActividad().getNombre().equalsIgnoreCase("Siembra") ||
+					 * ar.getActividad().getNombre().equalsIgnoreCase("siembra")) {
+					 * ar.getPredio().setEstado("Sembrado");
+					 * 
+					 * }
+					 */
 
 					// Guardar
 					actividadRealizadaService.save(ar);
