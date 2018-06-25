@@ -66,5 +66,11 @@ public class ActividadRealizadaServiceImplementation implements ActividadRealiza
 		// TODO Auto-generated method stub
 		return actividadRealizadaRepo.actividadesReporteTemporada(idTemporada);
 	}
+	
+	@Override
+	public List<Actividad_Realizada> totalActividadesAtrasadas() {
+		// TODO Auto-generated method stub
+		return actividadRealizadaRepo.listaActividadesAtrasadas();
+	}
 
 }

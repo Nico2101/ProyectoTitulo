@@ -70,15 +70,17 @@ public class ReprogramacionController {
 	}
 
 	@RequestMapping(value = "guardarReprogramacionDeActividades")
-	public @ResponseBody boolean reprogramarActividades(@RequestParam String motivo,
+	public @ResponseBody boolean reprogramarActividades
 
-			@RequestParam(value = "fechasEstimadas[]") String[] fechasEstimadas,
+	(@RequestParam(value = "fechasEstimadas[]") String[] fechasEstimadas,
 			@RequestParam(value = "fechasRealesReprogramadas[]") String[] fechasRealesReprogramadas,
-			@RequestParam(value = "Ids[]") String[] Ids) throws ParseException {
+			@RequestParam(value = "Ids[]") String[] Ids, @RequestParam(value = "motivos[]") String[] motivos)
+			throws ParseException {
+		System.out.println(motivos);
+		System.out.println(Ids);
 
-		if (!motivo.equalsIgnoreCase("") && fechasEstimadas.length > 0 && fechasRealesReprogramadas.length > 0
+		if (fechasEstimadas.length > 0 && fechasRealesReprogramadas.length > 0 && motivos.length > 0
 				&& Ids.length > 0) {
-
 			for (int j = 0; j < fechasEstimadas.length; j++) {
 				Reprogramacion r = new Reprogramacion();
 				// DateFormat dt=new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
@@ -93,7 +95,7 @@ public class ReprogramacionController {
 				Actividad_Realizada actividadRealizada = actividadRealizadaService
 						.buscarActividad(Integer.parseInt(Ids[j]));
 
-				r.setMotivo(motivo);
+				r.setMotivo(motivos[j]);
 				r.setActividadRealizada(actividadRealizada);
 				r.setFechaEstimadaAnterior(fechaEstimada);
 				r.setFechaReprogramacion(fechaReprogramacion);

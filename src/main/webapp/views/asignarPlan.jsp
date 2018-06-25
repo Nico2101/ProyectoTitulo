@@ -141,9 +141,14 @@
 										<strong>Actividades del plan</strong>
 									</center>
 								</h4>
-								<FONT FACE="raro, courier" SIZE=2 COLOR="black">*Las
-									fechas estimadas ingresadas deben estar dentro de la duración
-									de la temporada</FONT> <br> <br>
+
+								<p>
+									Las fechas estimadas ingresadas deben estar dentro de la
+									duración de la temporada, las cuales corresponden : Fecha Inicio
+									:  <label id="fechaInicio"> </label>  y Fecha Término :  <label
+										id="fechaTermino"> </label>
+								</p>
+								
 
 								<div class="row">
 									<div class="col-sm-2" style="text-align: center;"></div>
@@ -316,6 +321,7 @@
 						type : 'POST',
 						url : "obtenerFechasTemporada",
 						dataType : 'json',
+						async : false,
 						data : {
 							idTemporada : idTemporada
 						},
@@ -332,6 +338,7 @@
 											type : 'POST',
 											url : "obtenerListaActididadesPlan",
 											dataType : 'json',
+											async : false,
 											data : {
 												idPlan : idPlan
 											},
@@ -404,6 +411,21 @@
 														}
 
 													}
+
+													
+													fechaInicio = moment(fechaInicio, 'YYYY/MM/DD');
+													fechaInicio = fechaInicio
+															.format('DD-MM-YYYY');  
+													
+													fechaTermino = moment(fechaTermino, 'YYYY/MM/DD');
+													fechaTermino = fechaTermino
+															.format('DD-MM-YYYY');  
+
+													
+													$("#fechaInicio").text(
+															fechaInicio);
+													$("#fechaTermino").text(
+															fechaTermino);
 
 													//Ocultar la columna id actividad
 													var tbl = document
@@ -478,8 +500,8 @@
 		for (i = 1; i < filas.length; i++) { //Recorre las filas 1 a 1
 			var celdas = $(filas[i]).find("td"); //devolverá las celdas de una fila
 			fechas = $($(celdas[2]).children("input")[0]).val();
-			if(fechas!=""){
-			arregloFechas.push(fechas);
+			if (fechas != "") {
+				arregloFechas.push(fechas);
 			}
 		}
 
@@ -530,7 +552,8 @@
 
 		if (sectorSeleccionado > 0 && predioSeleccionado > 0
 				&& temporadaSeleccionada > 0 && planSeleccionado > 0
-				&& arregloIds.length > 0 && arregloFechas.length==arregloIds.length) {
+				&& arregloIds.length > 0
+				&& arregloFechas.length == arregloIds.length) {
 
 			document.getElementById('loader').style.display = 'inline';
 
@@ -572,8 +595,8 @@
 							document.getElementById('loader').style.display = 'none';
 						}
 					});
-		}else{
-		toastr.error("Error, verificar datos ingresados");
+		} else {
+			toastr.error("Error, verificar datos ingresados");
 		}
 	}
 </script>

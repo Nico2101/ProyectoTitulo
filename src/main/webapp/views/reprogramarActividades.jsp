@@ -111,6 +111,15 @@
 									Predio</h3>
 
 							</div>
+							<div class="box-header">
+								<p>
+
+									Las fechas nuevas estimadas ingresadas deben estar dentro de la
+									duración de la temporada, las cuales corresponden : Fecha
+									Inicio : <label id="fechaInicio"> </label> y Fecha Término : <label
+										id="fechaTermino"> </label>
+								</p>
+							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
 								<div class="row">
@@ -126,7 +135,8 @@
 													<th>N°</th>
 													<th width="400px">Nombre Actividad</th>
 													<th width="250px">Fecha Estimada</th>
-													<th width="250px">Nueva Fecha Estimada</th>
+													<th width="400px">Nueva Fecha Estimada</th>
+													<th width="1200px">Motivo</th>
 													<th>id actividad</th>
 
 												</tr>
@@ -134,12 +144,6 @@
 											</thead>
 
 										</table>
-										<label>Motivo de reprogramación de actividades:</label>
-										<p>
-											<textarea name="motivo" id="motivo" cols="102" rows="3"></textarea>
-											<br> <span id="errorMotivo" class="error"
-												style="display: none">Debe ingresar un motivo</span>
-										</p>
 
 									</div>
 									<div class="col-sm-3"></div>
@@ -314,7 +318,9 @@
 										var cell2 = row.insertCell(1);//nombre
 										var cell3 = row.insertCell(2);//fechaEstimada
 										var cell4 = row.insertCell(3);//nueva fecha estimada
-										var cell5 = row.insertCell(4);//idActividad
+										var cell5 = row.insertCell(4);//motivo
+										var cell6 = row.insertCell(5);//idActividad
+										//55
 
 										// Add some text to the new cells:
 										cell1.innerHTML = num;
@@ -342,6 +348,7 @@
 
 										if (data[i].fechaEjecucionReal == null) {
 											cell4.innerHTML = '<input type="date" name="fecha" id="NuevaFechaEstimada"  min="'+fechaInicio+'" max="'+fechaTermino+'" class="form-control select2 select2-hidden-accessible"/>';
+											cell5.innerHTML = '<input type="text" name="motivo" id="idMotivo"   class="form-control select2 select2-hidden-accessible"/>';
 										} else {
 											fecha = moment(
 													data[i].fechaEjecucionReal,
@@ -349,9 +356,10 @@
 											fecha = fecha.format('DD-MM-YYYY');
 											cell4.innerHTML = "Actividad realizada el "
 													+ fecha;
+											cell5.innerHTML = "";
 										}
-										cell5.innerHTML = data[i].idActividadRealizada;
 
+										cell6.innerHTML = data[i].idActividadRealizada;
 										$('#planAsignado')
 												.val(
 														data[i].actividad.planEjecucion.nombre);
@@ -359,6 +367,17 @@
 									}
 
 								}
+
+								fechaInicio = moment(fechaInicio, 'YYYY/MM/DD');
+								fechaInicio = fechaInicio.format('DD-MM-YYYY');
+
+								fechaTermino = moment(fechaTermino,
+										'YYYY/MM/DD');
+								fechaTermino = fechaTermino
+										.format('DD-MM-YYYY');
+
+								$("#fechaInicio").text(fechaInicio);
+								$("#fechaTermino").text(fechaTermino);
 
 								//Ocultar la columna id actividad
 								var tbl = document
@@ -369,7 +388,7 @@
 
 										tbl.rows[i].cells[j].style.display = "";
 
-										if (j == 4)
+										if (j == 5)
 
 											tbl.rows[i].cells[j].style.display = "none";
 
@@ -396,8 +415,6 @@
 
 	function guardarDatosReprogramacionFecha() {
 		//Recorrer Tabla y Guardar los datos en un arreglo
-		//Obteniene el motivo de la reprogramacion
-		var motivo = $('#motivo').val();
 
 		//obtener los dato de la tabla
 		var oTable = document.getElementById('tablaActividades');
@@ -411,7 +428,10 @@
 		var arregloFechasRealesReprogramadas = Array();
 		var arregloIds = Array();
 		var arregloFechasEstimadas = Array();
+		var arreglosMotivos = Array();
+		var arreglosMotivos2 = Array();
 
+		//obtengo las fechas estimadas de los input
 		var filas = $("#tablaActividades").find("tr"); //devulve las filas del body de tu tabla segun el ejemplo que brindaste
 		var fechas = "";
 		for (i = 1; i < filas.length; i++) { //Recorre las filas 1 a 1
@@ -421,30 +441,40 @@
 
 		}
 
+		//obtengo los motivos de los input
+		var filas = $("#tablaActividades").find("tr"); //devulve las filas del body de tu tabla segun el ejemplo que brindaste
+		var motivos = "";
+		for (i = 1; i < filas.length; i++) { //Recorre las filas 1 a 1
+			var celdas = $(filas[i]).find("td"); //devolverá las celdas de una fila
+			motivos = $($(celdas[4]).children("input")[0]).val();
+			arreglosMotivos.push(motivos);
+
+		}
+
 		if (rowLength > 1) {
 			//loops through rows    
 			for (i = 1; i < rowLength; i++) {
 				var oCells = oTable.rows.item(i).cells;//devuelve un objeto con la fila completa
 				arregloFechasEstimadas.push(oCells[2].innerHTML);//fechas estimadas
-				arregloIds.push(oCells[4].innerHTML);//almacena los ids
+				arregloIds.push(oCells[5].innerHTML);//almacena los ids
 
 			}
 
 		}
-		// console.log(arregloFechasEstimadas);
-		//console.log(arregloIds);
-		// console.log(arregloFechasReprogramadas);
 
 		var arregloIdsReprogramados = Array();
 		var arregloFechasEstiamdasReprogramadas = Array();
 
 		for (i = 0; i < arregloFechasReprogramadas.length; i++) {
 			if (typeof arregloFechasReprogramadas[i] != 'undefined'
-					&& arregloFechasReprogramadas[i] != "") {
+					&& arregloFechasReprogramadas[i] != ""
+					&& typeof arreglosMotivos[i] != 'undefined'
+					&& arreglosMotivos[i] != "") {
 				arregloFechasEstiamdasReprogramadas
 						.push(arregloFechasEstimadas[i]);//almacena las fechas estimadas que se reprogramaron
 				arregloFechasRealesReprogramadas
 						.push(arregloFechasReprogramadas[i]);//almacena fechas reales reprogramadas
+				arreglosMotivos2.push(arreglosMotivos[i]);//almacena los motivos		
 				arregloIdsReprogramados.push(arregloIds[i]);//almacena los Ids de las actividades reprogramadas reales
 
 			}
@@ -455,10 +485,12 @@
 		console.log(arregloFechasRealesReprogramadas);
 		console.log(arregloIdsReprogramados);
 		console.log(arregloFechasReprogramadas);
+		console.log(arreglosMotivos2);
 
 		if (arregloFechasEstiamdasReprogramadas.length > 0
 				&& arregloFechasRealesReprogramadas.length > 0
-				&& arregloIdsReprogramados.length > 0 && motivo != "") {
+				&& arregloIdsReprogramados.length > 0
+				&& arreglosMotivos2.length > 0) {
 			//Enviar arreglo
 			$
 					.ajax({
@@ -470,7 +502,7 @@
 							fechasEstimadas : arregloFechasEstiamdasReprogramadas,
 							fechasRealesReprogramadas : arregloFechasRealesReprogramadas,
 							Ids : arregloIdsReprogramados,
-							motivo : motivo
+							motivos : arreglosMotivos2
 
 						},
 						success : function(data) {
@@ -497,15 +529,7 @@
 						}
 					});
 		} else {
-			if (motivo == "") {
-				document.getElementById('errorMotivo').style.display = 'inline';
-				document.getElementById('motivo').style.border = "1px solid red";
-			} else {
-				document.getElementById('errorMotivo').style.display = 'none';
-				document.getElementById('motivo').style.border = "";
-				toastr.warning("Debe ingresar una nueva fecha estimada");
-			}
-
+			toastr.error("Error, verificar datos");
 		}
 
 	}

@@ -83,5 +83,28 @@ public class PredioServiceImplementation implements PredioService {
 		// TODO Auto-generated method stub
 		return predioRepo.listaPrediosConPlanesAsigandosParaComparacion(idTemporada, idSector);
 	}
+	
+	@Override
+	public Integer totalPredios() {
+		// TODO Auto-generated method stub
+		return predioRepo.totalPredios();
+	}
+	
+	@Override
+	public Integer totalPrediosEnProceso() {
+		// TODO Auto-generated method stub
+		return predioRepo.totalPrediosEnProceso();
+	}
+	
+	@Override
+	public Integer totalPrediosCosechados() {
+		// TODO Auto-generated method stub
+		return predioRepo.totalPrediosCosechados();
+	}
+	@Override
+	public Integer totalPrediosSinPlanAsignado() {
+		// TODO Auto-generated method stub
+		return predioRepo.totalPrediosSinPlanAsignado();
+	}
 
 }

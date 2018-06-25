@@ -17,6 +17,7 @@ import com.app.proyectotitulo.domain.Actividad_Realizada;
 import com.app.proyectotitulo.domain.Empleado;
 import com.app.proyectotitulo.service.ActividadRealizadaService;
 import com.app.proyectotitulo.service.EmpleadoService;
+import com.app.proyectotitulo.service.PredioService;
 
 @Controller
 public class LoginController {
@@ -26,6 +27,9 @@ public class LoginController {
 	
 	@Autowired
 	private ActividadRealizadaService actividadRealizadaService;
+	
+	@Autowired
+	private PredioService predioService;
 
 
 	@RequestMapping(value = "inicio")
@@ -56,7 +60,17 @@ public class LoginController {
 					sesion.setAttribute("empleado", e);
 					vista.addObject("empleado", e);
 					List<Actividad_Realizada> listaActividades = actividadRealizadaService.totalActividadesRealizadas();
+					List<Actividad_Realizada> listaActividadesAtrasadas = actividadRealizadaService.totalActividadesAtrasadas();
+					int totalPredios= predioService.totalPredios();
+					int totalPrediosEnProceso= predioService.totalPrediosEnProceso();
+					int totalPrediosCosechados= predioService.totalPrediosCosechados();
+					int totalPrediosSinPlanAsignado= predioService.totalPrediosSinPlanAsignado();
 					vista.addObject("listaActividades", listaActividades);
+					vista.addObject("listaActividadesAtrasadas", listaActividadesAtrasadas);
+					vista.addObject("totalPredios",totalPredios);
+					vista.addObject("totalPrediosEnProceso",totalPrediosEnProceso);
+					vista.addObject("totalPrediosCosechados",totalPrediosCosechados);
+					vista.addObject("totalPrediosSinPlanAsignado",totalPrediosSinPlanAsignado);
 					vista.setViewName("inicio");
 				} else {
 					// el usuario no existe o hay error

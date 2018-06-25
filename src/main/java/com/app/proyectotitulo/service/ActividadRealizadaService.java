@@ -23,5 +23,7 @@ public interface ActividadRealizadaService {
 	List<Actividad_Realizada> totalActividadesRealizadas();
 
 	List<Actividad_Realizada> actividadesReporteTemporada(int idTemporada);
+	
+	List<Actividad_Realizada> totalActividadesAtrasadas();
 
 }

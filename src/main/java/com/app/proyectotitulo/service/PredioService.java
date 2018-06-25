@@ -31,4 +31,14 @@ public interface PredioService {
 
 	List<Predio> listaPrediosConPlanesAsigandosParaComparacion(int idTemporada, int idSector);
 
+	Integer totalPredios();
+
+	Integer totalPrediosEnProceso();
+	
+	Integer totalPrediosCosechados();
+	
+	Integer totalPrediosSinPlanAsignado();
+	
+	
+
 }
