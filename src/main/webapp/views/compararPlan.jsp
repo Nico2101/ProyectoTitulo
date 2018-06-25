@@ -93,9 +93,8 @@
 											un predio</span>
 									</div>
 									<div class="col-md-3" id="loader" style="display: none">
-										<br>
-										<img id="imagen" src="images/loaderWhite.gif" height="30"
-											width="30" />
+										<br> <img id="imagen" src="images/loaderWhite.gif"
+											height="30" width="30" />
 									</div>
 
 									<div class="col-md-3" id="divPlanAsignado"
@@ -430,15 +429,42 @@
 										fecha = fecha.format('DD-MM-YYYY');
 										cell3.innerHTML = fecha;
 
+										var fechaActual = new Date();
+										fechaActual = moment(fechaActual,
+												'YYYY/MM/DD');
+										fechaActual = fechaActual
+												.format('DD-MM-YYYY');
+
 										if (data[i].fechaEjecucionReal == null) {
-											cell4.innerHTML = "Actividad No Ejecutada";
+											console.log(fecha);
+											console.log(fechaActual);
+											if (fechaActual > fecha) {
+												cell4.innerHTML = 'Actividad No Realizada'
+														+ '<span class="pull-right-container"> <small class="label pull-right bg-red">Retrasada</small> </span>';
+											} else {
+												cell4.innerHTML = "Actividad No Realizada";
+											}
+
 										} else {
 											fechaEjecucion = moment(
 													data[i].fechaEjecucionReal,
 													'YYYY/MM/DD');
 											fechaEjecucion = fechaEjecucion
 													.format('DD-MM-YYYY');
-											cell4.innerHTML = fechaEjecucion;
+											if (fechaEjecucion > fecha) {
+												cell4.innerHTML = fechaEjecucion
+														+ '<span class="pull-right-container"> <small class="label pull-right bg-yellow">Realizada con retraso</small> </span>';
+											} else {
+												if (fechaEjecucion = fecha) {
+													cell4.innerHTML = fechaEjecucion
+															+ '<span class="pull-right-container"> <small class="label pull-right bg-green">Realizada en fecha estimada</small> </span>';
+												} else {
+													cell4.innerHTML = fechaEjecucion
+															+ '<span class="pull-right-container"> <small class="label pull-right bg-green">Realizada anticipadamente</small> </span>';
+												}
+
+											}
+
 										}
 
 										var idAR = data[i].idActividadRealizada;

@@ -202,22 +202,24 @@
 										<br> <br> <label class="col-sm-4 control-label">*
 											Cantidad</label>
 										<div class="col-sm-6">
-											<input type="text" class="form-control" id="cantidadInsumo" onkeypress="return filterFloat(event,this);">
-											<span id="errorCantidadInsumo" class="error"
-												style="display: none">Ingrese la cantidad de insumo
-												utilizado</span> <span id="errorCantidadCero" class="error"
-												style="display: none">La cantidad no puede ser 0</span>
+											<input type="text" class="form-control" id="cantidadInsumo"
+												onkeypress="return filterFloat(event,this);"> <span
+												id="errorCantidadInsumo" class="error" style="display: none">Ingrese
+												la cantidad de insumo utilizado</span> <span id="errorCantidadCero"
+												class="error" style="display: none">La cantidad no
+												puede ser 0</span>
 										</div>
 
 
 										<br> <br> <label class="col-sm-4 control-label">*
 											Costo</label>
 										<div class="col-sm-6">
-											<input type="text" class="form-control" id="costoInsumo" onkeypress="return filterFloat(event,this);">
-											<span id="errorCostoInsumo" class="error"
-												style="display: none">Ingrese el costo del insumo
-												utilizado</span> <span id="errorCostoCero" class="error"
-												style="display: none">El costo no puede ser 0</span>
+											<input type="text" class="form-control" id="costoInsumo"
+												onkeypress="return filterFloat(event,this);"> <span
+												id="errorCostoInsumo" class="error" style="display: none">Ingrese
+												el costo del insumo utilizado</span> <span id="errorCostoCero"
+												class="error" style="display: none">El costo no puede
+												ser 0</span>
 										</div>
 
 										<br> <br> <br> <label
@@ -586,6 +588,7 @@
 										var cell5 = row.insertCell(4);
 										var cell6 = row.insertCell(5);
 										var cell7 = row.insertCell(6);
+										var cell8 = row.insertCell(7);
 
 										// Add some text to the new cells:
 										cell1.innerHTML = num;
@@ -606,7 +609,7 @@
 												.format('YYYY-MM-DD');
 
 										var fechaMin = moment(
-												data[i].fechaEstimada,
+												data[i].temporada.fechaInicio,
 												'YYYY/MM/DD');
 
 										fechaMin = fechaMin
@@ -644,9 +647,11 @@
 														1)
 														+ " Kg.";
 											}
+											cell8.innerHTML = 1;
 
 										} else {
 											cell5.innerHTML = "";
+											cell8.innerHTML = 0;
 										}
 
 										cell7.innerHTML = data[i].idActividadRealizada;
@@ -671,10 +676,16 @@
 										if (j == 6)
 
 											tbl.rows[i].cells[j].style.display = "none";
+										if (j == 7)
+
+											tbl.rows[i].cells[j].style.display = "none";
 
 									}
 
 								}
+
+								//ocultar columna cosecha
+
 								document.getElementById('divPlanAsignado').style.display = 'inline';
 								document
 										.getElementById('divTablaRegistrarActividadRealizada').style.display = 'inline';
@@ -1316,8 +1327,7 @@
 
 					//Agregar los datos en un arreglo
 
-					if (oCells[1].innerHTML == "Cosecha"
-							|| oCells[1].innerHTML == "cosecha") {
+					if (oCells[7].innerHTML == 1) {
 						var cantCosechada = $('#cantidadCosechada').val();
 						if (cantCosechada == "") {
 							toastr
