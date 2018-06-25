@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ include file="libreria.jsp"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -112,11 +113,11 @@
 								<c:set var="index" value="${loop.index}" />
 								<c:set var="index" value="${index + 1}" />
 
-								<c:out value="${index}"></c:out>
-								&nbsp;&nbsp;-
+							<c:out value="${index}"></c:out>.
+								&nbsp;&nbsp;
 								<c:out value="${listaActividades.actividad.nombre}"></c:out>
 								&nbsp;&nbsp;- Fecha estimada :&nbsp;
-								<c:out value="${listaActividades.fechaEstimada}"></c:out>
+								<fmt:formatDate value="${listaActividades.fechaEstimada}" pattern="dd-MM-yyyy" />
 								&nbsp;&nbsp;- Sector : &nbsp;
 								<c:out value="${listaActividades.predio.sector.nombre}"></c:out>
 								&nbsp;&nbsp;- Predio :&nbsp;
@@ -136,7 +137,7 @@
             </div>
                 <div class="col-sm-6">
 				<div class="box"
-					style="background-color: #cee9f5; border-top: 3px solid #d01305;">
+					style="background-color: #efceda; border-top: 3px solid #d01305;">
 					<div class="box-header with-border">
 						<h3 class="box-title">
 							<font style="vertical-align: inherit;"><font
@@ -165,11 +166,11 @@
 								<c:set var="index" value="${loop.index}" />
 								<c:set var="index" value="${index + 1}" />
 
-								<c:out value="${index}"></c:out>
-								&nbsp;&nbsp;-
+								<c:out value="${index}"></c:out>.
+								&nbsp;&nbsp;
 								<c:out value="${listaActividadesAtrasadas.actividad.nombre}"></c:out>
 								&nbsp;&nbsp;- Fecha estimada :&nbsp;
-								<c:out value="${listaActividadesAtrasadas.fechaEstimada}"></c:out>
+								<fmt:formatDate value="${listaActividadesAtrasadas.fechaEstimada}" pattern="dd-MM-yyyy" />
 								&nbsp;&nbsp;- Sector : &nbsp;
 								<c:out value="${listaActividadesAtrasadas.predio.sector.nombre}"></c:out>
 								&nbsp;&nbsp;- Predio :&nbsp;
@@ -189,7 +190,7 @@
 				</div>
 			</div>
 			</section>
-		</div>
+		
 	</div>
 
 	<!-- /.content-wrapper -->
