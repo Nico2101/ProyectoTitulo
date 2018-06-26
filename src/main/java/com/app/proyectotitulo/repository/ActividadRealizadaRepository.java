@@ -22,13 +22,13 @@ public interface ActividadRealizadaRepository extends JpaRepository<Actividad_Re
 			@Param("id_predio") int idPredio);
 	
 	
-	@Query(value = "SELECT * FROM Actividad_Realizada  ar WHERE ar.fecha_estimada BETWEEN NOW( )  AND DATE_ADD( NOW( ) , INTERVAL +5 DAY ) ORDER BY ar.fecha_estimada ASC", nativeQuery = true)
+	@Query(value = "SELECT * FROM Actividad_Realizada ar WHERE ar.fecha_ejecucion_real IS NULL and ar.fecha_estimada BETWEEN CURRENT_DATE( ) AND DATE_ADD( CURRENT_DATE( ) , INTERVAL +5 DAY ) ORDER BY ar.fecha_estimada ASC", nativeQuery = true)
 	List<Actividad_Realizada> listaActividadesRealizadas();
 
 	@Query(value = "select ar.id_actividad_realizada, ar.fecha_estimada, ar.fecha_ejecucion_real,ar.cantidad_cosechada, ar.id_actividad, ar.id_temporada, ar.id_predio from Actividad_Realizada ar join Actividad a on ar.id_actividad=a.id_actividad join Plan_Ejecucion pe on a.id_plan_ejecucion=pe.id_plan_ejecucion join Temporada t on ar.id_temporada=t.id_temporada join Predio p on ar.id_predio=p.id_predio join Sector s on p.id_sector=s.id_sector where a.actividad_cosecha=1 and t.id_temporada=:id_temporada", nativeQuery = true)
 	List<Actividad_Realizada> actividadesReporteTemporada(@Param("id_temporada") int idTemporada);
 	
 	
-	@Query(value = "SELECT ar.id_actividad_realizada, ar.cantidad_cosechada, ar.fecha_ejecucion_real, ar.id_actividad, ar.id_temporada, ar.id_predio, ar.fecha_estimada FROM Actividad_Realizada ar WHERE ar.fecha_ejecucion_real is null and ar.fecha_estimada < NOW( ) AND DATE_ADD( NOW( ) , INTERVAL +0 DAY ) ORDER BY ar.fecha_estimada DESC", nativeQuery = true)
+	@Query(value = "SELECT * FROM Actividad_Realizada ar WHERE ar.fecha_ejecucion_real IS NULL AND ar.fecha_estimada < CURRENT_DATE( ) ORDER BY ar.fecha_estimada desc", nativeQuery = true)
 	List<Actividad_Realizada> listaActividadesAtrasadas();
 }
