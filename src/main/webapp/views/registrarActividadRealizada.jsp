@@ -165,11 +165,11 @@
 			<!-- Modal Agregar Insumo -->
 			<div class="modal fade" id="modalAgregarInsumo" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog" role="document">
+				<div class="modal-dialog modal-lg" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
 
-							<h4 class="modal-title" id="myModalLabel">Agregar Insumo</h4>
+							<h4 class="modal-title" id="myModalLabel">Asignar Insumo</h4>
 						</div>
 						<div class="modal-body">
 
@@ -180,7 +180,7 @@
 
 									<div id="form-editar" class="form-group">
 
-										<label class="col-sm-4 control-label">* Insumo</label>
+										<label class="col-sm-2 control-label">* Insumo</label>
 										<div class="col-sm-6">
 											<select id="insumo"
 												class="form-control select2 select2-hidden-accessible"
@@ -190,8 +190,14 @@
 												un insumo</span>
 										</div>
 
+										<div class="col-sm-2">
+											<button class="btn btn-primary"
+												onclick="abrirModalAgregarInsumoBD();">Agregar
+												Insumo</button>
+										</div>
+
 										<div id="divUMInsumo" style="display: none">
-											<br> <br> <label class="col-sm-4 control-label">Unidad
+											<br> <br> <label class="col-sm-2 control-label">Unidad
 												de Medida</label>
 											<div class="col-sm-6">
 												<input type="text" class="form-control" id="umInsumo"
@@ -199,7 +205,7 @@
 											</div>
 										</div>
 
-										<br> <br> <label class="col-sm-4 control-label">*
+										<br> <br> <label class="col-sm-2 control-label">*
 											Cantidad</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="cantidadInsumo"
@@ -211,7 +217,7 @@
 										</div>
 
 
-										<br> <br> <label class="col-sm-4 control-label">*
+										<br> <br> <label class="col-sm-2 control-label">*
 											Costo</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="costoInsumo"
@@ -428,6 +434,90 @@
 									data-dismiss="modal">Cerrar</button>
 								<button id="botonGuardar" type="button" class="btn btn-primary"
 									onclick="guardarInsumoEditado();">Actualizar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- Modal agregar insumo bd -->
+			<div class="modal fade" id="modalAgregarInsumoBD" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<h4 class="modal-title" id="myModalLabel">Agregar Insumo</h4>
+						</div>
+						<div class="modal-body">
+
+
+							<div class="row">
+
+								<div class="box-body">
+
+									<div id="form-editar" class="form-group">
+
+										<label class="col-sm-4 control-label">* Nombre</label>
+										<div class="col-sm-6">
+											<input type="text" class="form-control" id="nombreInsumo">
+											<span id="errorNombre" class="error" style="display: none">Ingrese
+												el nombre del insumo</span>
+										</div>
+										<br> <br> <label class="col-sm-4 control-label">*
+											Tipo</label>
+										<div class="col-sm-6">
+											<select class="form-control" id="tipoInsumo">
+												<option value="-1">Seleccione Tipo</option>
+												<option value="1">Combustible</option>
+												<option value="2">Semilla</option>
+												<option value="3">Abono</option>
+												<option value="4">Fertilizante</option>
+												<option value="5">Herbicida</option>
+
+											</select> <span id="errorTipo" class="error" style="display: none">Seleccione
+												el tipo de insumo</span>
+										</div>
+
+										<br> <br> <label class="col-sm-4 control-label">*
+											Unidad de Medida</label>
+
+										<div class="col-sm-6">
+											<select class="form-control" id="umInsumoBD">
+												<option value="-1">Seleccione Unidad de Medida</option>
+												<option value="1">Kilogramo</option>
+												<option value="2">Litro</option>
+												<option value="3">Unidad</option>
+
+											</select> <span id="errorUM" class="error" style="display: none">Seleccione
+												la unidad de medida</span>
+										</div>
+										<br> <br> <label class="col-sm-4 control-label">&nbsp;&nbsp;&nbsp;Marca</label>
+
+										<div class="col-sm-6">
+											<input type="text" class="form-control" id="marcaInsumo">
+										</div>
+
+										<br> <br> <br> <label
+											class="col-sm-4 control-label"></label>
+										<div class="col-sm-6">
+											<label class="pull-right"
+												style="font-weight: normal; color: red">* Campos
+												obligatorios</label>
+										</div>
+									</div>
+
+
+								</div>
+
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger pull-left"
+									data-dismiss="modal">Cerrar</button>
+								<button id="botonGuardar" type="button" class="btn btn-primary"
+									onclick="guardarDatosInsumo();">Agregar</button>
 							</div>
 						</div>
 					</div>
@@ -1575,6 +1665,135 @@
 			start -= 3;
 		}
 		return (parts.length == 3 ? '-' : '') + result;
+	}
+
+	function abrirModalAgregarInsumoBD() {
+		$('#modalAgregarInsumoBD').modal('show');
+
+		//Limpiar modal
+		$('#nombreInsumo').val("");
+		$('#marcaInsumo').val("");
+		$("#tipoInsumo").val(-1);
+		$("#umInsumo").val(-1);
+
+		document.getElementById('errorUM').style.display = 'none';
+		document.getElementById('umInsumoBD').style.border = "";
+
+		document.getElementById('errorTipo').style.display = 'none';
+		document.getElementById('tipoInsumo').style.border = "";
+
+		document.getElementById('errorNombre').style.display = 'none';
+		document.getElementById('nombreInsumo').style.border = "";
+
+	}
+
+	function guardarDatosInsumo() {
+		//Obtener los datos
+		var nombreInsumo = $('#nombreInsumo').val();
+
+		var tipo = document.getElementById("tipoInsumo");
+		var tipoSeleccionado = tipo.options[tipo.selectedIndex].text;
+
+		var um = document.getElementById("umInsumoBD");
+		var umSeleccionado = um.options[um.selectedIndex].text;
+
+		var marca = $('#marcaInsumo').val();
+
+		console.log(nombreInsumo);
+		console.log(tipoSeleccionado);
+		console.log(umSeleccionado);
+
+		//Validacion para el nombre
+		if (nombreInsumo == "") {
+			document.getElementById('errorNombre').style.display = 'inline';
+			document.getElementById('nombreInsumo').style.border = "1px solid red";
+		} else {
+			document.getElementById('errorNombre').style.display = 'none';
+			document.getElementById('nombreInsumo').style.border = "";
+		}
+
+		//Validacion para el tipo
+		if (tipoSeleccionado == "Seleccione Tipo") {
+			document.getElementById('errorTipo').style.display = 'inline';
+			document.getElementById('tipoInsumo').style.border = "1px solid red";
+		} else {
+			document.getElementById('errorTipo').style.display = 'none';
+			document.getElementById('tipoInsumo').style.border = "";
+		}
+
+		//Validacion para la unidad de medida
+		if (umSeleccionado == "Seleccione Unidad de Medida") {
+			document.getElementById('errorUM').style.display = 'inline';
+			document.getElementById('umInsumoBD').style.border = "1px solid red";
+		} else {
+			document.getElementById('errorUM').style.display = 'none';
+			document.getElementById('umInsumoBD').style.border = "";
+		}
+
+		if (nombreInsumo != "" && tipoSeleccionado != "Seleccione Tipo"
+				&& umSeleccionado != "Seleccione Unidad de Medida") {
+			$
+					.ajax({
+						type : 'POST',
+						url : "agregarInsumo",
+						dataType : 'json',
+						data : {
+							nombre : nombreInsumo,
+							tipo : tipoSeleccionado,
+							um : umSeleccionado,
+							marca : marca
+						},
+						success : function(data) {
+							console.log(data);
+							if (!$.isEmptyObject(data)) {
+								if (data.idInsumo > 0) {
+									toastr
+											.success("Insumo agregado correctamente");
+
+									//Recargar select
+									//Obtener todos los insumos para cargarlos en el select
+
+									$
+											.ajax({
+												type : 'POST',
+												url : "obtenerListaInsumos",
+												dataType : 'json',
+												success : function(data) {
+													console.log(data);
+													//Cargar los datos en el select
+													$("#insumo").empty();
+													$("#insumo")
+															.append(
+																	'<option value="-1">Seleccione un insumo</option>');
+													for (var i = 0; i < data.length; i++) {
+														$("#insumo")
+																.append(
+																		'<option value='+data[i].idInsumo+'>'
+																				+ data[i].nombre
+																				+ '</option>');
+
+													}
+
+													//ocultar modal
+													$('#modalAgregarInsumoBD')
+															.modal('hide');
+												},
+												error : function(jqXHR,
+														errorThrown) {
+													alert("Error al obtener los insumos");
+												}
+
+											});
+								}
+							}
+
+						},
+						error : function(jqXHR, errorThrown) {
+							toastr.error("Error al agregar el insumo");
+						}
+					});
+		}
+
 	}
 
 	function filterFloat(evt, input) {
