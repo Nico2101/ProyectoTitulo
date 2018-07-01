@@ -111,9 +111,10 @@
 
 										<label class="col-sm-4 control-label">* Nombre</label>
 										<div class="col-sm-6">
-											<input type="text" class="form-control" id="nombreSector">
-											<span id="errorNombre" class="error" style="display: none">Ingrese
-												el nombre del sector</span>
+											<input type="text" class="form-control" id="nombreSector"
+												onclick="sectorVacio();"> <span id="errorNombre"
+												class="error" style="display: none">Ingrese el nombre
+												del sector</span>
 										</div>
 										<br> <br> <label class="col-sm-4 control-label">*
 											Superficie (m<sup>2</sup>)
@@ -121,7 +122,8 @@
 
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="superficieSector"
-												onkeypress="return filterFloat(event,this);"> <span
+												onkeypress="return filterFloat(event,this);"
+												onclick="superficieVacia();"> <span
 												id="errorSuperficie" class="error" style="display: none">Ingrese
 												la superficie del sector</span> <span id="errorSuperficieNegativa"
 												class="error" style="display: none">La superficie no
@@ -235,8 +237,25 @@
 </body>
 
 <script>
+
+
+function sectorVacio(){
+	nombreSector=$('#nombreSector').val();
+	
+		document.getElementById('errorNombre').style.display = 'none';
+		document.getElementById('nombreSector').style.border = "";
+		
+}
+
+
+function superficieVacia(){
+		document.getElementById('errorSuperficie').style.display = 'none';
+		document.getElementById('superficieSector').style.border = "";
+}
+
  
  function agregarSector() {
+	 
 		$('#modalAgregarSector').modal('show');
 
 		//Limpiar modal

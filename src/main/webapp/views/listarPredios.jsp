@@ -121,7 +121,7 @@
 
 										<label class="col-sm-4 control-label">* Nombre</label>
 										<div class="col-sm-6">
-											<input type="text" class="form-control" id="nombrePredio">
+											<input type="text" class="form-control" id="nombrePredio" onclick="nombrePredioVacio();">
 											<span id="errorNombre" class="error" style="display: none">Ingrese
 												el nombre del predio</span>
 										</div>
@@ -130,7 +130,7 @@
 											Sector </label>
 										<div class="col-sm-6">
 											<select class="form-control" id="sectorSeleccionado"
-												onchange="superficieTotalPredios()">
+												onchange="superficieTotalPredios()"  onclick="sectorNoSeleccionado();">
 												<option value="-1">Seleccione sector al que
 													pertenece</option>
 												<c:forEach items="${sectores}" var="sectores">
@@ -179,7 +179,7 @@
 											<div class="col-sm-6">
 												<input type="number" class="form-control"
 													onkeypress="return filterFloat(event,this);"
-													id="superficiePredio"> <span id="errorSuperficie"
+													id="superficiePredio" onclick="superficiePredioVacia();"> <span id="errorSuperficie"
 													class="error" style="display: none">Ingrese la
 													superficie del predio</span> <span id="errorSubTotal"
 													class="error" style="display: none">La superficie
@@ -342,6 +342,35 @@
 </body>
 
 <script>
+
+
+function nombrePredioVacio(){
+	nombreSector=$('#nombrePredio').val();
+	
+		document.getElementById('errorNombre').style.display = 'none';
+		document.getElementById('nombrePredio').style.border = "";
+		
+}
+
+function sectorNoSeleccionado(){
+	nombreSector=$('#sectorSeleccionado').val();
+	
+		document.getElementById('errorSector').style.display = 'none';
+		document.getElementById('sectorSeleccionado').style.border = "";
+		
+}
+
+function superficiePredioVacia(){
+	nombreSector=$('#superficiePredio').val();
+	
+		document.getElementById('errorSuperficie').style.display = 'none';
+		document.getElementById('superficiePredio').style.border = "";
+		
+}
+
+
+
+
 	function agregarPredio() {
 		$('#modalAgregarPredio').modal('show');
 
@@ -605,10 +634,12 @@
 			document.getElementById('superficiePredio').style.border = "";
 		}
 		
-		
-		if(superficie=="" && ($('#idinput3').val())==0){
+		if(($('#idinput3').val())==0){
 			document.getElementById('errorSuperficie').style.display = 'none';
 			document.getElementById('superficiePredio').style.border = "";
+		}
+		
+		if(($('#idinput3').val())==0 && nombrePredio!="" && idSector!=-1){
 			toastr.error("Error no se puede agregar predio en el sector indicado");
 			
 		}

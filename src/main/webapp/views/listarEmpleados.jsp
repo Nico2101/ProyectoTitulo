@@ -128,7 +128,7 @@
 
 										<label class="col-sm-4 control-label">* Nombre</label>
 										<div class="col-sm-6">
-											<input type="text" class="form-control" id="nombreEmpleado">
+											<input type="text" class="form-control" id="nombreEmpleado" onclick="nombreVacio();">
 											<span id="errorNombreEmpleado" class="error"
 												style="display: none">Ingrese el nombre del empleado</span>
 										</div>
@@ -137,7 +137,7 @@
 											Apellidos</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
-												id="apellidosEmpleado"> <span
+												id="apellidosEmpleado" onclick="apellidoVacio();"> <span
 												id="errorApellidosEmpleado" class="error"
 												style="display: none">Ingrese los apellidos del
 												empleado</span>
@@ -147,7 +147,7 @@
 										<br> <br> <label class="col-sm-4 control-label">*
 											Rut</label>
 										<div class="col-sm-6">
-											<input type="text" class="form-control" id="rutEmpleado">
+											<input type="text" class="form-control" id="rutEmpleado" onclick="rutVacio();">
 											<span id="errorRutEmpleado" class="error"
 												style="display: none">Ingrese el rut del empleado</span> <span
 												id="errorRutEmpleadoInvalido" class="error"
@@ -162,7 +162,7 @@
 											Fecha nacimiento</label>
 										<div class="col-sm-6">
 											<input type="date" class="form-control"
-												id="fechaNacimientoEmpleado"> <span
+												id="fechaNacimientoEmpleado" onclick="fechaNacimientoVacia();"> <span
 												id="errorFechaNacimientoEmpleado" class="error"
 												style="display: none">Ingrese fecha de nacimiento del
 												empleado</span> <span id="errorFechaNacimientoSup" class="error"
@@ -174,7 +174,7 @@
 											Dirección</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
-												id="direccionEmpleado"> <span
+												id="direccionEmpleado" onclick="direccionVacia();"> <span
 												id="errorDireccionEmpleado" class="error"
 												style="display: none">Ingrese dirección del empleado</span>
 										</div>
@@ -182,7 +182,7 @@
 										<br> <br> <label class="col-sm-4 control-label">*
 											Telefono</label>
 										<div class="col-sm-6">
-											<input type="text" class="form-control" id="telefonoEmpleado">
+											<input type="text" class="form-control" id="telefonoEmpleado" onclick="telefonoVacio();">
 											<span id="errorTelefonoEmpleado" class="error"
 												style="display: none">Ingrese telefono del empleado</span>
 										</div>
@@ -191,7 +191,7 @@
 											Cargo</label>
 
 										<div class="col-sm-6">
-											<select class="form-control" id="cargoEmpleado">
+											<select class="form-control" id="cargoEmpleado" onclick="cargoVacio();">
 												<option value="-1">Seleccione cargo</option>
 												<option value="1">Jefe de producción</option>
 												<option value="2">Gerente</option>
@@ -356,6 +356,48 @@
 </body>
 <script src="assets/rut.js"></script>
 <script>
+
+function nombreVacio(){
+		document.getElementById('errorNombreEmpleado').style.display = 'none';
+		document.getElementById('nombreEmpleado').style.border = "";
+		
+}
+
+function apellidoVacio(){
+		document.getElementById('errorApellidosEmpleado').style.display = 'none';
+		document.getElementById('apellidosEmpleado').style.border = "";
+		
+}
+
+function rutVacio(){
+		document.getElementById('errorRutEmpleado').style.display = 'none';
+		document.getElementById('rutEmpleado').style.border = "";
+		
+}
+
+function fechaNacimientoVacia(){
+	document.getElementById('errorFechaNacimientoEmpleado').style.display = 'none';
+	document.getElementById('fechaNacimientoEmpleado').style.border = "";
+	
+}
+
+function direccionVacia(){
+	document.getElementById('errorDireccionEmpleado').style.display = 'none';
+	document.getElementById('direccionEmpleado').style.border = "";
+	
+}
+
+function telefonoVacio(){
+	document.getElementById('errorTelefonoEmpleado').style.display = 'none';
+	document.getElementById('telefonoEmpleado').style.border = "";
+	
+}
+
+function cargoVacio(){
+	document.getElementById('errorCargoEmpleado').style.display = 'none';
+	document.getElementById('cargoEmpleado').style.border = "";
+	
+}
 	function agregarEmpleado() {
 		$('#modalAgregarEmpleado').modal('show');
 
