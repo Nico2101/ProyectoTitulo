@@ -50,7 +50,7 @@
 									<div class="col-md-3 col-sm-6 col-xs-12">
 										<label>* Temporada</label> <select id="temporada"
 											class="form-control select2 select2-hidden-accessible"
-											onchange="buscarPrediosSector();">
+											onchange="buscarSector();">
 
 											<option value="-1">Seleccione una temporada</option>
 											<c:forEach var="listaTemporadas" items="${listaTemporadas}">
@@ -61,10 +61,13 @@
 
 
 										</select> <span id="errorTemporada" class="error" style="display: none">Seleccione
-											una temporada</span>
+											una temporada</span> <span id="errorTemporada2" class="error"
+											style="display: none">Temporada no ha sido ejecutada
+											en ningún predio</span>
 									</div>
 
-									<div class="col-md-3 col-sm-6 col-xs-12">
+									<div id="divSector" class="col-md-3 col-sm-6 col-xs-12"
+										style="display: none">
 										<label>* Sector</label> <select id="sector"
 											class="form-control select2 select2-hidden-accessible"
 											onchange="buscarPrediosSector();">
@@ -148,10 +151,11 @@
 
 													<th>N°</th>
 													<th width="400px">Nombre Actividad</th>
-													<th>Fecha Estimada Inicial</th>
-													<th>Fecha Ejecución Real</th>
-													<th>Reprogramaciones</th>
+													<th width="135px">Fecha Estimada Inicial</th>
+													<th width="350px">Fecha Ejecución Real</th>
+													<th width="100px">Reprogramaciones</th>
 													<th>id actividad</th>
+													<th>Costos</th>
 
 												</tr>
 											</thead>
@@ -229,6 +233,52 @@
 					</div>
 				</div>
 			</div>
+
+
+			<!-- Modal Ver Detalle de costos -->
+			<div class="modal fade" id="modalVerDetallesCostos" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog  modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+
+							<h4 class="modal-title">Detalle de costos</h4>
+
+						</div>
+						<div class="modal-body">
+
+
+							<div class="row">
+
+								<div class="box-body">
+
+									<table id="listaDetallesCostos"
+										class="table table-striped table-bordered table-hover">
+
+										<thead>
+											<tr>
+												<th width="25px">N°</th>
+												<th>Nombre Insumo</th>
+												<th>Tipo</th>
+												<th>Unidad de Medida</th>
+												<th>Cantidad</th>
+												<th>Costo</th>
+
+											</tr>
+										</thead>
+									</table>
+								</div>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger pull-left"
+									data-dismiss="modal">Cerrar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 
 			</section>
 
@@ -418,6 +468,7 @@
 										var cell4 = row.insertCell(3);
 										var cell5 = row.insertCell(4);
 										var cell6 = row.insertCell(5);
+										var cell7 = row.insertCell(6);
 
 										// Add some text to the new cells:
 										cell1.innerHTML = num;
@@ -486,12 +537,39 @@
 																	+ idAR
 																	+ ');"><i class="fa fa-eye fa-lg" style="color: blue"></i></a>';
 														} else {
-															cell5.innerHTML = "Sin Reprogramaciones";
+															cell5.innerHTML = "";
 														}
 													},
 													error : function(jqXHR,
 															errorThrown) {
-														alert("Error al obtener los productos");
+														alert("Error al obtener las reprogramaciones");
+													}
+												});
+
+										//Preguntar si la actividad tiene costos
+										$
+												.ajax({
+													type : 'POST',
+													url : "verificarSiLaActividadTieneCostos",
+													dataType : 'json',
+													async : false,
+													data : {
+														idActividadRealizada : data[i].idActividadRealizada
+													},
+													success : function(data) {
+														console.log(data);
+														if (data == true) {
+															cell7.innerHTML = '<a href="#" title="Ver Insumos" onclick="verInsumosActividadRealizada('
+																	+ idAR
+																	+ ');"><i class="fa fa-eye fa-lg" style="color: blue"></i></a>';
+														} else {
+															cell7.innerHTML = "";
+														}
+
+													},
+													error : function(jqXHR,
+															errorThrown) {
+														alert("Error al obtener los costos de la actividad");
 													}
 												});
 
@@ -567,68 +645,41 @@
 					success : function(data) {
 						console.log(data);
 						if (!$.isEmptyObject(data)) {
+							//vaciar datatable
+							var oTable = $('#tablaReprogramaciones')
+									.dataTable();
+							oTable.fnClearTable();
+
+							//Llenar data table
 							for (var i = 0; i < data.length; i++) {
-								//N° Filas
-								var filas = document
-										.getElementById("tablaReprogramaciones").rows.length;
-								console.log("filas: " + filas);
+								var fecha = moment(
+										data[i].fechaEstimadaAnterior,
+										'YYYY/MM/DD');
+								fecha = fecha.format('DD-MM-YYYY');
 
-								if (filas >= 1) {
-									//Agregar el nombre de la actividad a la tabla
+								var fechaReprogramacion = moment(
+										data[i].fechaReprogramacion,
+										'YYYY/MM/DD');
+								fechaReprogramacion = fechaReprogramacion
+										.format('DD-MM-YYYY');
+								$('#tablaReprogramaciones')
+										.dataTable()
+										.fnAddData(
 
-									//numero
-									var num = 0;
-									var oTable = document
-											.getElementById('tablaReprogramaciones');
+												[
+														i + 1,
+														data[i].actividadRealizada.actividad.nombre,
+														fecha,
+														fechaReprogramacion,
 
-									var rowLength = oTable.rows.length;
-									var oCells = oTable.rows
-											.item(rowLength - 1).cells;
-									var n = oCells[0].textContent;
+														data[i].motivo ]
 
-									if (n == "N°") {
-										num = 1;
-									} else {
-										num = parseInt(n) + 1;
-									}
+										);
 
-									// Find a <table> element with id="myTable":
-									var table = document
-											.getElementById("tablaReprogramaciones");
-
-									// Create an empty <tr> element and add it to the 1st position of the table:
-									var row = table.insertRow(filas);
-
-									// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
-									var cell1 = row.insertCell(0);
-									var cell2 = row.insertCell(1);
-									var cell3 = row.insertCell(2);
-									var cell4 = row.insertCell(3);
-									var cell5 = row.insertCell(4);
-
-									// Add some text to the new cells:
-									cell1.innerHTML = num;
-									cell2.innerHTML = data[i].actividadRealizada.actividad.nombre;
-
-									var fecha = moment(
-											data[i].fechaEstimadaAnterior,
-											'YYYY/MM/DD');
-									fecha = fecha.format('DD-MM-YYYY');
-									cell3.innerHTML = fecha;
-
-									fechaReprogramacion = moment(
-											data[i].fechaReprogramacion,
-											'YYYY/MM/DD');
-									fechaReprogramacion = fechaReprogramacion
-											.format('DD-MM-YYYY');
-									cell4.innerHTML = fechaReprogramacion;
-
-									cell5.innerHTML = data[i].motivo;
-
-								}
 							}
-
+							//Mostrar modal
 							$('#modalVerReprogramaciones').modal('show');
+
 						}
 					},
 					error : function(jqXHR, errorThrown) {
@@ -660,6 +711,181 @@
 		}
 		return (parts.length == 3 ? '-' : '') + result;
 	}
+
+	function buscarSector() {
+		//Obtener sector
+		var idTemporada = $('#temporada').val();
+		if (idTemporada > 0) {
+			document.getElementById('errorTemporada').style.display = 'none';
+			document.getElementById('temporada').style.border = "";
+		} else {
+			document.getElementById('errorTemporada').style.display = 'inline';
+			document.getElementById('temporada').style.border = "1px solid red";
+			document.getElementById('divPlanAsignado').style.display = 'none';
+			document.getElementById('divTablaActividades').style.display = 'none';
+			document.getElementById('divPredio').style.display = 'none';
+			document.getElementById('divSector').style.display = 'none';
+		}
+
+		if (idTemporada > 0) {
+			//Obtener los sectores que están ejecutando esa temporada
+			$
+					.ajax({
+						type : 'POST',
+						url : "getSectoresConPrediosConPlanes",
+						dataType : 'json',
+						data : {
+							idTemporada : idTemporada
+						},
+						success : function(data) {
+							console.log(data);
+							if (!$.isEmptyObject(data)) {
+								document.getElementById('errorTemporada2').style.display = 'none';
+								document.getElementById('temporada').style.border = "";
+								//Vaciar select sector y cargar los datos
+								$('#sector').empty();
+								$('#sector')
+										.append(
+												'<option value="-1">Seleccione un sector</option>');
+								for (var i = 0; i < data.length; i++) {
+									$('#sector').append(
+											'<option value='+data[i].idSector+'>'
+													+ data[i].nombre
+													+ '</option>');
+								}
+
+								//Mostrar sector
+								document.getElementById('divSector').style.display = 'inline';
+							} else {
+								//Mostrar mensaje de error
+								document.getElementById('errorTemporada2').style.display = 'inline';
+								document.getElementById('temporada').style.border = "1px solid red";
+							}
+
+						},
+						error : function(jqXHR, errorThrown) {
+							alert("Error al obtener los sectores");
+						}
+					});
+
+		}
+	}
+
+	function verInsumosActividadRealizada(idActividadRealizada) {
+		if (idActividadRealizada > 0) {
+			//Obtener los datos de los insumos utilizados
+			$
+					.ajax({
+						type : 'POST',
+						url : "obtenerInsumosUtilizadosEnLaActividad",
+						dataType : 'json',
+						data : {
+							idActividad : idActividadRealizada
+						},
+						success : function(data) {
+							console.log(data);
+							if (!$.isEmptyObject(data)) {
+								//Cargar los datos en el modal
+								//vaciar datatable
+								var oTable = $('#listaDetallesCostos')
+										.dataTable();
+								oTable.fnClearTable();
+
+								//Llenar data table
+								for (var i = 0; i < data.length; i++) {
+									$('#listaDetallesCostos')
+											.dataTable()
+											.fnAddData(
+
+													[
+															i + 1,
+															data[i].insumo.nombre,
+															data[i].insumo.tipo,
+															data[i].insumo.unidadMedida,
+															data[i].cantidad,
+															"$  "
+																	+ currency(
+																			data[i].costo,
+																			1), ]
+
+											);
+								}
+								//Mostrar modal
+								$('#modalVerDetallesCostos').modal('show');
+
+							}
+
+						},
+						error : function(jqXHR, errorThrown) {
+							alert("Error al obtener los insumos utilizados en la actividad");
+						}
+					});
+		}
+	}
+</script>
+
+<script>
+	$('#listaDetallesCostos').DataTable({
+		'dom' : 'Bfrtip',
+		'paging' : true,
+		'lengthChange' : true,
+		'searching' : false,
+		'ordering' : false,
+		'info' : true,
+		'autoWidth' : true,
+		'responsive' : true,
+		"language" : {
+			"sProcessing" : "Procesando...",
+			"sLengthMenu" : "Mostrar _MENU_ registros",
+			"sZeroRecords" : "No se encontraron resultados",
+			"sEmptyTable" : "Ningún dato disponible en esta tabla",
+			"sInfo" : "",
+			"sInfoEmpty" : "No hay datos para mostrar",
+			"sInfoFiltered" : "(filtrado de un total de _MAX_ registros)",
+			"sInfoPostFix" : "",
+			"sSearch" : "Buscar:",
+			"sUrl" : "",
+			"sInfoThousands" : ",",
+			"sLoadingRecords" : "Cargando...",
+			"oPaginate" : {
+				"sFirst" : "Primero",
+				"sLast" : "Último",
+				"sNext" : "Siguiente",
+				"sPrevious" : "Anterior"
+			}
+		}
+	})
+
+	$('#tablaReprogramaciones').DataTable({
+		'dom' : 'Bfrtip',
+		'paging' : true,
+		'lengthChange' : true,
+		'searching' : false,
+		'ordering' : false,
+		'info' : true,
+		'autoWidth' : true,
+		'responsive' : true,
+		"language" : {
+			"sProcessing" : "Procesando...",
+			"sLengthMenu" : "Mostrar _MENU_ registros",
+			"sZeroRecords" : "No se encontraron resultados",
+			"sEmptyTable" : "Ningún dato disponible en esta tabla",
+			"sInfo" : "",
+			"sInfoEmpty" : "No hay datos para mostrar",
+			"sInfoFiltered" : "(filtrado de un total de _MAX_ registros)",
+			"sInfoPostFix" : "",
+			"sSearch" : "Buscar:",
+			"sUrl" : "",
+			"sInfoThousands" : ",",
+			"sLoadingRecords" : "Cargando...",
+			"oPaginate" : {
+				"sFirst" : "Primero",
+				"sLast" : "Último",
+				"sNext" : "Siguiente",
+				"sPrevious" : "Anterior"
+			}
+		}
+	})
 </script>
 
 </html>

@@ -70,7 +70,7 @@ public class SectorController {
 	}
 
 	@RequestMapping(value = "obtenerListaSectores")
-	public @ResponseBody List<Sector> obtenerListaSectores(){
+	public @ResponseBody List<Sector> obtenerListaSectores() {
 
 		List<Sector> lista = sectorService.listarSectores(false);
 
@@ -128,15 +128,21 @@ public class SectorController {
 		return false;
 
 	}
-	
+
 	@RequestMapping(value = "obtenerTotalSuperficeSector")
 	public @ResponseBody Integer obtieneTotalSuperficieSector(@RequestParam int idSector) {
 
-		Integer TotalSuperficieSector= sectorService.TotalSuperficieSector(idSector);
-			return TotalSuperficieSector;
-		
+		Integer TotalSuperficieSector = sectorService.TotalSuperficieSector(idSector);
+		return TotalSuperficieSector;
+
 	}
-	
-	
+
+	@RequestMapping(value = "getSectoresConPrediosConPlanes")
+	public @ResponseBody List<Sector> getSectoresConPrediosConPlanes(@RequestParam int idTemporada) {
+
+		List<Sector> lista = sectorService.listaSectoresConPrediosConPlanes(idTemporada);
+		return lista;
+
+	}
 
 }

@@ -463,4 +463,23 @@ public class ActividadRealizadaController {
 
 	}
 
+	@RequestMapping(value = "verificarSiLaActividadTieneCostos")
+	public @ResponseBody boolean verificarSiLaActividadTieneCostos(@RequestParam int idActividadRealizada) {
+
+		if (idActividadRealizada > 0) {
+
+			// Verificar si la actividad tiene costos
+			List<Actividad_Insumo> lista = actividadInsumoService.listaInsumosActividadRealizada(idActividadRealizada);
+			if (lista.size() > 0) {
+				return true;
+			} else {
+				return false;
+			}
+
+		} else {
+			return false;
+		}
+
+	}
+
 }
