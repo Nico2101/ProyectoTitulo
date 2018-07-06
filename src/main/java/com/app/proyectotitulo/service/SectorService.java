@@ -19,5 +19,7 @@ public interface SectorService {
 	Sector editarSector(Sector s);
 
 	Integer TotalSuperficieSector(int idSector);
+	
+	List<Sector> listaSectoresConPrediosConPlanes(int id_temporada);
 
 }

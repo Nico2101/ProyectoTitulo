@@ -24,35 +24,41 @@ public class SectorServiceImplementation implements SectorService {
 		// TODO Auto-generated method stub
 		return sectorRepo.findBySectorEliminadoOrderByNombreAsc(sectorEliminado);
 	}
+
 	@Override
 	public Sector saveAndFlush(Sector s) {
 		// TODO Auto-generated method stub
 		return sectorRepo.saveAndFlush(s);
-	
-   
+
 	}
+
 	@Override
 	public Sector findByIdSector(int idSector) {
 		// TODO Auto-generated method stub
 		return sectorRepo.findByIdSector(idSector);
 	}
-	
+
 	@Override
 	public Sector eliminarSector(Sector s) {
 		// TODO Auto-generated method stub
 		return sectorRepo.save(s);
 	}
-	
+
 	@Override
 	public Sector editarSector(Sector s) {
 		// TODO Auto-generated method stub
 		return sectorRepo.save(s);
 	}
-	
-	public Integer  TotalSuperficieSector(int id_sector) {
+
+	public Integer TotalSuperficieSector(int id_sector) {
 		// TODO Auto-generated method stub
-		return sectorRepo.TotalSuperSector( id_sector);
+		return sectorRepo.TotalSuperSector(id_sector);
 	}
-	
+
+	@Override
+	public List<Sector> listaSectoresConPrediosConPlanes(int id_temporada) {
+		// TODO Auto-generated method stub
+		return sectorRepo.listaSectoresConPrediosConPlanAsignado(id_temporada);
+	}
 
 }
