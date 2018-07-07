@@ -60,13 +60,17 @@
 		<div class="main-content">
 			<div class="row">
 				<div class="col-sm-10 col-sm-offset-1">
+					<br> <br> <br> <br> <br>
+					<div class="center">
+					<h1 class="header blue lighter bigger">Sistema para el control
+						de siembras</h1>
+					<h1 class="header blue lighter bigger">
+						<i class="glyphicon glyphicon-grain"></i> Fundo Santa Emilia
+					</h1>
+					</div>
+					<br>
 					<div class="login-container">
 						<div class="center">
-							<br><br>
-							
-							<h1 class="header blue lighter bigger"><i class="glyphicon glyphicon-grain"></i>Fundo Santa Emilia</h1>
-							<br>
-
 							<div class="position-relative">
 								<div id="login-box"
 									class="login-box visible widget-box no-border">
