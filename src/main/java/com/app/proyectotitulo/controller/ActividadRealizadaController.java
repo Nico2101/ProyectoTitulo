@@ -397,6 +397,8 @@ public class ActividadRealizadaController {
 		if (datos.length > 0) {
 			int aux = 0;
 			for (int i = 0; i < datos.length / 2; i++) {
+				System.out.println(datos[aux]);
+				System.out.println(datos[aux+1]);
 				// Buscar Actividad
 				Actividad_Realizada ar = actividadRealizadaService.buscarActividad(Integer.parseInt(datos[aux]));
 				if (ar != null) {
