@@ -28,9 +28,11 @@ import com.app.proyectotitulo.TO.ReporteProductoTO;
 import com.app.proyectotitulo.domain.Actividad_Realizada;
 import com.app.proyectotitulo.domain.Empleado;
 import com.app.proyectotitulo.domain.Plan_Ejecucion;
+import com.app.proyectotitulo.domain.Temporada;
 import com.app.proyectotitulo.service.ActividadInsumoService;
 import com.app.proyectotitulo.service.ActividadRealizadaService;
 import com.app.proyectotitulo.service.PlanEjecucionService;
+import com.app.proyectotitulo.service.TemporadaService;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -55,6 +57,9 @@ public class ReportesController {
 
 	@Autowired
 	private PlanEjecucionService planEjecucionService;
+
+	@Autowired
+	private TemporadaService temporadaService;
 
 	@Autowired
 	private ActividadRealizadaService actividadRealizadaService;
@@ -744,5 +749,28 @@ public class ReportesController {
 			out.flush();
 			out.close();
 		}
+	}
+
+	@RequestMapping(value = "cosechaTemporada")
+	public ModelAndView cosechaTemporada(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
+
+		sesion = request.getSession(true);
+		Empleado e = (Empleado) sesion.getAttribute("empleado");
+
+		if (e != null) {
+			vista.setViewName("cosechaPorTemporada");
+
+			// Obtener todas las temporadas
+			List<Temporada> lista = temporadaService.listaTemporadas(false);
+			vista.addObject("listaTemporadas", lista);
+
+		} else {
+			vista.setViewName("login");
+			vista.addObject("empleado", new Empleado());
+			vista.addObject("sesionExpirada", "Su sesión ha expirado");
+
+		}
+
+		return vista;
 	}
 }

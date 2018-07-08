@@ -40,8 +40,7 @@
 					</div>
 					<div class="col-md-3 col-sm-6 col-xs-12"></div>
 					<div class="col-md-2 col-sm-6 col-xs-12"></div>
-					<div id="botonGenerarReporte" style="display: none"
-						class="col-md-2 col-sm-6 col-xs-12">
+					<div id="botonGenerarReporte" style="display: none">
 
 						<a id="#" href="generarReporteProductos">
 							<button class="btn btn-primary pull-right" type="button">Generar
@@ -49,15 +48,7 @@
 
 						</a>
 					</div>
-					<div id="botonGenerarReporteTemporada" style="display: none"
-						class="col-md-2 col-sm-6 col-xs-12">
 
-
-						<button class="btn btn-primary pull-right" type="button"
-							onclick="abrirModalTemporada();">Informe Temporada</button>
-
-
-					</div>
 				</div>
 				<br> <br> <br>
 				<div id="graficos"></div>
@@ -272,7 +263,7 @@
 
 					document.getElementById('imagen').style.display = 'none';
 					document.getElementById('botonGenerarReporte').style.display = 'inline';
-					document.getElementById('botonGenerarReporteTemporada').style.display = 'inline';
+
 					document.getElementById('titulo').style.display = 'inline';
 
 				},
