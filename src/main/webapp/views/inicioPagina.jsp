@@ -18,16 +18,16 @@
 
 	<!-- Header -->
 	<section id="header">
-	<br><br>
+	<br>
 		<header>
 			<!--  <span class="image avatar"><img src="images/perfil.jpg" alt="" /></span>-->
 			<h1 id="logo">
-				<a href="#"><i class="glyphicon glyphicon-grain"></i>Fundo Santa
+				<a href="#"><i class="glyphicon glyphicon-grain"></i>Sistema para el control de siembras del fundo Santa
 					Emilia</a>
 			</h1>
-
+ 
 		</header>
-		<br><br><br><br>
+		<br>
 		<nav id="nav">
 			<ul>
 				<li><a href="#one" class="active">Sobre la Empresa</a></li>
@@ -72,35 +72,16 @@
 				<div class="container">
 					<div class="features">
 						<article>
-							<a href="#" class="image"><img src="images/trigo.jpeg" alt="" /></a>
-							<div class="inner">
-								<h4>Trigo</h4>
-
-							</div>
+							<a href="#" class="image"><img src="images/trigo.jpeg" alt="" width="200px" height="240px"/><br><h4>Trigo</h4></a>
+							<a href="#" class="image"><img src="images/arvejas.jpg" alt="" width="200px" height="240px" /><br><h4>Arvejas</h4></a>
+							
 						</article>
+						
 						<article>
-							<a href="#" class="image"><img src="images/remolacha.jpg"
-								alt="" /></a>
-							<div class="inner">
-								<h4>Remolacha</h4>
-
-							</div>
-						</article>
-						<article>
-							<a href="#" class="image"><img src="images/achicoria.jpg"
-								alt="" /></a>
-							<div class="inner">
-								<h4>Achicoria</h4>
-
-							</div>
-						</article>
-						<article>
-							<a href="#" class="image"><img src="images/arvejas.jpg"
-								alt="" /></a>
-							<div class="inner">
-								<h4>Arvejas</h4>
-
-							</div>
+						<br>
+							<a href="#" class="image"><img src="images/achicoria.jpg" alt="" width="200px" height="240px"/><br><h4>Achicoria</h4></a>
+							<a href="#" class="image"><img src="images/remolacha.jpg" alt="" width="200px" height="240px"/><br><h4>Remolacha</h4></a>
+							
 						</article>
 					</div>
 				</div>
