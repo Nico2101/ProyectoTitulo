@@ -8,6 +8,15 @@ public class ReporteProductoTO {
 	private Date fechaInicio;
 	private Date fechaTermino;
 	private int cantidadCosechada;
+	private int costo;
+
+	public int getCosto() {
+		return costo;
+	}
+
+	public void setCosto(int costo) {
+		this.costo = costo;
+	}
 
 	public String getNombreTemporada() {
 		return nombreTemporada;

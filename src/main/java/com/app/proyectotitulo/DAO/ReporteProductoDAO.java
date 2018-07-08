@@ -12,8 +12,9 @@ import com.app.proyectotitulo.TO.ReporteProductoTO;
 
 public class ReporteProductoDAO {
 
-	private static final String OBTENER_COSECHA_PRODUCTO_TEMPORADAS = "SELECT t.nombre AS temporada,t.fecha_inicio, t.fecha_termino, IFNULL( SUM( ar.cantidad_cosechada ) , 0 ) AS cantidad_cosechada FROM Actividad_Realizada ar JOIN Actividad a ON ar.id_actividad = a.id_actividad JOIN Plan_Ejecucion pe ON a.id_plan_ejecucion = pe.id_plan_ejecucion JOIN Temporada t ON ar.id_temporada = t.id_temporada WHERE pe.plan_eliminado =0 AND pe.id_plan_ejecucion =? GROUP BY t.id_temporada";
+	private static final String OBTENER_COSECHA_PRODUCTO_TEMPORADAS = "SELECT t.id_temporada, t.nombre AS temporada,t.fecha_inicio, t.fecha_termino, IFNULL( SUM( ar.cantidad_cosechada ) , 0 ) AS cantidad_cosechada FROM Actividad_Realizada ar JOIN Actividad a ON ar.id_actividad = a.id_actividad JOIN Plan_Ejecucion pe ON a.id_plan_ejecucion = pe.id_plan_ejecucion JOIN Temporada t ON ar.id_temporada = t.id_temporada WHERE pe.plan_eliminado =0 AND pe.id_plan_ejecucion =? GROUP BY t.id_temporada";
 	private static final String GET_PLANES = "SELECT pe.id_plan_ejecucion, pe.nombre from Plan_Ejecucion pe where pe.plan_eliminado=0";
+	private static final String GET_COSTO_TEMPORADA = "select ifnull(sum(ai.costo),0) as costos from Actividad_Insumo ai join Actividad_Realizada ar on ai.id_actividad_realizada=ar.id_actividad_realizada join Temporada t on ar.id_temporada=t.id_temporada where t.id_temporada=?";
 
 	/*
 	 * private static final String DB_NAME = "npfuente"; private static final String
@@ -64,16 +65,25 @@ public class ReporteProductoDAO {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				result = new ReporteProductoTO();
+
 				result.setNombreTemporada(rs.getString("temporada"));
 				result.setFechaInicio(rs.getDate("fecha_inicio"));
 				result.setFechaTermino(rs.getDate("fecha_termino"));
 				result.setCantidadCosechada(rs.getInt("cantidad_cosechada"));
 
+				// Obtener el costo de incurrido en esa temporada
+				PreparedStatement ps2 = conn.prepareStatement(GET_COSTO_TEMPORADA);
+				ps2.setInt(1, rs.getInt("id_temporada"));
+				ResultSet rs2 = ps2.executeQuery();
+				if (rs2.next()) {
+					result.setCosto(rs2.getInt("costos"));
+				}
+
 				lista.add(result);
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			System.err.println("Error al conectar con la base de datos: inventario");
+			System.err.println("Error al conectar con la base de datos");
 		}
 
 		return lista;

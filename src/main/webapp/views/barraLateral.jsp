@@ -167,7 +167,12 @@
 
 				<li><a href="rendimientoProducto"> <i
 						class="fa fa-circle-o"></i> <span><c:out
-								value="Rendimiento por producto"></c:out></span>
+								value="Cosecha por producto"></c:out></span>
+
+				</a></li>
+
+				<li><a href="cosechaTemporada"> <i class="fa fa-circle-o"></i>
+						<span><c:out value="Cosecha por Temporada"></c:out></span>
 
 				</a></li>
 			</ul></li>
@@ -223,6 +228,10 @@
 				<li><a href="rendimientoProducto"> <i
 						class="fa fa-circle-o"></i> <span><c:out
 								value="Rendimiento por producto"></c:out></span>
+
+				</a></li>
+				<li><a href="cosechaTemporada"> <i class="fa fa-circle-o"></i>
+						<span><c:out value="Cosecha por Temporada"></c:out></span>
 
 				</a></li>
 			</ul></li>

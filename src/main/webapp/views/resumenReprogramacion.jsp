@@ -165,7 +165,7 @@
 												return datos.labels[tooltipItem.index]
 														+ " : "
 														+ datos.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
-														+ " actividades reprogramadas";
+														+ " reprogramaciones";
 											}
 
 										}

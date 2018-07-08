@@ -28,6 +28,7 @@ import com.app.proyectotitulo.TO.ReporteProductoTO;
 import com.app.proyectotitulo.domain.Actividad_Realizada;
 import com.app.proyectotitulo.domain.Empleado;
 import com.app.proyectotitulo.domain.Plan_Ejecucion;
+import com.app.proyectotitulo.service.ActividadInsumoService;
 import com.app.proyectotitulo.service.ActividadRealizadaService;
 import com.app.proyectotitulo.service.PlanEjecucionService;
 import com.itextpdf.text.BaseColor;
@@ -57,6 +58,9 @@ public class ReportesController {
 
 	@Autowired
 	private ActividadRealizadaService actividadRealizadaService;
+
+	@Autowired
+	private ActividadInsumoService actividadInsumoService;
 
 	@RequestMapping(value = "rendimientoProducto")
 	public ModelAndView rendimientoSector(ModelAndView vista, HttpServletRequest request, HttpSession sesion) {
@@ -144,7 +148,8 @@ public class ReportesController {
 			String FILE_NAME = "ReporteProductos.pdf";
 
 			// Declaramos un documento como un objecto Document.
-			Document documento = new Document(PageSize.LETTER);
+			Document documento = new Document(PageSize.LETTER, 0, 0, 0, 0);
+			documento.setMargins(0, 0, 0, 0);
 
 			// writer es declarado como el método utilizado para escribir en el archivo.
 			PdfWriter pdfWriter = null;
@@ -173,7 +178,7 @@ public class ReportesController {
 
 			titulo.setFont(new Font(FontFamily.TIMES_ROMAN, 20, Font.BOLD));
 			titulo.setAlignment(Element.ALIGN_CENTER);
-			titulo.add("Reporte Rendimiento Productos");
+			titulo.add("Reporte Cosecha Productos");
 
 			// Datos Productos
 
@@ -195,8 +200,8 @@ public class ReportesController {
 				// outer table
 				PdfPTable outertable3 = new PdfPTable(1);
 				// inner table 1
-				PdfPTable innertable3 = new PdfPTable(5);
-				innertable3.setWidths(new int[] { 3, 20, 10, 10, 10 });
+				PdfPTable innertable3 = new PdfPTable(6);
+				innertable3.setWidths(new int[] { 3, 20, 10, 10, 10, 10 });
 
 				Paragraph titulo4 = new Paragraph();
 
@@ -205,8 +210,8 @@ public class ReportesController {
 				// outer table
 				PdfPTable outertable4 = new PdfPTable(1);
 				// inner table 1
-				PdfPTable innertable4 = new PdfPTable(5);
-				innertable4.setWidths(new int[] { 3, 20, 10, 10, 10 });
+				PdfPTable innertable4 = new PdfPTable(6);
+				innertable4.setWidths(new int[] { 3, 20, 10, 10, 10, 10 });
 
 				Paragraph titulo2 = new Paragraph();
 				titulo2.setFont(new Font(FontFamily.TIMES_ROMAN, 14, Font.BOLD));
@@ -257,6 +262,12 @@ public class ReportesController {
 
 					// column 5
 					cell3 = new PdfPCell(new Phrase("Cantidad Cosechada"));
+					cell3.setBorderColorBottom(BaseColor.BLACK);
+					cell3.setBorder(Rectangle.NO_BORDER);
+					innertable3.addCell(cell3);
+
+					// column 6
+					cell3 = new PdfPCell(new Phrase("Costo Total"));
 					cell3.setBorderColorBottom(BaseColor.BLACK);
 					cell3.setBorder(Rectangle.NO_BORDER);
 					innertable3.addCell(cell3);
@@ -348,6 +359,12 @@ public class ReportesController {
 						cell4.setBorder(Rectangle.NO_BORDER);
 						innertable4.addCell(cell4);
 
+						// column 6
+						cell4 = new PdfPCell(
+								new Phrase("$ " + formatea.format(datos.get(i).getDatos().get(j).getCosto())));
+						cell4.setBorder(Rectangle.NO_BORDER);
+						innertable4.addCell(cell4);
+
 						// spacing
 						cell4 = new PdfPCell();
 						cell4.setColspan(5);
@@ -357,37 +374,27 @@ public class ReportesController {
 						total += datos.get(i).getDatos().get(j).getCantidadCosechada();
 					}
 
-					// column 1
-					cell4 = new PdfPCell(new Phrase());
-					cell4.setBorder(Rectangle.NO_BORDER);
-					innertable4.addCell(cell4);
-
-					// column 2
-					cell4 = new PdfPCell(new Phrase());
-					cell4.setBorder(Rectangle.NO_BORDER);
-					innertable4.addCell(cell4);
-
-					// column 3
-					cell4 = new PdfPCell(new Phrase());
-					cell4.setBorder(Rectangle.NO_BORDER);
-					innertable4.addCell(cell4);
-
-					// column 4
-					cell4 = new PdfPCell(new Phrase("Total Histórico"));
-					cell4.setBorder(Rectangle.NO_BORDER);
-					innertable4.addCell(cell4);
-
-					// column 5
-					cell4 = new PdfPCell(new Phrase(formatea.format(total) + " Kg."));
-					cell4.setBorder(Rectangle.NO_BORDER);
-					innertable4.addCell(cell4);
-
-					// spacing
-					cell4 = new PdfPCell();
-					cell4.setColspan(5);
-					cell4.setFixedHeight(3);
-					cell4.setBorder(Rectangle.NO_BORDER);
-					innertable4.addCell(cell4);
+					/*
+					 * // column 1 cell4 = new PdfPCell(new Phrase());
+					 * cell4.setBorder(Rectangle.NO_BORDER); innertable4.addCell(cell4);
+					 * 
+					 * // column 2 cell4 = new PdfPCell(new Phrase());
+					 * cell4.setBorder(Rectangle.NO_BORDER); innertable4.addCell(cell4);
+					 * 
+					 * // column 3 cell4 = new PdfPCell(new Phrase());
+					 * cell4.setBorder(Rectangle.NO_BORDER); innertable4.addCell(cell4);
+					 * 
+					 * // column 4 cell4 = new PdfPCell(new Phrase("Total Histórico"));
+					 * cell4.setBorder(Rectangle.NO_BORDER); innertable4.addCell(cell4);
+					 * 
+					 * // column 5 cell4 = new PdfPCell(new Phrase(formatea.format(total) +
+					 * " Kg.")); cell4.setBorder(Rectangle.NO_BORDER); innertable4.addCell(cell4);
+					 * 
+					 * // spacing cell4 = new PdfPCell(); cell4.setColspan(5);
+					 * cell4.setFixedHeight(3); cell4.setBorder(Rectangle.NO_BORDER);
+					 * innertable4.addCell(cell4);
+					 * 
+					 */
 
 					// first nested table
 					cell4 = new PdfPCell(innertable4);
@@ -395,6 +402,7 @@ public class ReportesController {
 					cell4.setBorder(Rectangle.NO_BORDER);
 					cell4.setPadding(8);
 					outertable4.addCell(cell4);
+
 				} else {
 					Paragraph titulo5 = new Paragraph();
 					titulo5.setFont(new Font(FontFamily.TIMES_ROMAN, 12));
@@ -471,7 +479,8 @@ public class ReportesController {
 			String FILE_NAME = "Reporte Temporada.pdf";
 
 			// Declaramos un documento como un objecto Document.
-			Document documento = new Document(PageSize.LETTER);
+			Document documento = new Document(PageSize.LETTER, 0, 0, 0, 0);
+			documento.setMargins(0, 0, 0, 0);
 
 			// writer es declarado como el método utilizado para escribir en el archivo.
 			PdfWriter pdfWriter = null;
@@ -518,8 +527,8 @@ public class ReportesController {
 			// outer table
 			PdfPTable outertable3 = new PdfPTable(1);
 			// inner table 1
-			PdfPTable innertable3 = new PdfPTable(5);
-			innertable3.setWidths(new int[] { 3, 15, 15, 10, 10 });
+			PdfPTable innertable3 = new PdfPTable(6);
+			innertable3.setWidths(new int[] { 3, 15, 15, 10, 10, 10 });
 
 			Paragraph titulo4 = new Paragraph();
 
@@ -528,8 +537,8 @@ public class ReportesController {
 			// outer table
 			PdfPTable outertable4 = new PdfPTable(1);
 			// inner table 1
-			PdfPTable innertable4 = new PdfPTable(5);
-			innertable4.setWidths(new int[] { 3, 15, 15, 10, 10 });
+			PdfPTable innertable4 = new PdfPTable(6);
+			innertable4.setWidths(new int[] { 3, 15, 15, 10, 10, 10 });
 
 			// Titulos tabla
 			// first row
@@ -540,26 +549,31 @@ public class ReportesController {
 			innertable3.addCell(cell3);
 			// column 2
 
-			// column 3
 			cell3 = new PdfPCell(new Phrase("Sector"));
 			cell3.setBorderColorBottom(BaseColor.BLACK);
 			cell3.setBorder(Rectangle.NO_BORDER);
 			innertable3.addCell(cell3);
 
-			// column 4
+			// column 3
 			cell3 = new PdfPCell(new Phrase("Predio"));
 			cell3.setBorderColorBottom(BaseColor.BLACK);
 			cell3.setBorder(Rectangle.NO_BORDER);
 			innertable3.addCell(cell3);
 
-			// column 5
+			// column 4
 			cell3 = new PdfPCell(new Phrase("Fecha Cosecha"));
 			cell3.setBorderColorBottom(BaseColor.BLACK);
 			cell3.setBorder(Rectangle.NO_BORDER);
 			innertable3.addCell(cell3);
 
-			// column 6
+			// column 5
 			cell3 = new PdfPCell(new Phrase("Cantidad Cosechada"));
+			cell3.setBorderColorBottom(BaseColor.BLACK);
+			cell3.setBorder(Rectangle.NO_BORDER);
+			innertable3.addCell(cell3);
+
+			// column 6
+			cell3 = new PdfPCell(new Phrase("Costo"));
 			cell3.setBorderColorBottom(BaseColor.BLACK);
 			cell3.setBorder(Rectangle.NO_BORDER);
 			innertable3.addCell(cell3);
@@ -579,7 +593,8 @@ public class ReportesController {
 			outertable3.addCell(cell3);
 
 			documento.add(outertable3);
-			int total = 0;
+			int totalCosechado = 0;
+			int costoTotal = 0;
 			DecimalFormat formatea = new DecimalFormat("###,###.##");
 			for (int i = 0; i < lista.size(); i++) {
 
@@ -619,6 +634,17 @@ public class ReportesController {
 				cell4.setBorder(Rectangle.NO_BORDER);
 				innertable4.addCell(cell4);
 
+				// Costo
+				Integer costo = actividadInsumoService.obtenerCostosTotales(lista.get(i).getPredio().getIdPredio(),
+						lista.get(i).getTemporada().getIdTemporada());
+
+				if (costo != null) {
+					// column 6
+					cell4 = new PdfPCell(new Phrase("$ " + formatea.format(costo)));
+					cell4.setBorder(Rectangle.NO_BORDER);
+					innertable4.addCell(cell4);
+				}
+
 				// spacing
 				cell4 = new PdfPCell();
 				cell4.setColspan(5);
@@ -626,41 +652,10 @@ public class ReportesController {
 				cell4.setBorder(Rectangle.NO_BORDER);
 				innertable4.addCell(cell4);
 
-				total += lista.get(i).getCantidadCosechada();
+				totalCosechado += lista.get(i).getCantidadCosechada();
+				costoTotal += costo;
 
 			}
-
-			// column 1
-			cell4 = new PdfPCell(new Phrase());
-			cell4.setBorder(Rectangle.NO_BORDER);
-			innertable4.addCell(cell4);
-
-			// column 2
-			cell4 = new PdfPCell(new Phrase());
-			cell4.setBorder(Rectangle.NO_BORDER);
-			innertable4.addCell(cell4);
-
-			// column 3
-			cell4 = new PdfPCell(new Phrase());
-			cell4.setBorder(Rectangle.NO_BORDER);
-			innertable4.addCell(cell4);
-
-			// column 4
-			cell4 = new PdfPCell(new Phrase("Total"));
-			cell4.setBorder(Rectangle.NO_BORDER);
-			innertable4.addCell(cell4);
-
-			// column 5
-			cell4 = new PdfPCell(new Phrase(formatea.format(total) + " Kg."));
-			cell4.setBorder(Rectangle.NO_BORDER);
-			innertable4.addCell(cell4);
-
-			// spacing
-			cell4 = new PdfPCell();
-			cell4.setColspan(5);
-			cell4.setFixedHeight(3);
-			cell4.setBorder(Rectangle.NO_BORDER);
-			innertable4.addCell(cell4);
 
 			// first nested table
 			cell4 = new PdfPCell(innertable4);
@@ -670,6 +665,59 @@ public class ReportesController {
 			outertable4.addCell(cell4);
 
 			documento.add(outertable4);
+
+			// Otro rectangulo para mostrar el total cosechado y el costo total
+			PdfPCell cell5;
+			PdfPCellEvent roundRectangle5 = new RoundRectangle();
+			// outer table
+			PdfPTable outertable5 = new PdfPTable(1);
+			// inner table 1
+			PdfPTable innertable5 = new PdfPTable(5);
+			innertable5.setWidths(new int[] { 15, 15, 2, 15, 15 });
+
+			documento.add(saltoLinea);
+			documento.add(saltoLinea);
+
+			// column 1
+			cell5 = new PdfPCell(new Phrase("Total Cosechado: "));
+			cell5.setBorder(Rectangle.NO_BORDER);
+			innertable5.addCell(cell5);
+
+			// column 2
+			cell5 = new PdfPCell(new Phrase(formatea.format(totalCosechado) + " Kg."));
+			cell5.setBorder(Rectangle.NO_BORDER);
+			innertable5.addCell(cell5);
+
+			// column 3
+			cell5 = new PdfPCell(new Phrase());
+			cell5.setBorder(Rectangle.NO_BORDER);
+			innertable5.addCell(cell5);
+
+			// column 4
+			cell5 = new PdfPCell(new Phrase("Costo Total: "));
+			cell5.setBorder(Rectangle.NO_BORDER);
+			innertable5.addCell(cell5);
+
+			// column 5
+			cell5 = new PdfPCell(new Phrase("$ " + formatea.format(costoTotal)));
+			cell5.setBorder(Rectangle.NO_BORDER);
+			innertable5.addCell(cell5);
+
+			// spacing
+			cell5 = new PdfPCell();
+			cell5.setColspan(5);
+			cell5.setFixedHeight(3);
+			cell5.setBorder(Rectangle.NO_BORDER);
+			innertable5.addCell(cell5);
+
+			// first nested table
+			cell5 = new PdfPCell(innertable5);
+			cell5.setCellEvent(roundRectangle5);
+			cell5.setBorder(Rectangle.NO_BORDER);
+			cell5.setPadding(8);
+			outertable5.addCell(cell5);
+
+			documento.add(outertable5);
 
 			// Cerramos el documento.
 			documento.close();
