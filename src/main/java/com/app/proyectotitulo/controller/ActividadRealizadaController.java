@@ -85,13 +85,21 @@ public class ActividadRealizadaController {
 
 		if (e != null) {
 
-			List<Sector> sectores = sectorService.listarSectores(false);
-			List<Plan_Ejecucion> listaPlanes = planEjecucionService.listaPlanes(false);
-			List<Temporada> listaTemporadasActivas = temporadaService.listarTemporadasActivas();
-			vista.addObject("sectores", sectores);
-			vista.addObject("listaPlanes", listaPlanes);
-			vista.addObject("listaTemporadasActivas", listaTemporadasActivas);
-			vista.setViewName("asignarPlan");
+			if (e.getCargo().equalsIgnoreCase("Administrador") || e.getCargo().equalsIgnoreCase("Jefe de Producción")) {
+
+				List<Sector> sectores = sectorService.listarSectores(false);
+				List<Plan_Ejecucion> listaPlanes = planEjecucionService.listaPlanes(false);
+				List<Temporada> listaTemporadasActivas = temporadaService.listarTemporadasActivas();
+				vista.addObject("sectores", sectores);
+				vista.addObject("listaPlanes", listaPlanes);
+				vista.addObject("listaTemporadasActivas", listaTemporadasActivas);
+				vista.setViewName("asignarPlan");
+
+			} else {
+				vista.setViewName("login");
+				vista.addObject("empleado", new Empleado());
+				vista.addObject("accesoNoAutorizado", "No tiene acceso a esta funcionalidad");
+			}
 		} else {
 			vista.setViewName("login");
 			vista.addObject("empleado", new Empleado());
@@ -110,11 +118,19 @@ public class ActividadRealizadaController {
 
 		if (e != null) {
 
-			// Get Sectores
-			List<Sector> listaSectores = sectorService.listarSectores(false);
-			vista.addObject("listaSectores", listaSectores);
+			if (e.getCargo().equalsIgnoreCase("Administrador") || e.getCargo().equalsIgnoreCase("Jefe de Producción")) {
 
-			vista.setViewName("registrarActividadRealizada");
+				// Get Sectores
+				List<Sector> listaSectores = sectorService.listarSectores(false);
+				vista.addObject("listaSectores", listaSectores);
+
+				vista.setViewName("registrarActividadRealizada");
+				
+			} else {
+				vista.setViewName("login");
+				vista.addObject("empleado", new Empleado());
+				vista.addObject("accesoNoAutorizado", "No tiene acceso a esta funcionalidad");
+			}
 
 		} else {
 			vista.setViewName("login");
@@ -398,7 +414,7 @@ public class ActividadRealizadaController {
 			int aux = 0;
 			for (int i = 0; i < datos.length / 2; i++) {
 				System.out.println(datos[aux]);
-				System.out.println(datos[aux+1]);
+				System.out.println(datos[aux + 1]);
 				// Buscar Actividad
 				Actividad_Realizada ar = actividadRealizadaService.buscarActividad(Integer.parseInt(datos[aux]));
 				if (ar != null) {

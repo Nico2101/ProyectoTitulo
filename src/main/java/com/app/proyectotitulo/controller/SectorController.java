@@ -35,9 +35,17 @@ public class SectorController {
 
 		if (e != null) {
 
-			List<Sector> sectores = sectorService.listarSectores(false);
-			vista.addObject("sectores", sectores);
-			vista.setViewName("listarSectores");
+			if (e.getCargo().equalsIgnoreCase("Administrador")) {
+
+				List<Sector> sectores = sectorService.listarSectores(false);
+				vista.addObject("sectores", sectores);
+				vista.setViewName("listarSectores");
+
+			} else {
+				vista.setViewName("login");
+				vista.addObject("empleado", new Empleado());
+				vista.addObject("accesoNoAutorizado", "No tiene acceso a esta funcionalidad");
+			}
 
 		} else {
 			vista.setViewName("login");

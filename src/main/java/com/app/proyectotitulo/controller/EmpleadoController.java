@@ -31,9 +31,17 @@ public class EmpleadoController {
 
 		if (e != null) {
 
-			List<Empleado> listaEmpleados = empleadoService.listarEmpleados();
-			vista.addObject("listaEmpleados", listaEmpleados);
-			vista.setViewName("listarEmpleados");
+			if (e.getCargo().equalsIgnoreCase("Administrador")) {
+
+				List<Empleado> listaEmpleados = empleadoService.listarEmpleados();
+				vista.addObject("listaEmpleados", listaEmpleados);
+				vista.setViewName("listarEmpleados");
+
+			} else {
+				vista.setViewName("login");
+				vista.addObject("empleado", new Empleado());
+				vista.addObject("accesoNoAutorizado", "No tiene acceso a esta funcionalidad");
+			}
 
 		} else {
 			vista.setViewName("login");
@@ -48,31 +56,29 @@ public class EmpleadoController {
 	public @ResponseBody Empleado agregarEmpleado(@RequestParam String rut, @RequestParam String nombre,
 			@RequestParam String apellidos, @RequestParam Date fechaNacimiento, @RequestParam String telefono,
 			@RequestParam String direccion, @RequestParam String cargo, @RequestParam String clave) {
-		
+
 		System.out.print(nombre);
 		System.out.print(apellidos);
 		System.out.print(rut);
 		System.out.print(fechaNacimiento);
 		System.out.print(telefono);
-		
-	
+
 		Empleado e = new Empleado();
 		Empleado empleado = new Empleado();
-
 
 		if (!nombre.equalsIgnoreCase("") && !apellidos.equalsIgnoreCase("") && !rut.equalsIgnoreCase("")
 				&& fechaNacimiento != null && !telefono.equalsIgnoreCase("") && !direccion.equalsIgnoreCase("")
 				&& !cargo.equalsIgnoreCase("") && !clave.equalsIgnoreCase("")) {
-			
+
 			e.setNombre(nombre);
 			e.setApellidos(apellidos);
 			e.setRut(rut);
 			e.setFechaNac(fechaNacimiento);
 			e.setTelefono(telefono);
 			e.setDireccion(direccion);
-            e.setCargo(cargo);
-            e.setClave(clave);
-			
+			e.setCargo(cargo);
+			e.setClave(clave);
+
 			// Guardar
 			empleado = empleadoService.saveAndFlush(e);
 			System.out.print(empleado);
@@ -192,8 +198,8 @@ public class EmpleadoController {
 		Empleado e = empleadoService.findByRut(rut);
 		if (e == null) {
 			return true;
-		} 
+		}
 		return false;
 	}
-	
+
 }

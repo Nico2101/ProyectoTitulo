@@ -35,10 +35,19 @@ public class TemporadaController {
 		Empleado e = (Empleado) sesion.getAttribute("empleado");
 
 		if (e != null) {
-			List<Temporada> listaTemporadas = temporadaService.listaTemporadas(false);
 
-			vista.addObject("listaTemporadas", listaTemporadas);
-			vista.setViewName("listarTemporadas");
+			if (e.getCargo().equalsIgnoreCase("Administrador")) {
+
+				List<Temporada> listaTemporadas = temporadaService.listaTemporadas(false);
+
+				vista.addObject("listaTemporadas", listaTemporadas);
+				vista.setViewName("listarTemporadas");
+
+			} else {
+				vista.setViewName("login");
+				vista.addObject("empleado", new Empleado());
+				vista.addObject("accesoNoAutorizado", "No tiene acceso a esta funcionalidad");
+			}
 
 		} else {
 			vista.setViewName("login");

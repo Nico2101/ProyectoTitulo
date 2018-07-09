@@ -75,7 +75,15 @@ public class ReportesController {
 
 		if (e != null) {
 
-			vista.setViewName("rendimientoProducto");
+			if (e.getCargo().equalsIgnoreCase("Administrador") || e.getCargo().equalsIgnoreCase("Gerente")) {
+
+				vista.setViewName("rendimientoProducto");
+
+			} else {
+				vista.setViewName("login");
+				vista.addObject("empleado", new Empleado());
+				vista.addObject("accesoNoAutorizado", "No tiene acceso a esta funcionalidad");
+			}
 
 		} else {
 			vista.setViewName("login");
@@ -758,11 +766,20 @@ public class ReportesController {
 		Empleado e = (Empleado) sesion.getAttribute("empleado");
 
 		if (e != null) {
-			vista.setViewName("cosechaPorTemporada");
 
-			// Obtener todas las temporadas
-			List<Temporada> lista = temporadaService.listaTemporadas(false);
-			vista.addObject("listaTemporadas", lista);
+			if (e.getCargo().equalsIgnoreCase("Administrador") || e.getCargo().equalsIgnoreCase("Gerente")) {
+
+				vista.setViewName("cosechaPorTemporada");
+
+				// Obtener todas las temporadas
+				List<Temporada> lista = temporadaService.listaTemporadas(false);
+				vista.addObject("listaTemporadas", lista);
+
+			} else {
+				vista.setViewName("login");
+				vista.addObject("empleado", new Empleado());
+				vista.addObject("accesoNoAutorizado", "No tiene acceso a esta funcionalidad");
+			}
 
 		} else {
 			vista.setViewName("login");

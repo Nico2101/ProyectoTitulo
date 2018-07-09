@@ -54,11 +54,19 @@ public class ReprogramacionController {
 
 		if (e != null) {
 
-			// Get Sectores
-			List<Sector> listaSectores = sectorService.listarSectores(false);
-			vista.addObject("listaSectores", listaSectores);
+			if (e.getCargo().equalsIgnoreCase("Administrador") || e.getCargo().equalsIgnoreCase("Jefe de Producción")) {
 
-			vista.setViewName("reprogramarActividades");
+				// Get Sectores
+				List<Sector> listaSectores = sectorService.listarSectores(false);
+				vista.addObject("listaSectores", listaSectores);
+
+				vista.setViewName("reprogramarActividades");
+
+			} else {
+				vista.setViewName("login");
+				vista.addObject("empleado", new Empleado());
+				vista.addObject("accesoNoAutorizado", "No tiene acceso a esta funcionalidad");
+			}
 
 		} else {
 			vista.setViewName("login");
@@ -180,7 +188,16 @@ public class ReprogramacionController {
 		Empleado e = (Empleado) sesion.getAttribute("empleado");
 
 		if (e != null) {
-			vista.setViewName("resumenReprogramacion");
+
+			if (e.getCargo().equalsIgnoreCase("Administrador") || e.getCargo().equalsIgnoreCase("Gerente")) {
+
+				vista.setViewName("resumenReprogramacion");
+
+			} else {
+				vista.setViewName("login");
+				vista.addObject("empleado", new Empleado());
+				vista.addObject("accesoNoAutorizado", "No tiene acceso a esta funcionalidad");
+			}
 		} else {
 			vista.setViewName("login");
 			vista.addObject("empleado", new Empleado());

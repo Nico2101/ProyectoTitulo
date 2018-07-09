@@ -36,7 +36,7 @@
 				<div class="col-xs-12">
 					<div class="box box-primary">
 						<div class="box-header">
-							<h3 class="box-title">Seguimiento Planes</h3>
+							<h3 class="box-title">Informe Cosecha de Productos por Temporada</h3>
 
 							<label class="pull-right" style="font-weight: normal; color: red">*
 								Campos obligatorios</label>

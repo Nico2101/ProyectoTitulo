@@ -62,11 +62,11 @@
 				<div class="col-sm-10 col-sm-offset-1">
 					<br> <br> <br> <br> <br>
 					<div class="center">
-					<h1 class="header blue lighter bigger">Sistema para el control
-						de siembras</h1>
-					<h1 class="header blue lighter bigger">
-						<i class="glyphicon glyphicon-grain"></i> Fundo Santa Emilia
-					</h1>
+						<h1 class="header blue lighter bigger">Sistema para el
+							control de siembras</h1>
+						<h1 class="header blue lighter bigger">
+							<i class="glyphicon glyphicon-grain"></i> Fundo Santa Emilia
+						</h1>
 					</div>
 					<br>
 					<div class="login-container">
@@ -92,6 +92,14 @@
 												<script>
 													toastr
 															.warning("Su sesión ha expirado");
+												</script>
+											</c:if>
+
+
+											<c:if test="${not empty accesoNoAutorizado}">
+												<script>
+													toastr
+															.warning("No tiene acceso a la url indicada");
 												</script>
 											</c:if>
 

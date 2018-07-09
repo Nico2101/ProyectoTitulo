@@ -54,11 +54,19 @@ public class PredioController {
 
 		if (e != null) {
 
-			List<Predio> listaPredios = predioService.listarTodosLosPredios(false, false);
-			List<Sector> sectores = sectorService.listarSectores(false);
-			vista.addObject("listaPredios", listaPredios);
-			vista.addObject("sectores", sectores);
-			vista.setViewName("listarPredios");
+			if (e.getCargo().equalsIgnoreCase("Administrador")) {
+
+				List<Predio> listaPredios = predioService.listarTodosLosPredios(false, false);
+				List<Sector> sectores = sectorService.listarSectores(false);
+				vista.addObject("listaPredios", listaPredios);
+				vista.addObject("sectores", sectores);
+				vista.setViewName("listarPredios");
+
+			} else {
+				vista.setViewName("login");
+				vista.addObject("empleado", new Empleado());
+				vista.addObject("accesoNoAutorizado", "No tiene acceso a esta funcionalidad");
+			}
 
 		} else {
 			vista.setViewName("login");
@@ -271,13 +279,21 @@ public class PredioController {
 
 		if (e != null) {
 
-			List<Temporada> listaTemporadas = temporadaService.listaTemporadas(false);
-			vista.addObject("listaTemporadas", listaTemporadas);
+			if (e.getCargo().equalsIgnoreCase("Administrador") || e.getCargo().equalsIgnoreCase("Gerente")) {
 
-			// Get Sectores
-			List<Sector> listaSectores = sectorService.listarSectores(false);
-			vista.addObject("listaSectores", listaSectores);
-			vista.setViewName("costosTotalesPredio");
+				List<Temporada> listaTemporadas = temporadaService.listaTemporadas(false);
+				vista.addObject("listaTemporadas", listaTemporadas);
+
+				// Get Sectores
+				List<Sector> listaSectores = sectorService.listarSectores(false);
+				vista.addObject("listaSectores", listaSectores);
+				vista.setViewName("costosTotalesPredio");
+
+			} else {
+				vista.setViewName("login");
+				vista.addObject("empleado", new Empleado());
+				vista.addObject("accesoNoAutorizado", "No tiene acceso a esta funcionalidad");
+			}
 
 		} else {
 			vista.setViewName("login");
@@ -310,8 +326,8 @@ public class PredioController {
 		// Obtengo los detalles del costo total
 		DetallesCostosDAO detallesCostosDAO = new DetallesCostosDAO();
 		LinkedList<ActividadInsumoTO> listaDetalles = detallesCostosDAO.detallesCostos(idPredio, idTemporada);
-		
-        //System.out.print(listaDetalles);
+
+		// System.out.print(listaDetalles);
 		return listaDetalles;
 
 	}

@@ -47,7 +47,15 @@ public class PlanEjecucionController {
 		Empleado e = (Empleado) sesion.getAttribute("empleado");
 
 		if (e != null) {
-			vista.setViewName("agregarPlan-Actividad");
+			if (e.getCargo().equalsIgnoreCase("Administrador") || e.getCargo().equalsIgnoreCase("Jefe de Producción")) {
+
+				vista.setViewName("agregarPlan-Actividad");
+
+			} else {
+				vista.setViewName("login");
+				vista.addObject("empleado", new Empleado());
+				vista.addObject("accesoNoAutorizado", "No tiene acceso a esta funcionalidad");
+			}
 		} else {
 			vista.setViewName("login");
 			vista.addObject("empleado", new Empleado());
@@ -116,11 +124,19 @@ public class PlanEjecucionController {
 
 		if (e != null) {
 
-			List<Plan_Ejecucion> lista = planEjecucionService.listaPlanes(false);
+			if (e.getCargo().equalsIgnoreCase("Administrador") || e.getCargo().equalsIgnoreCase("Jefe de Producción")) {
 
-			if (!lista.isEmpty()) {
-				vista.setViewName("listarPlanes");
-				vista.addObject("listaPlanes", lista);
+				List<Plan_Ejecucion> lista = planEjecucionService.listaPlanes(false);
+
+				if (!lista.isEmpty()) {
+					vista.setViewName("listarPlanes");
+					vista.addObject("listaPlanes", lista);
+				}
+
+			} else {
+				vista.setViewName("login");
+				vista.addObject("empleado", new Empleado());
+				vista.addObject("accesoNoAutorizado", "No tiene acceso a esta funcionalidad");
 			}
 
 		} else {
@@ -225,15 +241,23 @@ public class PlanEjecucionController {
 
 		if (e != null) {
 
-			// Get Sectores
-			List<Sector> listaSectores = sectorService.listarSectores(false);
-			vista.addObject("listaSectores", listaSectores);
+			if (e.getCargo().equalsIgnoreCase("Administrador") || e.getCargo().equalsIgnoreCase("Gerente")) {
 
-			// Get Temporadas
-			List<Temporada> listaTemporadas = temporadaService.listaTemporadas(false);
-			vista.addObject("listaTemporadas", listaTemporadas);
+				// Get Sectores
+				List<Sector> listaSectores = sectorService.listarSectores(false);
+				vista.addObject("listaSectores", listaSectores);
 
-			vista.setViewName("compararPlan");
+				// Get Temporadas
+				List<Temporada> listaTemporadas = temporadaService.listaTemporadas(false);
+				vista.addObject("listaTemporadas", listaTemporadas);
+
+				vista.setViewName("compararPlan");
+
+			} else {
+				vista.setViewName("login");
+				vista.addObject("empleado", new Empleado());
+				vista.addObject("accesoNoAutorizado", "No tiene acceso a esta funcionalidad");
+			}
 
 		} else {
 			vista.setViewName("login");

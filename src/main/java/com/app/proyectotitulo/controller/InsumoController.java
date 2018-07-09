@@ -33,9 +33,17 @@ public class InsumoController {
 
 		if (e != null) {
 
-			List<Insumo> listaInsumos = insumoService.listarTodosLosInsumos(false);
-			vista.addObject("listaInsumos", listaInsumos);
-			vista.setViewName("listarInsumos");
+			if (e.getCargo().equalsIgnoreCase("Administrador") || e.getCargo().equalsIgnoreCase("Jefe de Producción")) {
+
+				List<Insumo> listaInsumos = insumoService.listarTodosLosInsumos(false);
+				vista.addObject("listaInsumos", listaInsumos);
+				vista.setViewName("listarInsumos");
+
+			} else {
+				vista.setViewName("login");
+				vista.addObject("empleado", new Empleado());
+				vista.addObject("accesoNoAutorizado", "No tiene acceso a esta funcionalidad");
+			}
 
 		} else {
 			vista.setViewName("login");
