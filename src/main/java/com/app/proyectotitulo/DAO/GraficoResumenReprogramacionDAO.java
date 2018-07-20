@@ -14,7 +14,7 @@ import com.app.proyectotitulo.TO.PlanTO;
 public class GraficoResumenReprogramacionDAO {
 
 	private static final String GET_RESUMEN = "select pe.nombre, count(*) as total from Reprogramacion r join Actividad_Realizada ar on r.id_actividad_realizada=ar.id_actividad_realizada join Actividad a on ar.id_actividad=a.id_actividad join Plan_Ejecucion pe on a.id_plan_ejecucion=pe.id_plan_ejecucion group by pe.id_plan_ejecucion";
-	private static final String GET_ACTIVIDIDADES_REPROGRAMADAS = "select a.nombre as nombreActividad, pe.nombre as nombrePlan, count(*) as total from Reprogramacion r join Actividad_Realizada ar on r.id_actividad_realizada=ar.id_actividad_realizada join Actividad a on ar.id_actividad=a.id_actividad join Plan_Ejecucion pe on a.id_plan_ejecucion=pe.id_plan_ejecucion group by a.id_actividad";
+	private static final String GET_ACTIVIDIDADES_REPROGRAMADAS = "select a.nombre as nombreActividad, pe.nombre as nombrePlan, count(*) as total from Reprogramacion r join Actividad_Realizada ar on r.id_actividad_realizada=ar.id_actividad_realizada join Actividad a on ar.id_actividad=a.id_actividad join Plan_Ejecucion pe on a.id_plan_ejecucion=pe.id_plan_ejecucion group by a.id_actividad limit 10";
 
 	/*
 	 * private static final String DB_NAME = "npfuente"; private static final String
