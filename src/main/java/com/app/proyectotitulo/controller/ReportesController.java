@@ -377,6 +377,11 @@ public class ReportesController {
 								new Phrase("$ " + formatea.format(datos.get(i).getDatos().get(j).getCosto())));
 						cell4.setBorder(Rectangle.NO_BORDER);
 						innertable4.addCell(cell4);
+						
+						// column 7
+						cell4 = new PdfPCell();
+						cell4.setBorder(Rectangle.NO_BORDER);
+						innertable4.addCell(cell4);
 
 						// spacing
 						cell4 = new PdfPCell();
@@ -657,6 +662,11 @@ public class ReportesController {
 					cell4.setBorder(Rectangle.NO_BORDER);
 					innertable4.addCell(cell4);
 				}
+				
+				// column 7
+				cell4 = new PdfPCell();
+				cell4.setBorder(Rectangle.NO_BORDER);
+				innertable4.addCell(cell4);
 
 				// spacing
 				cell4 = new PdfPCell();
