@@ -118,7 +118,7 @@
 													<th>N°</th>
 													<th width="400px">Nombre Predio</th>
 													<th width="250px">Costos totales</th>
-													<th width="350px">Acción</th>
+													<th width="350px">Detalle</th>
 												</tr>
 
 											</thead>

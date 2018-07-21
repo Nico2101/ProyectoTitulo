@@ -49,7 +49,7 @@ public class WebController {
 		int totalPredios= predioService.totalPredios();
 		int totalPrediosEnProceso= predioService.totalPrediosEnProceso();
 		int totalPrediosCosechados= predioService.totalPrediosCosechados();
-		int totalPrediosSinPlanAsignado= predioService.totalPrediosSinPlanAsignado();
+		int totalPrediosSinPlanAsignado= totalPredios-totalPrediosEnProceso-totalPrediosCosechados;
 		vista.addObject("listaActividades", listaActividades);
 		vista.addObject("listaActividadesAtrasadas", listaActividadesAtrasadas);
 		vista.addObject("totalPredios", totalPredios);

@@ -40,10 +40,10 @@ public interface PredioRepository extends JpaRepository<Predio, Integer> {
 	@Query(value = "SELECT count(*) totalPredios from Predio where predio_eliminado=0", nativeQuery = true)
 	Integer totalPredios();
 	
-	@Query(value = "select count(*) as prediosEnProceso from Predio where estado='En Proceso' and predio_eliminado=0", nativeQuery = true)
+	@Query(value = "select count(*) as prediosEnProceso from Predio p where p.id_predio in (select ar.id_predio from Actividad_Realizada ar JOIN Temporada t ON ar.id_temporada = t.id_temporada where t.estado=1) and p.estado=\"En Proceso\" and p.predio_eliminado=0", nativeQuery = true)
 	Integer totalPrediosEnProceso();
 	
-	@Query(value = "select count(*) as prediosCosechados from Predio where estado='Cosechado' and predio_eliminado=0", nativeQuery = true)
+	@Query(value = "select count(*) as prediosCosechados from Predio p where p.id_predio in (select ar.id_predio from Actividad_Realizada ar JOIN Temporada t ON ar.id_temporada = t.id_temporada where t.estado=1) and p.estado=\"Cosechado\" and p.predio_eliminado=0", nativeQuery = true)
 	Integer totalPrediosCosechados();
 	
 	@Query(value = "select count(*) as prediosSinPlanAsignado from Predio where estado is null and predio_eliminado=0", nativeQuery = true)
