@@ -22,7 +22,7 @@ public class TemporadaServiceImplementation implements TemporadaService {
 	@Override
 	public List<Temporada> listaTemporadas(boolean temporadaEliminada) {
 		// TODO Auto-generated method stub
-		return temporadaRepo.findByTemporadaEliminadaOrderByEstadoDesc(temporadaEliminada);
+		return temporadaRepo.findByTemporadaEliminadaOrderByFechaInicioDescEstadoDesc(temporadaEliminada);
 	}
 
 	@Override
