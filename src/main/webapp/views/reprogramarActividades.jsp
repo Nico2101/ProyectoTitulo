@@ -151,7 +151,7 @@
 								</div>
 								<br>
 
-								<button type="button" class="btn btn-primary pull-right"
+								<button id="botonGuardar" type="button" class="btn btn-primary pull-right"
 									onclick="guardarDatosReprogramacionFecha();">
 									<i class="fa fa-save"> Guardar</i>
 								</button>
@@ -265,7 +265,7 @@
 
 			}
 		}
-
+       var contador= 0;
 		//obtener el id del predio
 		var idPredio = $('#predio').val();
 		if (idPredio > 0) {
@@ -357,6 +357,7 @@
 											cell4.innerHTML = "Actividad realizada el "
 													+ fecha;
 											cell5.innerHTML = "";
+											contador++;
 										}
 
 										cell6.innerHTML = data[i].idActividadRealizada;
@@ -395,11 +396,17 @@
 									}
 
 								}
+								if (contador == data.length) {
+									document.getElementById('botonGuardar').style.display = 'none';
+								}
+								
 								document.getElementById('divPlanAsignado').style.display = 'inline';
 								document.getElementById('divTablaActividades').style.display = 'inline';
 
 								document.getElementById('errorMotivo').style.display = 'none';
 								document.getElementById('motivo').style.border = "";
+								
+								
 
 							}
 						},
