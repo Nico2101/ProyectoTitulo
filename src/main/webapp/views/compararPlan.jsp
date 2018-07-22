@@ -486,40 +486,8 @@
 										fechaActual = fechaActual
 												.format('DD-MM-YYYY');
 
-										if (data[i].fechaEjecucionReal == null) {
-											console.log(fecha);
-											console.log(fechaActual);
-											if (fechaActual > fecha) {
-												cell4.innerHTML = 'Actividad No Realizada'
-														+ '<span class="pull-right-container"> <small class="label pull-right bg-red">Retrasada</small> </span>';
-											} else {
-												cell4.innerHTML = "Actividad No Realizada";
-											}
-
-										} else {
-											fechaEjecucion = moment(
-													data[i].fechaEjecucionReal,
-													'YYYY/MM/DD');
-											fechaEjecucion = fechaEjecucion
-													.format('DD-MM-YYYY');
-											if (fechaEjecucion > fecha) {
-												cell4.innerHTML = fechaEjecucion
-														+ '<span class="pull-right-container"> <small class="label pull-right bg-yellow">Realizada con retraso</small> </span>';
-											} else {
-												if (fechaEjecucion = fecha) {
-													cell4.innerHTML = fechaEjecucion
-															+ '<span class="pull-right-container"> <small class="label pull-right bg-green">Realizada en fecha estimada</small> </span>';
-												} else {
-													cell4.innerHTML = fechaEjecucion
-															+ '<span class="pull-right-container"> <small class="label pull-right bg-green">Realizada anticipadamente</small> </span>';
-												}
-
-											}
-
-										}
-
 										var idAR = data[i].idActividadRealizada;
-
+										var tieneRepro = false;
 										//Preguntar si la actividad tiene reprogramaciones
 										$
 												.ajax({
@@ -536,6 +504,7 @@
 															cell5.innerHTML = '<a href="#" title="Ver Reprogramaciones" onclick="verReprogramaciones('
 																	+ idAR
 																	+ ');"><i class="fa fa-eye fa-lg" style="color: blue"></i></a>';
+															tieneRepro = true;
 														} else {
 															cell5.innerHTML = "";
 														}
@@ -545,6 +514,44 @@
 														alert("Error al obtener las reprogramaciones");
 													}
 												});
+
+										if (data[i].fechaEjecucionReal == null) {
+											console.log(fecha);
+											console.log(fechaActual);
+											if (fechaActual > fecha) {
+												cell4.innerHTML = 'Actividad No Realizada'
+														+ '<span class="pull-right-container"> <small class="label pull-right bg-red">Retrasada</small> </span>';
+											} else {
+												cell4.innerHTML = "Actividad No Realizada";
+											}
+
+										} else {
+											fechaEjecucion = moment(
+													data[i].fechaEjecucionReal,
+													'YYYY/MM/DD');
+											fechaEjecucion = fechaEjecucion
+													.format('DD-MM-YYYY');
+											if (tieneRepro == true) {
+												cell4.innerHTML = fechaEjecucion
+														+ '<span class="pull-right-container"> <small class="label pull-right bg-purple">Realizada/Reprogramada</small> </span>';
+											} else {
+												if (fechaEjecucion > fecha) {
+													cell4.innerHTML = fechaEjecucion
+															+ '<span class="pull-right-container"> <small class="label pull-right bg-orange">Realizada con retraso</small> </span>';
+												} else {
+
+													if (fechaEjecucion == fecha) {
+														cell4.innerHTML = fechaEjecucion
+																+ '<span class="pull-right-container"> <small class="label pull-right bg-green">Realizada en fecha estimada</small> </span>';
+													} else {
+														cell4.innerHTML = fechaEjecucion
+																+ '<span class="pull-right-container"> <small class="label pull-right bg-teal">Realizada con anticipación</small> </span>';
+													}
+
+												}
+											}
+
+										}
 
 										//Preguntar si la actividad tiene costos
 										$
@@ -718,6 +725,11 @@
 		if (idTemporada > 0) {
 			document.getElementById('errorTemporada').style.display = 'none';
 			document.getElementById('temporada').style.border = "";
+			document.getElementById('divPlanAsignado').style.display = 'none';
+			document.getElementById('divTablaActividades').style.display = 'none';
+			document.getElementById('divPredio').style.display = 'none';
+			document.getElementById('divSector').style.display = 'none';
+
 		} else {
 			document.getElementById('errorTemporada').style.display = 'inline';
 			document.getElementById('temporada').style.border = "1px solid red";
