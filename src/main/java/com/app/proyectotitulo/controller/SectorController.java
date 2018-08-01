@@ -153,4 +153,12 @@ public class SectorController {
 
 	}
 
+	@RequestMapping(value = "obtenerSectoresParaCostosPredios")
+	public @ResponseBody List<Sector> obtenerSectoresParaCostosPredios(@RequestParam int idTemporada) {
+
+		List<Sector> lista = sectorService.listaSectoresParaCostos(idTemporada);
+		return lista;
+
+	}
+
 }

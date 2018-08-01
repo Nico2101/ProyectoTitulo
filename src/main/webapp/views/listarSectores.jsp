@@ -328,17 +328,49 @@ function superficieVacia(){
 					if (data.idSector > 0) {
 						$('#modalAgregarSector').modal('hide');
 
-						var tabla = $('#listaSectores').dataTable();
-						var num = tabla.fnSettings().fnRecordsTotal();
+						//Actualizar el data table
+						$.ajax({
+									type : 'POST',
+									url : "obtenerListaSectores",
+									dataType : 'json',
+									success : function(data) {
 
-						$('#listaSectores').dataTable().fnAddData(
+										if (!$.isEmptyObject(data)) {
+											//vaciar datatable
+											var oTable = $(
+													'#listaSectores')
+													.dataTable();
+											oTable
+													.fnClearTable();
 
-								[ num + 1, data.nombre, data.superficie, '<a href="#" onclick="editarSector('+data.idSector+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarSector('+data.idSector+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+											//Llenar data table
+											for (var i = 0; i < data.length; i++) {
+												$(
+														'#listaSectores')
+														.dataTable()
+														.fnAddData(
 
-						);
+																[i + 1,
+																		data[i].nombre,
+																		data[i].superficie,
+																		'<a href="#" onclick="editarSector('
+																				+ data[i].idSector
+																				+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarSector('
+																				+ data[i].idSector
+																				+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
 
-						$("#listaSectores").DataTable().page('last')
-								.draw('page');
+														);
+											}
+										}
+
+									},
+									error : function(jqXHR,
+											errorThrown) {
+										toastr
+												.error("Error al obtener los sectores");
+									}
+								}); 
+					            //
 
 						toastr.success("Sector agregado correctamente");
 					} else {
@@ -430,22 +462,8 @@ function superficieVacia(){
 						success : function(data) {
 							if(data==true){
 								swal.close();
+								
 								toastr.success("Sector eliminado correctamente");
-								
-								 
-								//elimina los predios asociados a un sector
-								$.ajax({
-								type : 'POST',
-								url : "eliminarPrediosDeUnSector",
-								dataType : 'json',
-								data : {
-								idSector:idSector
-							 },
-							  success : function(data) {
-							  if(data==true){
-								swal.close();
-								
-
 								//Actualizar el data table
 								$.ajax({
 											type : 'POST',
@@ -489,6 +507,18 @@ function superficieVacia(){
 											}
 										}); 
 							            //
+					
+								//elimina los predios asociados a un sector
+								$.ajax({
+								type : 'POST',
+								url : "eliminarPrediosDeUnSector",
+								dataType : 'json',
+								data : {
+								idSector:idSector
+							 },
+							  success : function(data) {
+							  if(data==true){
+												
 
 							           } 
 							          	
@@ -502,6 +532,8 @@ function superficieVacia(){
 								toastr.error("Error al obtener los sectores");
 							
 						}	
+							
+							
                        },
 						error : function(jqXHR, errorThrown) {
 							toastr.error("Error al eliminar sector");

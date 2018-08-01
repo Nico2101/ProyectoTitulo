@@ -12,11 +12,11 @@ import com.app.proyectotitulo.domain.Empleado;
 public interface EmpleadoRepository extends JpaRepository<Empleado, String> {
 
 	public Empleado findByRutAndClave(String rut, String clave);
-	
-	//lista todos los empleados menos el administrador
-	@Query(value="select* from Empleado where cargo !='administrador' and empleado_Eliminado='0'", nativeQuery=true)
-	List<Empleado>  totalEmpleados();
-	
-	 Empleado findByRut(String rut);
+
+	// lista todos los empleados menos el administrador
+	@Query(value = "select * from Empleado where cargo !='administrador' and empleado_Eliminado='0' order by apellidos asc", nativeQuery = true)
+	List<Empleado> totalEmpleados();
+
+	Empleado findByRut(String rut);
 
 }

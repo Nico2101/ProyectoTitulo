@@ -34,11 +34,11 @@ public interface PredioService {
 	Integer totalPredios();
 
 	Integer totalPrediosEnProceso();
-	
+
 	Integer totalPrediosCosechados();
-	
+
 	Integer totalPrediosSinPlanAsignado();
-	
-	
+
+	List<Predio> getPrediosParaCostos(int id_temporada, int id_sector);
 
 }

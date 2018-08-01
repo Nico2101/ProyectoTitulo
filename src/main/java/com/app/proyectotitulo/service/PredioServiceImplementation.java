@@ -20,7 +20,8 @@ public class PredioServiceImplementation implements PredioService {
 	@Override
 	public List<Predio> listarTodosLosPredios(boolean predioEliminado, boolean sectorEliminado) {
 		// TODO Auto-generated method stub
-		return predioRepo.findByPredioEliminadoAndSectorSectorEliminadoOrderByNombreAsc(predioEliminado, sectorEliminado);
+		return predioRepo.findByPredioEliminadoAndSectorSectorEliminadoOrderByNombreAsc(predioEliminado,
+				sectorEliminado);
 	}
 
 	@Override
@@ -83,28 +84,35 @@ public class PredioServiceImplementation implements PredioService {
 		// TODO Auto-generated method stub
 		return predioRepo.listaPrediosConPlanesAsigandosParaComparacion(idTemporada, idSector);
 	}
-	
+
 	@Override
 	public Integer totalPredios() {
 		// TODO Auto-generated method stub
 		return predioRepo.totalPredios();
 	}
-	
+
 	@Override
 	public Integer totalPrediosEnProceso() {
 		// TODO Auto-generated method stub
 		return predioRepo.totalPrediosEnProceso();
 	}
-	
+
 	@Override
 	public Integer totalPrediosCosechados() {
 		// TODO Auto-generated method stub
 		return predioRepo.totalPrediosCosechados();
 	}
+
 	@Override
 	public Integer totalPrediosSinPlanAsignado() {
 		// TODO Auto-generated method stub
 		return predioRepo.totalPrediosSinPlanAsignado();
+	}
+
+	@Override
+	public List<Predio> getPrediosParaCostos(int id_temporada, int id_sector) {
+		// TODO Auto-generated method stub
+		return predioRepo.listaDePrediosParaCostos(id_temporada, id_sector);
 	}
 
 }

@@ -518,7 +518,8 @@
 										if (data[i].fechaEjecucionReal == null) {
 											console.log(fecha);
 											console.log(fechaActual);
-											if (fechaActual > fecha) {
+											if (process(fechaActual) > process(fecha)) {
+
 												cell4.innerHTML = 'Actividad No Realizada'
 														+ '<span class="pull-right-container"> <small class="label pull-right bg-red">Retrasada</small> </span>';
 											} else {
@@ -535,12 +536,13 @@
 												cell4.innerHTML = fechaEjecucion
 														+ '<span class="pull-right-container"> <small class="label pull-right bg-purple">Realizada/Reprogramada</small> </span>';
 											} else {
-												if (fechaEjecucion > fecha) {
+												if (process(fechaEjecucion) > process(fecha)) {
 													cell4.innerHTML = fechaEjecucion
 															+ '<span class="pull-right-container"> <small class="label pull-right bg-orange">Realizada con retraso</small> </span>';
 												} else {
 
 													if (fechaEjecucion == fecha) {
+
 														cell4.innerHTML = fechaEjecucion
 																+ '<span class="pull-right-container"> <small class="label pull-right bg-green">Realizada en fecha estimada</small> </span>';
 													} else {
@@ -833,6 +835,11 @@
 						}
 					});
 		}
+	}
+
+	function process(date) {
+		var parts = date.split("-");
+		return new Date(parts[2], parts[1] - 1, parts[0]);
 	}
 </script>
 

@@ -61,4 +61,10 @@ public class SectorServiceImplementation implements SectorService {
 		return sectorRepo.listaSectoresConPrediosConPlanAsignado(id_temporada);
 	}
 
+	@Override
+	public List<Sector> listaSectoresParaCostos(int id_temporada) {
+		// TODO Auto-generated method stub
+		return sectorRepo.listaDeSectoresParaCostos(id_temporada);
+	}
+
 }

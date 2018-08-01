@@ -665,28 +665,52 @@ function superficiePredioVacia(){
 							if (data.idPredio > 0) {
 								$('#modalAgregarPredio').modal('hide');
 
-								var tabla = $('#listaPredios').dataTable();
-								var num = tabla.fnSettings().fnRecordsTotal();
+								//Actualizar el data table
+								$
+										.ajax({
+											type : 'POST',
+											url : "obtenerListaPredios",
+											dataType : 'json',
+											success : function(data) {
 
-								$('#listaPredios')
-										.dataTable()
-										.fnAddData(
+												if (!$
+														.isEmptyObject(data)) {
+													//vaciar datatable
+													var oTable = $(
+															'#listaPredios')
+															.dataTable();
+													oTable
+															.fnClearTable();
 
-												[
-														num + 1,
-														data.nombre,
-														data.superficie,
-														data.sector.nombre,
-														'<a href="#" onclick="editarPredio('
-																+ data.idPredio
-																+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarPredio('
-																+ data.idPredio
-																+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+													//Llenar data table
+													for (var i = 0; i < data.length; i++) {
+														$(
+																'#listaPredios')
+																.dataTable()
+																.fnAddData(
 
-										);
+																		[
+																				i + 1,
+																				data[i].nombre,
+																				data[i].superficie,
+																				data[i].sector.nombre,
+																				'<a href="#" onclick="editarPredio('
+																						+ data[i].idPredio
+																						+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarPredio('
+																						+ data[i].idPredio
+																						+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
 
-								$("#listaPredios").DataTable().page('last')
-										.draw('page');
+																);
+													}
+												}
+
+											},
+											error : function(jqXHR,
+													errorThrown) {
+												toastr
+														.error("Error al obtener los predios");
+											}
+										});
 
 								toastr.success("Predio agregado correctamente");
 							} else {

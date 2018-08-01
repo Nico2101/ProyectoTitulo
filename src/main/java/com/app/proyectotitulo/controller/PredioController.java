@@ -332,4 +332,13 @@ public class PredioController {
 
 	}
 
+	@RequestMapping(value = "obtenerPrediosDelSectorYTemporadaSeleccionada")
+	public @ResponseBody List<Predio> obtenerPrediosDelSectorYTemporadaSeleccionada(@RequestParam int idSector,
+			@RequestParam int idTemporada) {
+
+		List<Predio> lista = predioService.getPrediosParaCostos(idTemporada, idSector);
+		return lista;
+
+	}
+
 }
