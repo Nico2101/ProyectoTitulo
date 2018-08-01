@@ -58,7 +58,7 @@
 
 									<div class="col-md-3 col-sm-6 col-xs-12">
 										<label>* Fecha de Creación</label> <input id="fechaCreacion"
-											type="date"
+											type="date" disabled
 											class="form-control select2 select2-hidden-accessible"
 											name="daterange" value="" /> <span id="errorFechaCreacion"
 											class="error" style="display: none">Ingrese la fecha
@@ -286,6 +286,12 @@
 </body>
 
 <script>
+	var fechaHoy = new Date();
+	fechaHoy = moment(fechaHoy, 'YYYY/MM/DD');
+	fechaHoy = fechaHoy.format('YYYY-MM-DD');
+
+	$('#fechaCreacion').val(fechaHoy);
+
 	//Ocultar la columna check
 	var tbl = document.getElementById("tablaActividades");
 	for (var i = 0; i < tbl.rows.length; i++) {
@@ -378,7 +384,7 @@
 				$('#nombreActividad').focus();
 				var suma = num + 1;
 				$('#actividadIngresar').text("Nombre Actividad " + suma);
-				
+
 				//Ocultar la columna check
 				var tbl = document.getElementById("tablaActividades");
 				for (var i = 0; i < tbl.rows.length; i++) {
@@ -617,6 +623,12 @@
 										.success("El plan ha sido agregado correctamente");
 								$('#nombrePlan').val("");
 								$('#fechaCreacion').val("");
+
+								var fechaHoy = new Date();
+								fechaHoy = moment(fechaHoy, 'YYYY/MM/DD');
+								fechaHoy = fechaHoy.format('YYYY-MM-DD');
+
+								$('#fechaCreacion').val(fechaHoy);
 
 								//Vaciar tabla
 								//Vaciar tabla materiales

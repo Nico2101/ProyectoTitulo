@@ -367,18 +367,38 @@
 					if (data.idInsumo > 0) {
 						$('#modalAgregarInsumo').modal('hide');
 
-						var tabla = $('#listaInsumos').dataTable();
-						var num = tabla.fnSettings().fnRecordsTotal();
+						//Actualizar el data table
+						 $.ajax({
+								type : 'POST',
+								url : "obtenerListaInsumos",
+								dataType : 'json',
+								success : function(data) {
+									
+									if(!$.isEmptyObject(data)){
+										//vaciar datatable
+										var oTable = $('#listaInsumos').dataTable();
+										oTable.fnClearTable();
+										
+										//Llenar data table
+										for(var i=0;i<data.length;i++){
+											$('#listaInsumos').dataTable().fnAddData(
 
-						$('#listaInsumos').dataTable().fnAddData(
+													[i + 1, data[i].nombre, data[i].tipo,
+															data[i].unidadMedida, data[i].marca, '<a href="#" onclick="editarInsumo('+data[i].idInsumo+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarInsumo('+data[i].idInsumo+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
 
-								[ num + 1, data.nombre, data.tipo,
-										data.unidadMedida, data.marca, '<a href="#" onclick="editarInsumo('+data.idInsumo+');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarInsumo('+data.idInsumo+');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+											);
+										}
+									}
+									
+									//Close modal
+									$('#modalEditarInsumo').modal('hide');
+									
 
-						);
-
-						$("#listaInsumos").DataTable().page('last')
-								.draw('page');
+								},
+								error : function(jqXHR, errorThrown) {
+									toastr.error("Error al obtener los insumos");
+								}
+							});
 
 						toastr.success("Insumo agregado correctamente");
 					} else {

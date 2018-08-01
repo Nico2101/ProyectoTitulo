@@ -128,9 +128,10 @@
 
 										<label class="col-sm-4 control-label">* Nombre</label>
 										<div class="col-sm-6">
-											<input type="text" class="form-control" id="nombreEmpleado" onclick="nombreVacio();">
-											<span id="errorNombreEmpleado" class="error"
-												style="display: none">Ingrese el nombre del empleado</span>
+											<input type="text" class="form-control" id="nombreEmpleado"
+												onclick="nombreVacio();"> <span
+												id="errorNombreEmpleado" class="error" style="display: none">Ingrese
+												el nombre del empleado</span>
 										</div>
 
 										<br> <br> <label class="col-sm-4 control-label">*
@@ -147,13 +148,14 @@
 										<br> <br> <label class="col-sm-4 control-label">*
 											Rut</label>
 										<div class="col-sm-6">
-											<input type="text" class="form-control" id="rutEmpleado" onclick="rutVacio();">
-											<span id="errorRutEmpleado" class="error"
-												style="display: none">Ingrese el rut del empleado</span> <span
-												id="errorRutEmpleadoInvalido" class="error"
-												style="display: none">El rut ingresado es inválido</span> <span
-												id="errorRutEmpleadoYaExiste" class="error"
-												style="display: none">El rut ingresado ya exite</span>
+											<input type="text" class="form-control" id="rutEmpleado"
+												onclick="rutVacio();"> <span id="errorRutEmpleado"
+												class="error" style="display: none">Ingrese el rut
+												del empleado</span> <span id="errorRutEmpleadoInvalido"
+												class="error" style="display: none">El rut ingresado
+												es inválido</span> <span id="errorRutEmpleadoYaExiste"
+												class="error" style="display: none">El rut ingresado
+												ya exite</span>
 
 
 										</div>
@@ -162,7 +164,8 @@
 											Fecha nacimiento</label>
 										<div class="col-sm-6">
 											<input type="date" class="form-control"
-												id="fechaNacimientoEmpleado" onclick="fechaNacimientoVacia();"> <span
+												id="fechaNacimientoEmpleado"
+												onclick="fechaNacimientoVacia();"> <span
 												id="errorFechaNacimientoEmpleado" class="error"
 												style="display: none">Ingrese fecha de nacimiento del
 												empleado</span> <span id="errorFechaNacimientoSup" class="error"
@@ -174,16 +177,17 @@
 											Dirección</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
-												id="direccionEmpleado" onclick="direccionVacia();"> <span
-												id="errorDireccionEmpleado" class="error"
+												id="direccionEmpleado" onclick="direccionVacia();">
+											<span id="errorDireccionEmpleado" class="error"
 												style="display: none">Ingrese dirección del empleado</span>
 										</div>
 
 										<br> <br> <label class="col-sm-4 control-label">*
 											Telefono</label>
 										<div class="col-sm-6">
-											<input type="text" class="form-control" id="telefonoEmpleado" onclick="telefonoVacio();">
-											<span id="errorTelefonoEmpleado" class="error"
+											<input type="text" class="form-control" id="telefonoEmpleado"
+												onclick="telefonoVacio();"> <span
+												id="errorTelefonoEmpleado" class="error"
 												style="display: none">Ingrese telefono del empleado</span>
 										</div>
 
@@ -191,7 +195,8 @@
 											Cargo</label>
 
 										<div class="col-sm-6">
-											<select class="form-control" id="cargoEmpleado" onclick="cargoVacio();">
+											<select class="form-control" id="cargoEmpleado"
+												onclick="cargoVacio();">
 												<option value="-1">Seleccione cargo</option>
 												<option value="1">Jefe de producción</option>
 												<option value="2">Gerente</option>
@@ -296,12 +301,12 @@
 										</div>
 
 										<br> <br> <label class="col-sm-4 control-label">*
-											Telefono</label>
+											Teléfono</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control"
 												id="telefonoEmpleadoEditar"> <span
 												id="errorTelefonoEmpleadoEditar" class="error"
-												style="display: none">Ingrese telefono del empleado</span>
+												style="display: none">Ingrese teléfono del empleado</span>
 										</div>
 
 
@@ -356,48 +361,47 @@
 </body>
 <script src="assets/rut.js"></script>
 <script>
-
-function nombreVacio(){
+	function nombreVacio() {
 		document.getElementById('errorNombreEmpleado').style.display = 'none';
 		document.getElementById('nombreEmpleado').style.border = "";
-		
-}
 
-function apellidoVacio(){
+	}
+
+	function apellidoVacio() {
 		document.getElementById('errorApellidosEmpleado').style.display = 'none';
 		document.getElementById('apellidosEmpleado').style.border = "";
-		
-}
 
-function rutVacio(){
+	}
+
+	function rutVacio() {
 		document.getElementById('errorRutEmpleado').style.display = 'none';
 		document.getElementById('rutEmpleado').style.border = "";
-		
-}
 
-function fechaNacimientoVacia(){
-	document.getElementById('errorFechaNacimientoEmpleado').style.display = 'none';
-	document.getElementById('fechaNacimientoEmpleado').style.border = "";
-	
-}
+	}
 
-function direccionVacia(){
-	document.getElementById('errorDireccionEmpleado').style.display = 'none';
-	document.getElementById('direccionEmpleado').style.border = "";
-	
-}
+	function fechaNacimientoVacia() {
+		document.getElementById('errorFechaNacimientoEmpleado').style.display = 'none';
+		document.getElementById('fechaNacimientoEmpleado').style.border = "";
 
-function telefonoVacio(){
-	document.getElementById('errorTelefonoEmpleado').style.display = 'none';
-	document.getElementById('telefonoEmpleado').style.border = "";
-	
-}
+	}
 
-function cargoVacio(){
-	document.getElementById('errorCargoEmpleado').style.display = 'none';
-	document.getElementById('cargoEmpleado').style.border = "";
-	
-}
+	function direccionVacia() {
+		document.getElementById('errorDireccionEmpleado').style.display = 'none';
+		document.getElementById('direccionEmpleado').style.border = "";
+
+	}
+
+	function telefonoVacio() {
+		document.getElementById('errorTelefonoEmpleado').style.display = 'none';
+		document.getElementById('telefonoEmpleado').style.border = "";
+
+	}
+
+	function cargoVacio() {
+		document.getElementById('errorCargoEmpleado').style.display = 'none';
+		document.getElementById('cargoEmpleado').style.border = "";
+
+	}
 	function agregarEmpleado() {
 		$('#modalAgregarEmpleado').modal('show');
 
@@ -614,41 +618,57 @@ function cargoVacio(){
 																				.modal(
 																						'hide');
 
-																		var tabla = $(
-																				'#listaEmpleados')
-																				.dataTable();
-																		var num = tabla
-																				.fnSettings()
-																				.fnRecordsTotal();
+																		//Actualizar el data table
+																		$
+																				.ajax({
+																					type : 'POST',
+																					url : "obtenerListaEmpleados",
+																					dataType : 'json',
+																					success : function(
+																							data) {
 
-																		$(
-																				'#listaEmpleados')
-																				.dataTable()
-																				.fnAddData(
+																						if (!$
+																								.isEmptyObject(data)) {
+																							//vaciar datatable
+																							var oTable = $(
+																									'#listaEmpleados')
+																									.dataTable();
+																							oTable
+																									.fnClearTable();
 
-																						[
-																								num + 1,
-																								data.nombre,
-																								data.apellidos,
-																								data.rut,
-																								data.direccion,
-																								data.telefono,
-																								data.cargo,
-																								'<a href="#" onclick="editarEmpleado(\''
-																										+ data.rut
-																										+ '\');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarEmpleado(\''
-																										+ data.rut
-																										+ '\');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+																							//Llenar data table
+																							for (var i = 0; i < data.length; i++) {
+																								$(
+																										'#listaEmpleados')
+																										.dataTable()
+																										.fnAddData(
 
-																				);
+																												[
+																														i + 1,
+																														data[i].nombre,
+																														data[i].apellidos,
+																														data[i].rut,
+																														data[i].direccion,
+																														data[i].telefono,
+																														data[i].cargo,
+																														'<a href="#" onclick="editarEmpleado(\''
+																																+ data[i].rut
+																																+ '\');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarEmpleado(\''
+																																+ data[i].rut
+																																+ '\');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
 
-																		$(
-																				"#listaEmpleados")
-																				.DataTable()
-																				.page(
-																						'last')
-																				.draw(
-																						'page');
+																										);
+																							}
+																						}
+
+																					},
+																					error : function(
+																							jqXHR,
+																							errorThrown) {
+																						toastr
+																								.error("Error al obtener los empleados");
+																					}
+																				});
 
 																		toastr
 																				.success("Empleado agregado correctamente");
