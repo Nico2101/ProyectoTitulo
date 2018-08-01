@@ -36,7 +36,8 @@
 				<div class="col-xs-12">
 
 					<div class="col-md-6 col-sm-6 col-xs-12">
-						<h3 id="titulo" style="display: none">Informe Cosecha de Productos</h3>
+						<h3 id="titulo" style="display: none">Informe Cosecha de
+							Productos</h3>
 					</div>
 					<div class="col-md-3 col-sm-6 col-xs-12"></div>
 					<div class="col-md-2 col-sm-6 col-xs-12"></div>
@@ -225,18 +226,23 @@
 
 														return datos.datasets[tooltipItem.datasetIndex].label
 																+ " : "
-																+ currency(datos.datasets[tooltipItem.datasetIndex].data[tooltipItem.index])
+																+ currency(
+																		datos.datasets[tooltipItem.datasetIndex].data[tooltipItem.index],
+																		1)
 																+ " Kg.";
 													}
 												}
 											},
+
 											scales : {
 												yAxes : [ {
 													ticks : {
+														fontSize : 10,
 														beginAtZero : true,
 														callback : function(
 																value) {
-															return currency(value);
+															return currency(
+																	value, 1);
 														}
 													},
 													scaleLabel : {
@@ -246,6 +252,7 @@
 												} ],
 												xAxes : [ {
 													ticks : {
+														fontSize : 10,
 														autoSkip : false
 													},
 													scaleLabel : {
