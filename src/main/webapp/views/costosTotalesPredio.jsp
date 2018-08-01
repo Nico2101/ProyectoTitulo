@@ -49,7 +49,7 @@
 									<div class="col-md-3 col-sm-6 col-xs-12">
 										<label>* Temporada</label> <select id="temporadaSeleccionada"
 											class="form-control select2 select2-hidden-accessible"
-											onchange="buscarPrediosDelSector();">
+											onchange="buscarSectores();">
 
 											<option value="-1">Seleccione una temporada</option>
 											<c:forEach var="listaTemporadas" items="${listaTemporadas}">
@@ -63,22 +63,17 @@
 											una temporada</span>
 									</div>
 
+									<div style="display: none" id="divSector">
+										<div class="col-md-3 col-sm-6 col-xs-12">
+											<label>* Sector</label><select class="form-control"
+												id="sectorSeleccionado" onchange="buscarPrediosDelSector();">
 
-									<div class="col-md-3 col-sm-6 col-xs-12">
-										<label>* Sector</label><select class="form-control"
-											id="sectorSeleccionado" onchange="buscarPrediosDelSector();">
-											<option value="-1">Seleccione un sector</option>
-											<c:forEach var="listaSectores" items="${listaSectores}">
-												<option value="${listaSectores.idSector}">${listaSectores.nombre}</option>
-
-											</c:forEach>
-
-										</select> <span id="errorSector" class="error" style="display: none">Debe
-											seleccionar un sector</span><span id="sinPredio" class="error"
-											style="display: none">Sector no tiene predios con
-											planes asignados en la temporada</span>
+											</select> <span id="errorSector" class="error" style="display: none">Debe
+												seleccionar un sector</span><span id="sinPredio" class="error"
+												style="display: none">Sector no tiene predios con
+												planes asignados en la temporada</span>
+										</div>
 									</div>
-
 								</div>
 							</div>
 							<br>
@@ -170,9 +165,9 @@
 												<th width="25px">N°</th>
 												<th>Nombre Insumo</th>
 												<th>Tipo</th>
-												<th>Unidad </th>
+												<th>Unidad</th>
 												<th>Costo Total</th>
-												
+
 											</tr>
 										</thead>
 									</table>
@@ -205,6 +200,61 @@
 </body>
 
 <script>
+	function buscarSectores() {
+		var idTemporada = $('#temporadaSeleccionada').val();
+
+		if (idTemporada > 0) {
+			document.getElementById('errorTemporada').style.display = 'none';
+			document.getElementById('temporadaSeleccionada').style.border = "";
+			document.getElementById('divTablaCostosPredios').style.display = 'none';
+		} else {
+
+			document.getElementById('errorTemporada').style.display = 'inline';
+			document.getElementById('temporadaSeleccionada').style.border = "1px solid red";
+			document.getElementById('divTablaCostosPredios').style.display = 'none';
+			document.getElementById('divSector').style.display = 'none';
+		}
+
+		if (idTemporada > 0) {
+			$
+					.ajax({
+						type : 'POST',
+						url : "obtenerSectoresParaCostosPredios",
+						dataType : 'json',
+						data : {
+							idTemporada : idTemporada
+						},
+						success : function(data) {
+							console.log(data);
+							if (!$.isEmptyObject(data)) {
+								//cargar select
+
+								$('#sectorSeleccionado').empty();
+								$('#sectorSeleccionado')
+										.append(
+												'<option value="-1">Seleccione un sector</option>');
+
+								for (var i = 0; i < data.length; i++) {
+									console.log(data[i].idSector);
+									$('#sectorSeleccionado').append(
+											'<option value="'+data[i].idSector+'">'
+													+ data[i].nombre
+													+ '</option>');
+								}
+
+								//Mostrar select
+								document.getElementById('divSector').style.display = 'inline';
+
+							}
+
+						},
+						error : function(jqXHR, errorThrown) {
+							alert("Error al obtener los sectores");
+						}
+					});
+		}
+	}
+
 	function buscarPrediosDelSector() {
 
 		var idTemporada = $('#temporadaSeleccionada').val();
@@ -247,7 +297,7 @@
 			$
 					.ajax({
 						type : 'POST',
-						url : "obtenerPrediosDelSectorConPlanAsignado",
+						url : "obtenerPrediosDelSectorYTemporadaSeleccionada",
 						dataType : 'json',
 						async : false,
 						data : {
@@ -380,7 +430,7 @@
 							console.log(data);
 
 							if (!$.isEmptyObject(data)) {
-								
+
 								//vaciar datatable
 								var oTable = $('#listaDetallesCostos')
 										.dataTable();
@@ -420,7 +470,7 @@
 
 	function currency(value, decimals, separators) {
 		decimals = decimals >= 0 ? parseInt(decimals, 0) : 2;
-		separators = separators || [ '.', "'", ',' ];
+		separators = separators || [ '.', ".", ',' ];
 		var number = (parseFloat(value) || 0).toFixed(decimals);
 		if (number.length <= (4 + decimals))
 			return number.replace('.', separators[separators.length - 1]);
