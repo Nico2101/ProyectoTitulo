@@ -151,7 +151,8 @@
 								</div>
 								<br>
 
-								<button id="botonGuardar" type="button" class="btn btn-primary pull-right"
+								<button id="botonGuardar" type="button"
+									class="btn btn-primary pull-right"
 									onclick="guardarDatosReprogramacionFecha();">
 									<i class="fa fa-save"> Guardar</i>
 								</button>
@@ -191,6 +192,8 @@
 
 		var idSector = $('#sector').val();
 		console.log(idSector);
+		document.getElementById('divPlanAsignado').style.display = 'none';
+		document.getElementById('divTablaActividades').style.display = 'none';
 
 		if (idSector > 0) {
 			document.getElementById('errorSector').style.display = 'none';
@@ -265,7 +268,7 @@
 
 			}
 		}
-       var contador= 0;
+		var contador = 0;
 		//obtener el id del predio
 		var idPredio = $('#predio').val();
 		if (idPredio > 0) {
@@ -399,14 +402,12 @@
 								if (contador == data.length) {
 									document.getElementById('botonGuardar').style.display = 'none';
 								}
-								
+
 								document.getElementById('divPlanAsignado').style.display = 'inline';
 								document.getElementById('divTablaActividades').style.display = 'inline';
 
-								document.getElementById('errorMotivo').style.display = 'none';
-								document.getElementById('motivo').style.border = "";
-								
-								
+								//document.getElementById('errorMotivo').style.display = 'none';
+								//document.getElementById('motivo').style.border = "";
 
 							}
 						},
@@ -498,6 +499,7 @@
 				&& arregloFechasRealesReprogramadas.length > 0
 				&& arregloIdsReprogramados.length > 0
 				&& arreglosMotivos2.length > 0) {
+
 			//Enviar arreglo
 			$
 					.ajax({
@@ -536,7 +538,8 @@
 						}
 					});
 		} else {
-			toastr.error("Error, verificar datos");
+			toastr
+					.error("Error, recuerde indicar fecha y motivo de reprogramación");
 		}
 
 	}
