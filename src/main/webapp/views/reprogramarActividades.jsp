@@ -450,7 +450,7 @@
 		}
 
 		//obtengo los motivos de los input
-		var filas = $("#tablaActividades").find("tr"); //devulve las filas del body de tu tabla segun el ejemplo que brindaste
+		var filas = $("#tablaActividades").find("tr"); //devulve las filas del body de la tabla
 		var motivos = "";
 		for (i = 1; i < filas.length; i++) { //Recorre las filas 1 a 1
 			var celdas = $(filas[i]).find("td"); //devolverá las celdas de una fila
@@ -498,7 +498,7 @@
 		if (arregloFechasEstiamdasReprogramadas.length > 0
 				&& arregloFechasRealesReprogramadas.length > 0
 				&& arregloIdsReprogramados.length > 0
-				&& arreglosMotivos2.length > 0) {
+				&& arreglosMotivos2.length.equals(arregloFechasRealesReprogramadas.length)) {
 
 			//Enviar arreglo
 			$
