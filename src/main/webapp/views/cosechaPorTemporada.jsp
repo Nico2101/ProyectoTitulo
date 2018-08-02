@@ -36,7 +36,8 @@
 				<div class="col-xs-12">
 					<div class="box box-primary">
 						<div class="box-header">
-							<h3 class="box-title">Informe Cosecha de Productos por Temporada</h3>
+							<h3 class="box-title">Informe Cosecha de Productos por
+								Temporada</h3>
 
 							<label class="pull-right" style="font-weight: normal; color: red">*
 								Campos obligatorios</label>
@@ -134,9 +135,15 @@
 							idTemporada : idTemporada
 						},
 						success : function(data) {
+							console.log(data);
 							if (!$.isEmptyObject(data)) {
-								location.href = "generarReporteTemporada?idTemporada="
-										+ idTemporada;
+								if (data[0].cantidadCosechada == null) {
+									toastr
+											.error("No existen registros de cosecha para la temporada seleccionada");
+								} else {
+									location.href = "generarReporteTemporada?idTemporada="
+											+ idTemporada;
+								}
 
 							} else {
 
