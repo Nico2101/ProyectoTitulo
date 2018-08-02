@@ -406,6 +406,31 @@
 								}
 								if (contador == data.length) {
 									document.getElementById('botonGuardar').style.display = 'none';
+									
+									//Ocultar FILA MOTIVO actividad
+									var tbl = document
+											.getElementById("tablaActividades");
+									for (var i = 0; i < tbl.rows.length; i++) {
+
+										for (var j = 0; j < tbl.rows[i].cells.length; j++) {
+
+											tbl.rows[i].cells[j].style.display = "";
+
+											if (j == 4)
+
+												tbl.rows[i].cells[j].style.display = "none";
+											
+											if (j == 5)
+
+												tbl.rows[i].cells[j].style.display = "none";
+
+										}
+										
+
+									}
+									
+								}else{
+									document.getElementById('botonGuardar').style.display = 'inline';
 								}
 
 								document.getElementById('divPlanAsignado').style.display = 'inline';
