@@ -780,6 +780,8 @@
 
 								if (contActividadesRealizadas == data.length) {
 									document.getElementById('botonGuardar').style.display = 'none';
+								} else {
+									document.getElementById('botonGuardar').style.display = 'inline';
 								}
 							}
 						},
