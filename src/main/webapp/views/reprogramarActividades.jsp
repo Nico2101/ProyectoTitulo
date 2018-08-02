@@ -349,9 +349,14 @@
 										console.log(fechaInicio);
 										console.log(fechaTermino);
 
+										var idFecha = "fechaReprogramacion"
+												+ num;
+										var motivoReprogramacion = "motivo"
+												+ num;
+
 										if (data[i].fechaEjecucionReal == null) {
-											cell4.innerHTML = '<input type="date" name="fecha" id="NuevaFechaEstimada"  min="'+fechaInicio+'" max="'+fechaTermino+'" class="form-control select2 select2-hidden-accessible"/>';
-											cell5.innerHTML = '<input type="text" name="motivo" id="idMotivo"   class="form-control select2 select2-hidden-accessible"/>';
+											cell4.innerHTML = '<input type="date" name="fecha" id="'+idFecha+'"  min="'+fechaInicio+'" max="'+fechaTermino+'" class="form-control select2 select2-hidden-accessible"/>';
+											cell5.innerHTML = '<input type="text" name="motivo" id="'+motivoReprogramacion+'"   class="form-control select2 select2-hidden-accessible"/>';
 										} else {
 											fecha = moment(
 													data[i].fechaEjecucionReal,
@@ -439,66 +444,45 @@
 		var arreglosMotivos = Array();
 		var arreglosMotivos2 = Array();
 
-		//obtengo las fechas estimadas de los input
-		var filas = $("#tablaActividades").find("tr"); //devulve las filas del body de tu tabla segun el ejemplo que brindaste
 		var fechas = "";
-		for (i = 1; i < filas.length; i++) { //Recorre las filas 1 a 1
-			var celdas = $(filas[i]).find("td"); //devolverá las celdas de una fila
-			fechas = $($(celdas[3]).children("input")[0]).val();
-			arregloFechasReprogramadas.push(fechas);
 
-		}
+		for (i = 1; i < rowLength; i++) { //Recorre las filas 1 a 1
+			var idFecha = "fechaReprogramacion" + i;
+			var idMotivo = "motivo" + i;
 
-		//obtengo los motivos de los input
-		var filas = $("#tablaActividades").find("tr"); //devulve las filas del body de la tabla
-		var motivos = "";
-		for (i = 1; i < filas.length; i++) { //Recorre las filas 1 a 1
-			var celdas = $(filas[i]).find("td"); //devolverá las celdas de una fila
-			motivos = $($(celdas[4]).children("input")[0]).val();
-			arreglosMotivos.push(motivos);
+			var fecha = $('#' + idFecha).val();
+			var motivo = $('#' + idMotivo).val();
 
-		}
+			console.log(motivo);
+			console.log(fecha);
 
-		if (rowLength > 1) {
-			//loops through rows    
-			for (i = 1; i < rowLength; i++) {
+			if (typeof fecha != 'undefined' && fecha != "") {
+				arregloFechasReprogramadas.push($('#' + idFecha).val());
+
+			}
+
+			if (typeof motivo != 'undefined' && motivo != "") {
+				arreglosMotivos.push($('#' + idMotivo).val());
+			}
+
+			if (typeof motivo != 'undefined' && typeof fecha != 'undefined'
+					&& fecha != "" && motivo != "") {
 				var oCells = oTable.rows.item(i).cells;//devuelve un objeto con la fila completa
 				arregloFechasEstimadas.push(oCells[2].innerHTML);//fechas estimadas
 				arregloIds.push(oCells[5].innerHTML);//almacena los ids
-
 			}
 
 		}
 
-		var arregloIdsReprogramados = Array();
-		var arregloFechasEstiamdasReprogramadas = Array();
-
-		for (i = 0; i < arregloFechasReprogramadas.length; i++) {
-			if (typeof arregloFechasReprogramadas[i] != 'undefined'
-					&& arregloFechasReprogramadas[i] != ""
-					&& typeof arreglosMotivos[i] != 'undefined'
-					&& arreglosMotivos[i] != "") {
-				arregloFechasEstiamdasReprogramadas
-						.push(arregloFechasEstimadas[i]);//almacena las fechas estimadas que se reprogramaron
-				arregloFechasRealesReprogramadas
-						.push(arregloFechasReprogramadas[i]);//almacena fechas reales reprogramadas
-				arreglosMotivos2.push(arreglosMotivos[i]);//almacena los motivos		
-				arregloIdsReprogramados.push(arregloIds[i]);//almacena los Ids de las actividades reprogramadas reales
-
-			}
-
-		}
-
-		console.log(arregloFechasEstiamdasReprogramadas);
-		console.log(arregloFechasRealesReprogramadas);
-		console.log(arregloIdsReprogramados);
 		console.log(arregloFechasReprogramadas);
-		console.log(arreglosMotivos2);
+		console.log(arreglosMotivos);
+		console.log(arregloFechasEstimadas);
+		console.log(arregloIds);
 
-		if (arregloFechasEstiamdasReprogramadas.length > 0
-				&& arregloFechasRealesReprogramadas.length > 0
-				&& arregloIdsReprogramados.length > 0
-				&& arreglosMotivos2.length.equals(arregloFechasRealesReprogramadas.length)) {
+		if (arregloFechasEstimadas.length > 0
+				&& arregloFechasReprogramadas.length > 0
+				&& arregloIds.length > 0 && arreglosMotivos.length > 0
+				&& arreglosMotivos.length == arregloFechasReprogramadas.length) {
 
 			//Enviar arreglo
 			$
@@ -508,10 +492,10 @@
 						dataType : 'json',
 						async : false,
 						data : {
-							fechasEstimadas : arregloFechasEstiamdasReprogramadas,
-							fechasRealesReprogramadas : arregloFechasRealesReprogramadas,
-							Ids : arregloIdsReprogramados,
-							motivos : arreglosMotivos2
+							fechasEstimadas : arregloFechasEstimadas,
+							fechasRealesReprogramadas : arregloFechasReprogramadas,
+							Ids : arregloIds,
+							motivos : arreglosMotivos
 
 						},
 						success : function(data) {
