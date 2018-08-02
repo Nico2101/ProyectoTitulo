@@ -999,7 +999,7 @@ table.on( 'row-reorder', function ( e, diff, edit ) {
     		data:{arreglo:arreglo},
     		success : function(data) {
     			if(data==true){
-    				toastr.success("Posiciones actualizadas correctamente");
+    				toastr.success("Orden de las actividades actualizado correctamente");
     			}else{
     				toastr.error("Se ha producido un error al actualizar las posiciones");
     			}
