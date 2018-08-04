@@ -23,5 +23,7 @@ public interface SectorService {
 	List<Sector> listaSectoresConPrediosConPlanes(int id_temporada);
 
 	List<Sector> listaSectoresParaCostos(int id_temporada);
+	
+	Sector findByNombre(String nombre);
 
 }

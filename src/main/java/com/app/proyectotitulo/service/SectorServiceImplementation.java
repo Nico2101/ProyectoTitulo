@@ -67,4 +67,10 @@ public class SectorServiceImplementation implements SectorService {
 		return sectorRepo.listaDeSectoresParaCostos(id_temporada);
 	}
 
+	
+	@Override
+	public Sector findByNombre(String nombre) {
+		// TODO Auto-generated method stub
+		return sectorRepo.findByNombre(nombre);
+	}
 }

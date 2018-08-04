@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.app.proyectotitulo.domain.Empleado;
 import com.app.proyectotitulo.domain.Insumo;
+import com.app.proyectotitulo.domain.Plan_Ejecucion;
 import com.app.proyectotitulo.domain.Sector;
 import com.app.proyectotitulo.service.SectorService;
 
@@ -160,5 +161,18 @@ public class SectorController {
 		return lista;
 
 	}
+	
+	
+	@RequestMapping(value = "verificarNombreRepetidoSector")
+	public @ResponseBody boolean verificarNombreRepedtidoSector(@RequestParam String nombre) {
+
+		Sector sector = sectorService.findByNombre(nombre);
+		if (sector != null) {
+			return true;
+		}
+		return false;
+	}
+		
+	
 
 }

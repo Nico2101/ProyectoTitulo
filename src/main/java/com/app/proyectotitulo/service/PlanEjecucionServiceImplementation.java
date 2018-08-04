@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.proyectotitulo.domain.Insumo;
 import com.app.proyectotitulo.domain.Plan_Ejecucion;
+import com.app.proyectotitulo.domain.Predio;
 import com.app.proyectotitulo.repository.PlanEjecucionRepository;
 
 @Service
@@ -46,6 +48,12 @@ public class PlanEjecucionServiceImplementation implements PlanEjecucionService 
 	public void actualizarPlan(Plan_Ejecucion p) {
 		// TODO Auto-generated method stub
 		planEjecucionRepo.save(p);
+	}
+	
+	@Override
+	public Plan_Ejecucion findByNombre(String nombre) {
+		// TODO Auto-generated method stub
+		return planEjecucionRepo.findByNombre(nombre);
 	}
 
 }

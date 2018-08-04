@@ -121,8 +121,9 @@
 
 										<label class="col-sm-4 control-label">* Nombre</label>
 										<div class="col-sm-6">
-											<input type="text" class="form-control" id="nombrePredio" onclick="nombrePredioVacio();">
-											<span id="errorNombre" class="error" style="display: none">Ingrese
+											<input type="text" class="form-control" id="nombrePredio"
+												onclick="nombrePredioVacio();"> <span
+												id="errorNombre" class="error" style="display: none">Ingrese
 												el nombre del predio</span>
 										</div>
 
@@ -130,7 +131,8 @@
 											Sector </label>
 										<div class="col-sm-6">
 											<select class="form-control" id="sectorSeleccionado"
-												onchange="superficieTotalPredios()"  onclick="sectorNoSeleccionado();">
+												onchange="superficieTotalPredios()"
+												onclick="sectorNoSeleccionado();">
 												<option value="-1">Seleccione sector al que
 													pertenece</option>
 												<c:forEach items="${sectores}" var="sectores">
@@ -179,13 +181,14 @@
 											<div class="col-sm-6">
 												<input type="number" class="form-control"
 													onkeypress="return filterFloat(event,this);"
-													id="superficiePredio" onclick="superficiePredioVacia();"> <span id="errorSuperficie"
-													class="error" style="display: none">Ingrese la
-													superficie del predio</span> <span id="errorSubTotal"
-													class="error" style="display: none">La superficie
-													ingresada debe ser menor</span> <span id="errorSuperficieNegativa"
-													class="error" style="display: none">La superficie no
-													puede ser negativa</span> <span id="errorSuperficieNoPuedeSerCero"
+													id="superficiePredio" onclick="superficiePredioVacia();">
+												<span id="errorSuperficie" class="error"
+													style="display: none">Ingrese la superficie del
+													predio</span> <span id="errorSubTotal" class="error"
+													style="display: none">La superficie ingresada debe
+													ser menor</span> <span id="errorSuperficieNegativa" class="error"
+													style="display: none">La superficie no puede ser
+													negativa</span> <span id="errorSuperficieNoPuedeSerCero"
 													class="error" style="display: none">La superficie no
 													puede ser cero</span>
 											</div>
@@ -648,6 +651,32 @@ function superficiePredioVacia(){
 		
 		
 		 if (nombrePredio != "" && superficie>0 && superficie<=(totalSuperficieSector-totalSuperficiePredios) ) {
+			 
+			 $
+				.ajax({
+					type : 'POST',
+					url : "verificarNombreRepetidoPredio",
+					dataType : 'json',
+					async : false,
+					data : {
+						nombre : nombrePredio
+					},
+					success : function(data) {
+						if (data == true) {
+							swal(
+									{
+										title : "¿Está seguro de agregar un predio con un nombre ya existente?",
+										text : "Esta acción no podrá ser recuperada",
+										type : "warning",
+										showCancelButton : true,
+										confirmButtonClass : "btn-danger",
+										cancelButtonText : "Cancelar",
+										confirmButtonText : "Si, Seguro",
+										closeOnConfirm : false
+									},
+									function() {
+			 
+			 
 			$
 					.ajax({
 						type : 'POST',
@@ -660,6 +689,7 @@ function superficiePredioVacia(){
 							
 						},
 						success : function(data) {
+							swal.close();
 							console.log(data);
 
 							if (data.idPredio > 0) {
@@ -722,10 +752,94 @@ function superficiePredioVacia(){
 							toastr.error("Error al agregar el predio");
 						}
 					});
+			
+				});
+						}else{
+							$
+							.ajax({
+								type : 'POST',
+								url : "agregarPredio",
+								dataType : 'json',
+								data : {
+									nombre : nombrePredio,
+									superficie : superficie,
+								     idSector : idSector,
+									
+								},
+								success : function(data) {
+									console.log(data);
+
+									if (data.idPredio > 0) {
+										$('#modalAgregarPredio').modal('hide');
+
+										//Actualizar el data table
+										$
+												.ajax({
+													type : 'POST',
+													url : "obtenerListaPredios",
+													dataType : 'json',
+													success : function(data) {
+
+														if (!$
+																.isEmptyObject(data)) {
+															//vaciar datatable
+															var oTable = $(
+																	'#listaPredios')
+																	.dataTable();
+															oTable
+																	.fnClearTable();
+
+															//Llenar data table
+															for (var i = 0; i < data.length; i++) {
+																$(
+																		'#listaPredios')
+																		.dataTable()
+																		.fnAddData(
+
+																				[
+																						i + 1,
+																						data[i].nombre,
+																						data[i].superficie,
+																						data[i].sector.nombre,
+																						'<a href="#" onclick="editarPredio('
+																								+ data[i].idPredio
+																								+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarPredio('
+																								+ data[i].idPredio
+																								+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+
+																		);
+															}
+														}
+
+													},
+													error : function(jqXHR,
+															errorThrown) {
+														toastr
+																.error("Error al obtener los predios");
+													}
+												});
+
+										toastr.success("Predio agregado correctamente");
+									} else {
+										toastr.error("Error al agregar el predio");
+									}
+
+								},
+								error : function(jqXHR, errorThrown) {
+									toastr.error("Error al agregar el predio");
+								}
+							});
+						}
+					},
+					error : function(jqXHR, errorThrown) {
+						toastr
+								.error("Error, revisar datos");
+					}
+				});
+						
+			
+			
 		}
-		
-		
-		 
 
 	}
 

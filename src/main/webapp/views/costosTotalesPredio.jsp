@@ -528,6 +528,13 @@
 
 <script>
 	$('#listaDetallesCostos').DataTable({
+
+		"columnDefs" : [ {
+			"targets" : 4,
+			"className" : "text-right"
+		}
+
+		],
 		'dom' : 'Bfrtip',
 		'paging' : true,
 		'lengthChange' : true,
@@ -553,9 +560,11 @@
 				"sFirst" : "Primero",
 				"sLast" : "Último",
 				"sNext" : "Siguiente",
-				"sPrevious" : "Anterior"
+				"sPrevious" : "Anterior",
+
 			}
 		}
+
 	})
 </script>
 

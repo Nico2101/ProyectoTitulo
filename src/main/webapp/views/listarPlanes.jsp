@@ -286,7 +286,7 @@
 									<div id="form-editar" class="form-group">
 
 										<label class="col-sm-4 control-label"
-											id="tituloActividadAgregar">* Nombre Actividad</label>
+											id="tituloActividadAgregar">*Nombre Actividad</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control" id="nombreActividad">
 											<span id="errorNombreActividad" class="error"
@@ -820,7 +820,7 @@ function modalAgregarActividad() {
 	
 	var count=table.rows().count()+1;
 	
-	$('#tituloActividadAgregar').text("Nombre Actividad "+count);
+	$('#tituloActividadAgregar').text("*Nombre Actividad "+count);
 	
 	if($('#checkCosecha').prop('checked')){
 		$('#checkCosecha').prop('checked',false);

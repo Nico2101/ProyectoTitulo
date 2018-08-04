@@ -2,6 +2,7 @@ package com.app.proyectotitulo.service;
 
 import java.util.List;
 import com.app.proyectotitulo.domain.Predio;
+import com.app.proyectotitulo.domain.Sector;
 
 public interface PredioService {
 
@@ -40,5 +41,7 @@ public interface PredioService {
 	Integer totalPrediosSinPlanAsignado();
 
 	List<Predio> getPrediosParaCostos(int id_temporada, int id_sector);
+	
+	Predio findByNombre(String  nombre);
 
 }

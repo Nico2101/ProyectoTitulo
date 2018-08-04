@@ -3,6 +3,7 @@ package com.app.proyectotitulo.service;
 import java.util.List;
 
 import com.app.proyectotitulo.domain.Plan_Ejecucion;
+import com.app.proyectotitulo.domain.Predio;
 
 public interface PlanEjecucionService {
 
@@ -15,5 +16,7 @@ public interface PlanEjecucionService {
 	public void eliminarPlan(Plan_Ejecucion p);
 
 	public void actualizarPlan(Plan_Ejecucion p);
+	
+	Plan_Ejecucion findByNombre(String nombre);
 
 }

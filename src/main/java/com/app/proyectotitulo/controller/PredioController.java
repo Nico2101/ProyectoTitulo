@@ -22,6 +22,7 @@ import com.app.proyectotitulo.TO.DatosCosechaTO;
 import com.app.proyectotitulo.TO.PlanTO;
 import com.app.proyectotitulo.domain.Actividad_Insumo;
 import com.app.proyectotitulo.domain.Empleado;
+import com.app.proyectotitulo.domain.Plan_Ejecucion;
 import com.app.proyectotitulo.domain.Predio;
 import com.app.proyectotitulo.domain.Sector;
 import com.app.proyectotitulo.domain.Temporada;
@@ -339,6 +340,16 @@ public class PredioController {
 		List<Predio> lista = predioService.getPrediosParaCostos(idTemporada, idSector);
 		return lista;
 
+	}
+	
+	@RequestMapping(value = "verificarNombreRepetidoPredio")
+	public @ResponseBody boolean verificarNombreRepedtidoPredio(@RequestParam String nombre) {
+
+		Predio predio = predioService.findByNombre(nombre);
+		if (predio != null) {
+			return true;
+		}
+		return false;
 	}
 
 }

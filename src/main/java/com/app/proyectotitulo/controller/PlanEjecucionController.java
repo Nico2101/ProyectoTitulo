@@ -268,4 +268,14 @@ public class PlanEjecucionController {
 		return vista;
 	}
 
+	@RequestMapping(value = "verificarNombreRepetidoPlan")
+	public @ResponseBody boolean verificarNombreRepedtidoPlan(@RequestParam String nombre) {
+
+		Plan_Ejecucion plan = planEjecucionService.findByNombre(nombre);
+		if (plan != null) {
+			return true;
+		}
+		return false;
+	}
+
 }

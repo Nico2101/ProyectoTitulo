@@ -144,7 +144,7 @@
 
 								<p>
 									Las fechas estimadas ingresadas deben estar dentro de la
-									duración de la temporada, las cuales corresponden : Fecha Inicio
+									duración de la temporada a partir de la fecha actual, las cuales corresponden : Fecha Inicio
 									:  <label id="fechaInicio"> </label>  y Fecha Término :  <label
 										id="fechaTermino"> </label>
 								</p>

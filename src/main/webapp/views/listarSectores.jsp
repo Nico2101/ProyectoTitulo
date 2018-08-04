@@ -312,6 +312,32 @@ function superficieVacia(){
 		}
 		
 		if (nombreSector != "" && superficieSector>0) {
+			
+			$
+			.ajax({
+				type : 'POST',
+				url : "verificarNombreRepetidoSector",
+				dataType : 'json',
+				async : false,
+				data : {
+					nombre : nombreSector
+				},
+				success : function(data) {
+					if (data == true) {
+						swal(
+								{
+									title : "¿Está seguro de agregar un sector con un nombre ya existente?",
+									text : "Esta acción no podrá ser recuperada",
+									type : "warning",
+									showCancelButton : true,
+									confirmButtonClass : "btn-danger",
+									cancelButtonText : "Cancelar",
+									confirmButtonText : "Si, Seguro",
+									closeOnConfirm : false
+								},
+								function() {
+			
+			
 			$.ajax({
 				type : 'POST',
 				url : "agregarSector",
@@ -326,6 +352,7 @@ function superficieVacia(){
 					console.log(data);
 
 					if (data.idSector > 0) {
+						swal.close();
 						$('#modalAgregarSector').modal('hide');
 
 						//Actualizar el data table
@@ -334,6 +361,7 @@ function superficieVacia(){
 									url : "obtenerListaSectores",
 									dataType : 'json',
 									success : function(data) {
+										
 
 										if (!$.isEmptyObject(data)) {
 											//vaciar datatable
@@ -382,9 +410,98 @@ function superficieVacia(){
 					toastr.error("Error al agregar el sector");
 				}
 				
-				});
-			}
+			});
+								
+								});
+						
+				
+					}else{
+						
+						$.ajax({
+							type : 'POST',
+							url : "agregarSector",
+							dataType : 'json',
+							data : {
+								nombre : nombreSector,
+								superficie : superficieSector,
+								
+							},
+							
+							success : function(data) {
+								console.log(data);
 
+								if (data.idSector > 0) {
+									$('#modalAgregarSector').modal('hide');
+
+									//Actualizar el data table
+									$.ajax({
+												type : 'POST',
+												url : "obtenerListaSectores",
+												dataType : 'json',
+												success : function(data) {
+
+													if (!$.isEmptyObject(data)) {
+														//vaciar datatable
+														var oTable = $(
+																'#listaSectores')
+																.dataTable();
+														oTable
+																.fnClearTable();
+
+														//Llenar data table
+														for (var i = 0; i < data.length; i++) {
+															$(
+																	'#listaSectores')
+																	.dataTable()
+																	.fnAddData(
+
+																			[i + 1,
+																					data[i].nombre,
+																					data[i].superficie,
+																					'<a href="#" onclick="editarSector('
+																							+ data[i].idSector
+																							+ ');"><i class="fa fa-edit fa-lg" style="color: #1CE4D0"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="eliminarSector('
+																							+ data[i].idSector
+																							+ ');"><i class="fa fa-trash-o fa-lg" style="color: red"></i></a>' ]
+
+																	);
+														}
+													}
+
+												},
+												error : function(jqXHR,
+														errorThrown) {
+													toastr
+															.error("Error al obtener los sectores");
+												}
+											}); 
+								            //
+
+									toastr.success("Sector agregado correctamente");
+								} else {
+									toastr.error("Error al agregar el sector");
+								}
+
+							},
+							error : function(jqXHR, errorThrown) {
+								toastr.error("Error al agregar el sector");
+							}
+							
+						});
+											
+											
+									
+							
+								}
+					},
+					error : function(jqXHR, errorThrown) {
+						toastr
+								.error("Error, revisar datos");
+					}
+		
+				});
+			
+			}
 		}
  
  

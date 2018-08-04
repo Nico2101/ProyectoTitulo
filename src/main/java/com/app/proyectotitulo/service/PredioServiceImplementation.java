@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.app.proyectotitulo.domain.Predio;
+import com.app.proyectotitulo.domain.Sector;
 import com.app.proyectotitulo.repository.PredioRepository;
 
 @Service
@@ -113,6 +114,12 @@ public class PredioServiceImplementation implements PredioService {
 	public List<Predio> getPrediosParaCostos(int id_temporada, int id_sector) {
 		// TODO Auto-generated method stub
 		return predioRepo.listaDePrediosParaCostos(id_temporada, id_sector);
+	}
+	
+	@Override
+	public Predio findByNombre(String nombre) {
+		// TODO Auto-generated method stub
+		return predioRepo.findByNombre(nombre);
 	}
 
 }

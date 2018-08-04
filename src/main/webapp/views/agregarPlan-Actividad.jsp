@@ -57,7 +57,7 @@
 									</div>
 
 									<div class="col-md-3 col-sm-6 col-xs-12">
-										<label>* Fecha de Creación</label> <input id="fechaCreacion"
+										<label>Fecha de Creación</label> <input id="fechaCreacion"
 											type="date" disabled
 											class="form-control select2 select2-hidden-accessible"
 											name="daterange" value="" /> <span id="errorFechaCreacion"
@@ -609,51 +609,151 @@
 			$
 					.ajax({
 						type : 'POST',
-						url : "agregarPlanYActividades",
+						url : "verificarNombreRepetidoPlan",
 						dataType : 'json',
 						data : {
-							nombrePlan : nombrePlan,
-							fecha : fechaCreacion,
-							actividades : arregloActividades
+							nombre : nombrePlan
 						},
 						success : function(data) {
 							console.log(data);
 							if (data == true) {
-								toastr
-										.success("El plan ha sido agregado correctamente");
-								$('#nombrePlan').val("");
-								$('#fechaCreacion').val("");
+								swal(
+										{
+											title : "¿Está seguro de agregar un plan con un nombre ya existente?",
+											text : "Esta acción no podrá ser recuperada",
+											type : "warning",
+											showCancelButton : true,
+											confirmButtonClass : "btn-danger",
+											cancelButtonText : "Cancelar",
+											confirmButtonText : "Si, Seguro",
+											closeOnConfirm : false
+										},
+										function() {
 
-								var fechaHoy = new Date();
-								fechaHoy = moment(fechaHoy, 'YYYY/MM/DD');
-								fechaHoy = fechaHoy.format('YYYY-MM-DD');
+											$
+													.ajax({
+														type : 'POST',
+														url : "agregarPlanYActividades",
+														dataType : 'json',
+														data : {
+															nombrePlan : nombrePlan,
+															fecha : fechaCreacion,
+															actividades : arregloActividades
 
-								$('#fechaCreacion').val(fechaHoy);
+														},
+														success : function(data) {
+															console.log(data);
+															if (data == true) {
+																swal.close();
+																toastr
+																		.success("El plan ha sido agregado correctamente");
+																$('#nombrePlan')
+																		.val("");
+																$(
+																		'#fechaCreacion')
+																		.val("");
 
-								//Vaciar tabla
-								//Vaciar tabla materiales
-								var ot = document
-										.getElementById('tablaActividades');
-								var tam = ot.rows.length;
-								//loops through rows  
-								var w = 0;
-								for (w = 1; w < tam; w++) {
-									var ot2 = document
-											.getElementById('tablaActividades');
-									if (ot2.rows.length > 0) {
-										ot2.deleteRow(1);
+																var fechaHoy = new Date();
+																fechaHoy = moment(
+																		fechaHoy,
+																		'YYYY/MM/DD');
+																fechaHoy = fechaHoy
+																		.format('YYYY-MM-DD');
 
-									}
-								}
+																$(
+																		'#fechaCreacion')
+																		.val(
+																				fechaHoy);
 
+																//Vaciar tabla
+																//Vaciar tabla materiales
+																var ot = document
+																		.getElementById('tablaActividades');
+																var tam = ot.rows.length;
+																//loops through rows  
+																var w = 0;
+																for (w = 1; w < tam; w++) {
+																	var ot2 = document
+																			.getElementById('tablaActividades');
+																	if (ot2.rows.length > 0) {
+																		ot2
+																				.deleteRow(1);
+
+																	}
+																}
+
+															} else {
+																toastr
+																		.error("Se ha producido un error al guardar el plan");
+															}
+
+														},
+														error : function(jqXHR,
+																errorThrown) {
+															alert("Error al guardar el plan");
+														}
+													});
+										});
 							} else {
-								toastr
-										.error("Se ha producido un error al guardar el plan");
-							}
+								$
+										.ajax({
+											type : 'POST',
+											url : "agregarPlanYActividades",
+											dataType : 'json',
+											async : false,
+											data : {
+												nombrePlan : nombrePlan,
+												fecha : fechaCreacion,
+												actividades : arregloActividades
+											},
+											success : function(data) {
+												console.log(data);
+												if (data == true) {
+													swal.close();
+													toastr
+															.success("El plan ha sido agregado correctamente");
+													$('#nombrePlan').val("");
+													$('#fechaCreacion').val("");
 
+													var fechaHoy = new Date();
+													fechaHoy = moment(fechaHoy,
+															'YYYY/MM/DD');
+													fechaHoy = fechaHoy
+															.format('YYYY-MM-DD');
+
+													$('#fechaCreacion').val(
+															fechaHoy);
+
+													//Vaciar tabla
+													//Vaciar tabla materiales
+													var ot = document
+															.getElementById('tablaActividades');
+													var tam = ot.rows.length;
+													//loops through rows  
+													var w = 0;
+													for (w = 1; w < tam; w++) {
+														var ot2 = document
+																.getElementById('tablaActividades');
+														if (ot2.rows.length > 0) {
+															ot2.deleteRow(1);
+
+														}
+													}
+
+												} else {
+													toastr
+															.error("Se ha producido un error al guardar el plan");
+												}
+
+											},
+											error : function(jqXHR, errorThrown) {
+												alert("Error al guardar el plan");
+											}
+										});
+							}
 						},
 						error : function(jqXHR, errorThrown) {
-							alert("Error al guardar el plan");
+							toastr.error("Error, revisar datos");
 						}
 					});
 
