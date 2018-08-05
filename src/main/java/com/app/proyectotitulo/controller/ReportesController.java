@@ -6,8 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -128,6 +133,10 @@ public class ReportesController {
 
 	@RequestMapping(value = "generarReporteProductos")
 	public void generarReporteProductos(HttpServletResponse response) throws Exception {
+
+		// Fecha emision
+		LocalDateTime ldt = LocalDateTime.now();
+
 		// Obtener todos los datos
 
 		// Obtener planes
@@ -185,6 +194,12 @@ public class ReportesController {
 			// color, etc.
 			Paragraph titulo = new Paragraph();
 
+			Paragraph fecha_emision = new Paragraph();
+			fecha_emision.setFont(new Font(FontFamily.TIMES_ROMAN, 14));
+			fecha_emision.setAlignment(Element.ALIGN_LEFT);
+			fecha_emision
+					.add("Fecha de emisión: " + DateTimeFormatter.ofPattern("MM-dd-yyyy", Locale.ENGLISH).format(ldt));
+
 			Image imagen = Image.getInstance("logo.png");
 			imagen.scaleToFit(200, 400);
 			imagen.setAlignment(Element.ALIGN_RIGHT);
@@ -200,6 +215,7 @@ public class ReportesController {
 			System.out.println(datos.size());
 
 			// Agregamos el texto al documento.
+			documento.add(fecha_emision);
 			documento.add(imagen);
 			documento.add(saltoLinea);
 
@@ -377,7 +393,7 @@ public class ReportesController {
 								new Phrase("$ " + formatea.format(datos.get(i).getDatos().get(j).getCosto())));
 						cell4.setBorder(Rectangle.NO_BORDER);
 						innertable4.addCell(cell4);
-						
+
 						// column 7
 						cell4 = new PdfPCell();
 						cell4.setBorder(Rectangle.NO_BORDER);
@@ -488,6 +504,15 @@ public class ReportesController {
 	@RequestMapping(value = "generarReporteTemporada")
 	public void generarReporteTemporada(@RequestParam int idTemporada, HttpServletResponse response) throws Exception {
 		System.out.println(idTemporada);
+
+		// Fecha emision
+		LocalDateTime ldt = LocalDateTime.now();
+
+		Paragraph fecha_emision = new Paragraph();
+		fecha_emision.setFont(new Font(FontFamily.TIMES_ROMAN, 14));
+		fecha_emision.setAlignment(Element.ALIGN_LEFT);
+		fecha_emision.add("Fecha de emisión: " + DateTimeFormatter.ofPattern("MM-dd-yyyy", Locale.ENGLISH).format(ldt));
+
 		List<Actividad_Realizada> lista = actividadRealizadaService.actividadesReporteTemporada(idTemporada);
 		if (!lista.isEmpty()) {
 			// Generar Reporte
@@ -534,6 +559,7 @@ public class ReportesController {
 			// Recorrer arreglo
 
 			// Agregamos el texto al documento.
+			documento.add(fecha_emision);
 			documento.add(imagen);
 			documento.add(saltoLinea);
 
@@ -662,7 +688,7 @@ public class ReportesController {
 					cell4.setBorder(Rectangle.NO_BORDER);
 					innertable4.addCell(cell4);
 				}
-				
+
 				// column 7
 				cell4 = new PdfPCell();
 				cell4.setBorder(Rectangle.NO_BORDER);

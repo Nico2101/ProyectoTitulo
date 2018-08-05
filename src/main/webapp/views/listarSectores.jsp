@@ -326,13 +326,13 @@ function superficieVacia(){
 					if (data == true) {
 						swal(
 								{
-									title : "¿Está seguro de agregar un sector con un nombre ya existente?",
-									text : "Esta acción no podrá ser recuperada",
+									title : "Ya existe un sector con el nombre ingresado ¿Desea continuar?",
+									text : "",
 									type : "warning",
 									showCancelButton : true,
 									confirmButtonClass : "btn-danger",
 									cancelButtonText : "Cancelar",
-									confirmButtonText : "Si, Seguro",
+									confirmButtonText : "Si, continuar",
 									closeOnConfirm : false
 								},
 								function() {

@@ -665,8 +665,8 @@ function superficiePredioVacia(){
 						if (data == true) {
 							swal(
 									{
-										title : "¿Está seguro de agregar un predio con un nombre ya existente?",
-										text : "Esta acción no podrá ser recuperada",
+										title : "Ya existe un predio con el nombre ingresado ¿Desea continuar?",
+										text : "",
 										type : "warning",
 										showCancelButton : true,
 										confirmButtonClass : "btn-danger",
