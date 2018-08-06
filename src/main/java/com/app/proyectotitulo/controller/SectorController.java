@@ -161,18 +161,15 @@ public class SectorController {
 		return lista;
 
 	}
-	
-	
+
 	@RequestMapping(value = "verificarNombreRepetidoSector")
 	public @ResponseBody boolean verificarNombreRepedtidoSector(@RequestParam String nombre) {
 
-		Sector sector = sectorService.findByNombre(nombre);
-		if (sector != null) {
+		List<Sector> sector = sectorService.findByNombre(nombre);
+		if (!sector.isEmpty()) {
 			return true;
 		}
 		return false;
 	}
-		
-	
 
 }

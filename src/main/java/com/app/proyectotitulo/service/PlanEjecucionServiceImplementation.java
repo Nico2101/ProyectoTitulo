@@ -51,7 +51,7 @@ public class PlanEjecucionServiceImplementation implements PlanEjecucionService 
 	}
 	
 	@Override
-	public Plan_Ejecucion findByNombre(String nombre) {
+	public List<Plan_Ejecucion> findByNombre(String nombre) {
 		// TODO Auto-generated method stub
 		return planEjecucionRepo.findByNombre(nombre);
 	}

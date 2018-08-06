@@ -52,6 +52,6 @@ public interface PredioRepository extends JpaRepository<Predio, Integer> {
 
 	@Query(value = "select distinct p.id_predio, p.nombre, p.superficie, p.predio_eliminado, p.estado, p.id_sector from Actividad_Realizada ar join Predio p on ar.id_predio=p.id_predio join Temporada t on ar.id_temporada=t.id_temporada join Sector s on p.id_sector=s.id_sector where t.id_temporada=:id_temporada and s.sector_eliminado=0 and p.predio_eliminado=0 and s.id_sector=:id_sector", nativeQuery = true)
 	List<Predio> listaDePrediosParaCostos(@Param("id_temporada") int id_temporada, @Param("id_sector") int id_sector);
-	
-	Predio findByNombre(String nombre);
+
+	List<Predio> findByNombre(String nombre);
 }

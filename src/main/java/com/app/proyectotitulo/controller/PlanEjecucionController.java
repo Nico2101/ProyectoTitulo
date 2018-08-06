@@ -271,8 +271,8 @@ public class PlanEjecucionController {
 	@RequestMapping(value = "verificarNombreRepetidoPlan")
 	public @ResponseBody boolean verificarNombreRepedtidoPlan(@RequestParam String nombre) {
 
-		Plan_Ejecucion plan = planEjecucionService.findByNombre(nombre);
-		if (plan != null) {
+		List<Plan_Ejecucion> plan = planEjecucionService.findByNombre(nombre);
+		if (!plan.isEmpty()) {
 			return true;
 		}
 		return false;

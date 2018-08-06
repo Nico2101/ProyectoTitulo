@@ -115,9 +115,9 @@ public class PredioServiceImplementation implements PredioService {
 		// TODO Auto-generated method stub
 		return predioRepo.listaDePrediosParaCostos(id_temporada, id_sector);
 	}
-	
+
 	@Override
-	public Predio findByNombre(String nombre) {
+	public List<Predio> findByNombre(String nombre) {
 		// TODO Auto-generated method stub
 		return predioRepo.findByNombre(nombre);
 	}

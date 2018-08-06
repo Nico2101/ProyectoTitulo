@@ -41,7 +41,7 @@ public interface PredioService {
 	Integer totalPrediosSinPlanAsignado();
 
 	List<Predio> getPrediosParaCostos(int id_temporada, int id_sector);
-	
-	Predio findByNombre(String  nombre);
+
+	List<Predio> findByNombre(String nombre);
 
 }

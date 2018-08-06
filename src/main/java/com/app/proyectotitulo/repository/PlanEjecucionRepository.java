@@ -17,6 +17,6 @@ public interface PlanEjecucionRepository extends JpaRepository<Plan_Ejecucion, I
 
 	Plan_Ejecucion findByIdPlanEjecucion(int idPlan);
 	
-	Plan_Ejecucion findByNombre(String nombre);
+	List<Plan_Ejecucion> findByNombre(String nombre);
 
 }

@@ -341,12 +341,12 @@ public class PredioController {
 		return lista;
 
 	}
-	
+
 	@RequestMapping(value = "verificarNombreRepetidoPredio")
 	public @ResponseBody boolean verificarNombreRepedtidoPredio(@RequestParam String nombre) {
 
-		Predio predio = predioService.findByNombre(nombre);
-		if (predio != null) {
+		List<Predio> predio = predioService.findByNombre(nombre);
+		if (!predio.isEmpty()) {
 			return true;
 		}
 		return false;

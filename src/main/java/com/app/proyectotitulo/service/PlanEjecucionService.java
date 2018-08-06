@@ -17,6 +17,6 @@ public interface PlanEjecucionService {
 
 	public void actualizarPlan(Plan_Ejecucion p);
 	
-	Plan_Ejecucion findByNombre(String nombre);
+	List<Plan_Ejecucion> findByNombre(String nombre);
 
 }
