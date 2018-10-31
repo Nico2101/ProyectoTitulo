@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ include file="libreria.jsp"%>
+<%@ include file="template/libreria.jsp"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<%@ include file="cabecera.jsp"%>
+<%@ include file="template/cabecera.jsp"%>
 <style>
 .error {
 	color: #FF0000;
@@ -19,10 +19,10 @@
 	<div class="wrapper">
 
 		<header class="main-header"> <%@ include
-			file="barraSuperior.jsp"%> </header>
+			file="template/barraSuperior.jsp"%> </header>
 		<!-- Left side column. contains the logo and sidebar -->
 		<aside class="main-sidebar"> <%@ include
-			file="barraLateral.jsp"%> <!-- /.sidebar -->
+			file="template/barraLateral.jsp"%> <!-- /.sidebar -->
 		</aside>
 
 		<!-- Content Wrapper. Contains page content -->
@@ -103,62 +103,16 @@
 
 		<footer align="center" class="main-footer"
 			style="background-color:#ecf0f5;"> <%@ include
-			file="pieDePagina.jsp"%> </footer>
+			file="template/pieDePagina.jsp"%> </footer>
 
 		<div class="control-sidebar-bg"></div>
 
 	</div>
-	<%@ include file="scripts.jsp"%>
+	<%@ include file="template/scripts.jsp"%>
 </body>
 
-<script>
-	function generarReporte() {
-		//Obtener temporada
-		var aux = false;
-		var idTemporada = $('#temporada').val();
-		if (idTemporada < 0) {
-			document.getElementById('temporada').style.border = "1px solid red";
-			document.getElementById('errorTemporada').style.display = 'inline';
-		} else {
-			document.getElementById('temporada').style.border = "";
-			document.getElementById('errorTemporada').style.display = 'none';
-
-		}
-
-		if (idTemporada > 0) {
-			$
-					.ajax({
-						type : 'POST',
-						url : "verificarDatosReporteTemporadas",
-						dataType : 'json',
-						data : {
-							idTemporada : idTemporada
-						},
-						success : function(data) {
-							console.log(data);
-							if (!$.isEmptyObject(data)) {
-								if (data[0].cantidadCosechada == null) {
-									toastr
-											.error("No existen registros de cosecha para la temporada seleccionada");
-								} else {
-									location.href = "generarReporteTemporada?idTemporada="
-											+ idTemporada;
-								}
-
-							} else {
-
-								toastr
-										.error("No hay datos en la temporada seleccionada");
-							}
-
-						},
-						error : function(jqXHR, errorThrown) {
-							alert("Error al verificar la temporada");
-						}
-					});
-		}
-
-	}
+<script src="js/cosechaPorTemporada.js">
+	
 </script>
 
 

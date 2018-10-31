@@ -1,5 +1,5 @@
 
-<%@ include file="/views/libreria.jsp"%>
+<%@ include file="/views/template/libreria.jsp"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html lang="en">
 <head>
